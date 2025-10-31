@@ -8,7 +8,7 @@ namespace WebBanHang.Models
     public class Product
     {
         public int Id { get; set; }
-        public string TenSP { get; set; }
+        public string? TenSP { get; set; }
         public decimal Gia { get; set; }
     }
 }
