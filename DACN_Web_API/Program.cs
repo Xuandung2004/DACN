@@ -10,17 +10,19 @@ namespace DACN_Web_API
             // Add services to the container.
 
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
-
+            // Enable CORS for development/testing of the static admin pages
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowAll", policy =>
+                {
                     policy.AllowAnyOrigin()
                           .AllowAnyHeader()
-                          .AllowAnyMethod());
+                          .AllowAnyMethod();
+                });
             });
+            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
 
@@ -31,12 +33,13 @@ namespace DACN_Web_API
                 app.UseSwaggerUI();
             }
 
-            app.UseCors("AllowAll");
 
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+            // Use CORS (development only). If you want to restrict origins, change this policy.
+            app.UseCors("AllowAll");
 
+            app.UseAuthorization();
 
             app.MapControllers();
 
