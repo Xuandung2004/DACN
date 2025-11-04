@@ -482,3 +482,4 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+DACN_Web_API/Models/CsdlFinal1Context.cs
