@@ -19,15 +19,11 @@ public partial class Sanpham
 
     public int? TonKho { get; set; }
 
-    public int? AnhId { get; set; }
-
     public DateTime? NgayTao { get; set; }
 
     public DateTime? CapNhat { get; set; }
 
-    public int? KichThuocId { get; set; }
-
-    public virtual Anh? Anh { get; set; }
+    public virtual ICollection<Anh> Anhs { get; set; } = new List<Anh>();
 
     public virtual Danhmuc? DanhMuc { get; set; }
 
@@ -37,5 +33,5 @@ public partial class Sanpham
 
     public virtual ICollection<Giohang> Giohangs { get; set; } = new List<Giohang>();
 
-    public virtual Kichthuoc? KichThuoc { get; set; }
+    public virtual ICollection<Kichthuoc> Kichthuocs { get; set; } = new List<Kichthuoc>();
 }

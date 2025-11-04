@@ -9,9 +9,11 @@ public partial class Kichthuoc
 
     public int? SoLieu { get; set; }
 
+    public int? SanPhamId { get; set; }
+
     public virtual ICollection<DonhangChitiet> DonhangChitiets { get; set; } = new List<DonhangChitiet>();
 
     public virtual ICollection<Giohang> Giohangs { get; set; } = new List<Giohang>();
 
-    public virtual ICollection<Sanpham> Sanphams { get; set; } = new List<Sanpham>();
+    public virtual Sanpham? SanPham { get; set; }
 }

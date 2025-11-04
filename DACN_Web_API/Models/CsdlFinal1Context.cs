@@ -60,10 +60,17 @@ public partial class CsdlFinal1Context : DbContext
 
             entity.HasIndex(e => e.Id, "ID").IsUnique();
 
+            entity.HasIndex(e => e.SanPhamId, "SanPham_ID");
+
             entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.SanPhamId).HasColumnName("SanPham_ID");
             entity.Property(e => e.Url)
                 .HasMaxLength(255)
                 .HasColumnName("URL");
+
+            entity.HasOne(d => d.SanPham).WithMany(p => p.Anhs)
+                .HasForeignKey(d => d.SanPhamId)
+                .HasConstraintName("anh_ibfk_1");
         });
 
         modelBuilder.Entity<Danhgium>(entity =>
@@ -238,7 +245,14 @@ public partial class CsdlFinal1Context : DbContext
 
             entity.HasIndex(e => e.Id, "ID").IsUnique();
 
+            entity.HasIndex(e => e.SanPhamId, "SanPham_ID");
+
             entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.SanPhamId).HasColumnName("SanPham_ID");
+
+            entity.HasOne(d => d.SanPham).WithMany(p => p.Kichthuocs)
+                .HasForeignKey(d => d.SanPhamId)
+                .HasConstraintName("kichthuoc_ibfk_1");
         });
 
         modelBuilder.Entity<Ngayhen>(entity =>
@@ -291,19 +305,13 @@ public partial class CsdlFinal1Context : DbContext
 
             entity.ToTable("sanpham");
 
-            entity.HasIndex(e => e.AnhId, "Anh_ID");
-
             entity.HasIndex(e => e.DanhMucId, "DanhMuc_ID");
 
             entity.HasIndex(e => e.Id, "ID").IsUnique();
 
-            entity.HasIndex(e => e.KichThuocId, "KichThuoc_ID");
-
             entity.Property(e => e.Id).HasColumnName("ID");
-            entity.Property(e => e.AnhId).HasColumnName("Anh_ID");
             entity.Property(e => e.CapNhat).HasColumnType("datetime");
             entity.Property(e => e.DanhMucId).HasColumnName("DanhMuc_ID");
-            entity.Property(e => e.KichThuocId).HasColumnName("KichThuoc_ID");
             entity.Property(e => e.MoTa).HasColumnType("mediumtext");
             entity.Property(e => e.NgayTao).HasColumnType("datetime");
             entity.Property(e => e.Slug).HasMaxLength(255);
@@ -311,17 +319,9 @@ public partial class CsdlFinal1Context : DbContext
                 .HasMaxLength(255)
                 .HasColumnName("TenSP");
 
-            entity.HasOne(d => d.Anh).WithMany(p => p.Sanphams)
-                .HasForeignKey(d => d.AnhId)
-                .HasConstraintName("sanpham_ibfk_2");
-
             entity.HasOne(d => d.DanhMuc).WithMany(p => p.Sanphams)
                 .HasForeignKey(d => d.DanhMucId)
                 .HasConstraintName("sanpham_ibfk_1");
-
-            entity.HasOne(d => d.KichThuoc).WithMany(p => p.Sanphams)
-                .HasForeignKey(d => d.KichThuocId)
-                .HasConstraintName("sanpham_ibfk_3");
         });
 
         modelBuilder.Entity<Thanhtoanon>(entity =>
@@ -360,9 +360,7 @@ public partial class CsdlFinal1Context : DbContext
 
             entity.HasIndex(e => e.NguoiDungId, "NguoiDung_ID");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("ID");
+            entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.DiaChiNhan).HasMaxLength(255);
             entity.Property(e => e.NguoiDungId).HasColumnName("NguoiDung_ID");
             entity.Property(e => e.Sdtnn)

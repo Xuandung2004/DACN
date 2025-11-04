@@ -9,5 +9,7 @@ public partial class Anh
 
     public string? Url { get; set; }
 
-    public virtual ICollection<Sanpham> Sanphams { get; set; } = new List<Sanpham>();
+    public int? SanPhamId { get; set; }
+
+    public virtual Sanpham? SanPham { get; set; }
 }
