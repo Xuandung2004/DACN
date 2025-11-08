@@ -3,20 +3,24 @@
   "WorkspaceRootPath": "D:\\nam4\\Ky_1\\DACN\\test\\DACN\\DACN_Web_API\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{7FDE9145-D3B3-4837-B486-4A7D5FFFA34D}|DACN_Web_API.csproj|d:\\nam4\\ky_1\\dacn\\test\\dacn\\dacn_web_api\\models\\csdlfinal1context.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7FDE9145-D3B3-4837-B486-4A7D5FFFA34D}|DACN_Web_API.csproj|solutionrelative:models\\csdlfinal1context.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{7FDE9145-D3B3-4837-B486-4A7D5FFFA34D}|DACN_Web_API.csproj|d:\\nam4\\ky_1\\dacn\\test\\dacn\\dacn_web_api\\controllers\\giohangcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7FDE9145-D3B3-4837-B486-4A7D5FFFA34D}|DACN_Web_API.csproj|solutionrelative:controllers\\giohangcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7FDE9145-D3B3-4837-B486-4A7D5FFFA34D}|DACN_Web_API.csproj|d:\\nam4\\ky_1\\dacn\\test\\dacn\\dacn_web_api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{7FDE9145-D3B3-4837-B486-4A7D5FFFA34D}|DACN_Web_API.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{7FDE9145-D3B3-4837-B486-4A7D5FFFA34D}|DACN_Web_API.csproj|d:\\nam4\\ky_1\\dacn\\test\\dacn\\dacn_web_api\\controllers\\testcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7FDE9145-D3B3-4837-B486-4A7D5FFFA34D}|DACN_Web_API.csproj|solutionrelative:controllers\\testcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{7FDE9145-D3B3-4837-B486-4A7D5FFFA34D}|DACN_Web_API.csproj|d:\\nam4\\ky_1\\dacn\\test\\dacn\\dacn_web_api\\controllers\\sanphamcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7FDE9145-D3B3-4837-B486-4A7D5FFFA34D}|DACN_Web_API.csproj|solutionrelative:controllers\\sanphamcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7FDE9145-D3B3-4837-B486-4A7D5FFFA34D}|DACN_Web_API.csproj|d:\\nam4\\ky_1\\dacn\\test\\dacn\\dacn_web_api\\models\\csdlfinal1context.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7FDE9145-D3B3-4837-B486-4A7D5FFFA34D}|DACN_Web_API.csproj|solutionrelative:models\\csdlfinal1context.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{7FDE9145-D3B3-4837-B486-4A7D5FFFA34D}|DACN_Web_API.csproj|d:\\nam4\\ky_1\\dacn\\test\\dacn\\dacn_web_api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{7FDE9145-D3B3-4837-B486-4A7D5FFFA34D}|DACN_Web_API.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{7FDE9145-D3B3-4837-B486-4A7D5FFFA34D}|DACN_Web_API.csproj|d:\\nam4\\ky_1\\dacn\\test\\dacn\\dacn_web_api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -25,10 +29,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{7FDE9145-D3B3-4837-B486-4A7D5FFFA34D}|DACN_Web_API.csproj|d:\\nam4\\ky_1\\dacn\\test\\dacn\\dacn_web_api\\models\\kichthuoc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7FDE9145-D3B3-4837-B486-4A7D5FFFA34D}|DACN_Web_API.csproj|solutionrelative:models\\kichthuoc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{7FDE9145-D3B3-4837-B486-4A7D5FFFA34D}|DACN_Web_API.csproj|d:\\nam4\\ky_1\\dacn\\test\\dacn\\dacn_web_api\\controllers\\testcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7FDE9145-D3B3-4837-B486-4A7D5FFFA34D}|DACN_Web_API.csproj|solutionrelative:controllers\\testcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{7FDE9145-D3B3-4837-B486-4A7D5FFFA34D}|DACN_Web_API.csproj|d:\\nam4\\ky_1\\dacn\\test\\dacn\\dacn_web_api\\models\\danhgium.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -54,7 +54,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 10,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -66,31 +66,33 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "CsdlFinal1Context.cs",
               "DocumentMoniker": "D:\\nam4\\Ky_1\\DACN\\test\\DACN\\DACN_Web_API\\Models\\CsdlFinal1Context.cs",
               "RelativeDocumentMoniker": "Models\\CsdlFinal1Context.cs",
               "ToolTip": "D:\\nam4\\Ky_1\\DACN\\test\\DACN\\DACN_Web_API\\Models\\CsdlFinal1Context.cs",
               "RelativeToolTip": "Models\\CsdlFinal1Context.cs",
-              "ViewState": "AgIAAB0AAAAAAAAAAAAAwC4AAABEAAAAAAAAAA==",
+              "ViewState": "AgIAAB0AAAAAAAAAAAAAwCYAAAA4AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-08T04:53:30.327Z"
+              "WhenOpened": "2025-11-08T04:53:30.327Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "SanPhamController.cs",
               "DocumentMoniker": "D:\\nam4\\Ky_1\\DACN\\test\\DACN\\DACN_Web_API\\Controllers\\SanPhamController.cs",
               "RelativeDocumentMoniker": "Controllers\\SanPhamController.cs",
               "ToolTip": "D:\\nam4\\Ky_1\\DACN\\test\\DACN\\DACN_Web_API\\Controllers\\SanPhamController.cs",
               "RelativeToolTip": "Controllers\\SanPhamController.cs",
-              "ViewState": "AgIAACYAAAAAAAAAAAAwwDwAAAAhAAAAAAAAAA==",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAxwBgAAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-08T04:44:30.349Z"
+              "WhenOpened": "2025-11-08T04:44:30.349Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "Kichthuoc.cs",
               "DocumentMoniker": "D:\\nam4\\Ky_1\\DACN\\test\\DACN\\DACN_Web_API\\Models\\Kichthuoc.cs",
               "RelativeDocumentMoniker": "Models\\Kichthuoc.cs",
@@ -150,7 +152,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\nam4\\Ky_1\\DACN\\test\\DACN\\DACN_Web_API\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
@@ -162,20 +164,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "GioHangController.cs",
               "DocumentMoniker": "D:\\nam4\\Ky_1\\DACN\\test\\DACN\\DACN_Web_API\\Controllers\\GioHangController.cs",
               "RelativeDocumentMoniker": "Controllers\\GioHangController.cs",
               "ToolTip": "D:\\nam4\\Ky_1\\DACN\\test\\DACN\\DACN_Web_API\\Controllers\\GioHangController.cs",
               "RelativeToolTip": "Controllers\\GioHangController.cs",
-              "ViewState": "AgIAABAAAAAAAAAAAAA1wCMAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAABEAAAAAAAAAAAAQwBkAAAAaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-30T13:41:28.317Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "appsettings.json",
               "DocumentMoniker": "D:\\nam4\\Ky_1\\DACN\\test\\DACN\\DACN_Web_API\\appsettings.json",
               "RelativeDocumentMoniker": "appsettings.json",
@@ -183,12 +185,11 @@
               "RelativeToolTip": "appsettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-10-30T12:19:09.566Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-30T12:19:09.566Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 2,
               "Title": "TestController.cs",
               "DocumentMoniker": "D:\\nam4\\Ky_1\\DACN\\test\\DACN\\DACN_Web_API\\Controllers\\TestController.cs",
               "RelativeDocumentMoniker": "Controllers\\TestController.cs",
@@ -196,7 +197,8 @@
               "RelativeToolTip": "Controllers\\TestController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-30T12:14:29.418Z"
+              "WhenOpened": "2025-10-30T12:14:29.418Z",
+              "EditorCaption": ""
             }
           ]
         }
