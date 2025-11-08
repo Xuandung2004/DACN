@@ -1,4 +1,7 @@
 ﻿
+using DACN_Web_API.Models;
+using Microsoft.EntityFrameworkCore;
+
 namespace DACN_Web_API
 {
     public class Program
@@ -10,6 +13,11 @@ namespace DACN_Web_API
             // Add services to the container.
 
             builder.Services.AddControllers();
+            builder.Services.AddDbContext<CsdlFinal1Context>(options => options.UseMySql(
+                builder.Configuration.GetConnectionString("DefaultConnection"),
+                ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))
+                )
+            );
             // Enable CORS for development/testing of the static admin pages
             builder.Services.AddCors(options =>
             {

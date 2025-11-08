@@ -62,8 +62,8 @@ namespace DACN_Web_API.Controllers
             sp.DanhMucId = input.DanhMucId;
             sp.Slug = input.Slug;
             sp.TonKho = input.TonKho;
-            sp.AnhId = input.AnhId;
-            sp.KichThuocId = input.KichThuocId;
+            //sp.AnhId = input.AnhId;
+            //sp.KichThuocId = input.KichThuocId;
             sp.CapNhat = DateTime.Now;
 
             db.SaveChanges();
