@@ -12,39 +12,39 @@ namespace DACN_Web_API.Controllers
     public class GioHangController : ControllerBase
     {
         private CsdlFinal1Context db = new CsdlFinal1Context();
-        //[HttpGet]
-        //[Route("ChiTiet/{nguoiDungId}")]
-        //public IActionResult GetChiTiet(int nguoiDungId)
-        //{
-        //    var items = (from g in db.Giohangs
-        //                 join s in db.Sanphams on g.SanPhamId equals s.Id
-        //                 join k in db.Kichthuocs on g.KichThuocId equals k.Id
-        //                 join a in db.Anhs on s.AnhId equals a.Id into anhGroup
-        //                 from a in anhGroup.DefaultIfEmpty()
-        //                 where g.NguoiDungId == nguoiDungId
-        //                 select new
-        //                 {
-        //                     SanPhamID = s.Id,
-        //                     KichThuocID = k.Id,
-        //                     s.TenSp,
-        //                     s.Gia,
-        //                     SoLuong = g.SoLuong,
-        //                     ThanhTien = g.SoLuong * s.Gia,
-        //                     KichThuoc = k.SoLieu,
-        //                     Anh = a != null ? a.Url : null
-        //                 }).ToList();
+        [HttpGet]
+        [Route("ChiTiet/{nguoiDungId}")]
+        public IActionResult GetChiTiet(int nguoiDungId)
+        {
+            var items = (from g in db.Giohangs
+                         join s in db.Sanphams on g.SanPhamId equals s.Id
+                         join k in db.Kichthuocs on g.KichThuocId equals k.Id
+                         join a in db.Anhs on s.Id equals a.SanPhamId into anhGroup
+                         from a in anhGroup.DefaultIfEmpty()
+                         where g.NguoiDungId == nguoiDungId
+                         select new
+                         {
+                             SanPhamID = s.Id,
+                             KichThuocID = k.Id,
+                             TenSp = s.TenSp,
+                             Gia = s.Gia,
+                             SoLuong = g.SoLuong,
+                             ThanhTien = g.SoLuong * s.Gia,
+                             KichThuoc = k.SoLieu,
+                             Anh = a != null ? a.Url : null
+                         }).ToList();
 
-        //    if (!items.Any())
-        //        return Ok(new { Message = "Giỏ hàng trống", Items = items });
+            if (!items.Any())
+                return Ok(new { message = "Giỏ hàng trống", items = items });
 
-        //    var tongTien = items.Sum(i => i.ThanhTien);
-        //    return Ok(new
-        //    {
-        //        TongTien = tongTien,
-        //        SoSanPham = items.Count,
-        //        Items = items
-        //    });
-        //}
+            var tongTien = items.Sum(i => i.ThanhTien);
+            return Ok(new
+            {
+                tongTien,
+                soSanPham = items.Count,
+                items
+            });
+        }
         //Cập nhật số lượng sản phẩm trong giỏ
         [HttpPut("update")]
         public IActionResult UpdateCartItem([FromBody] GioHangDTO item)
