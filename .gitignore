@@ -53,3 +53,5 @@ CodeCoverage/
 TestResult.xml
 nunit-*.xml
 DACN_Web_API/Models/CsdlFinal1Context.cs
+DACN_Web_API/.vs
+
