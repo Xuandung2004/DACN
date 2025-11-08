@@ -491,3 +491,5 @@ DACN_Web_API/Models/CsdlFinal1Context.cs
 =======
 DACN_Web_API/Models/CsdlFinal1Context.cs
 >>>>>>> 06ed10b9426445790861e795b87744a15421f477
+/DACN_Web_API/bin/
+/DACN_Web_API/obj/
