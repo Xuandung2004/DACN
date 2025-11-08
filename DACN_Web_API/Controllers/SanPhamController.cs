@@ -1,8 +1,12 @@
 using DACN_Web_API.Models;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DACN_Web_API.Controllers
 {
@@ -10,82 +14,151 @@ namespace DACN_Web_API.Controllers
     [ApiController]
     public class SanPhamController : ControllerBase
     {
-        private CsdlFinal1Context db = new CsdlFinal1Context();
+        private readonly CsdlFinal1Context db = new CsdlFinal1Context();
+        private readonly IWebHostEnvironment _env;
+
+        public SanPhamController(IWebHostEnvironment env)
+        {
+            _env = env;
+        }
 
         // GET: api/SanPham
+        // Returns products with related DanhMuc and Anhs projected to friendly names expected by frontend
         [HttpGet]
         public IActionResult GetAllSP()
         {
-            return Ok(db.Sanphams.ToList());
+            var items = db.Sanphams
+                .Include(s => s.DanhMuc)
+                .Include(s => s.Anhs)
+                .Select(s => new
+                {
+                    id = s.Id,
+                    tenSp = s.TenSp,
+                    moTa = s.MoTa,
+                    gia = s.Gia,
+                    tonKho = s.TonKho,
+                    slug = s.Slug,
+                    ngayTao = s.NgayTao,
+                    capNhat = s.CapNhat,
+                    danhMuc = s.DanhMuc == null ? null : new { id = s.DanhMuc.Id, tenDanhMuc = s.DanhMuc.TenDm },
+                    anhs = s.Anhs.Select(a => new { id = a.Id, duongDan = a.Url })
+                })
+                .ToList();
+
+            return Ok(items);
         }
 
-        // // GET: api/SanPham/5
-        // [HttpGet("{id}")]
-        // public IActionResult GetById(int id)
-        // {
-        //     var sp = db.Sanphams.Find(id);
-        //     if (sp == null) return NotFound();
-        //     return Ok(sp);
-        // }
+        // GET: api/SanPham/5
+        [HttpGet("{id}")]
+        public IActionResult GetSP(int id)
+        {
+            var s = db.Sanphams
+                .Include(sp => sp.DanhMuc)
+                .Include(sp => sp.Anhs)
+                .Where(sp => sp.Id == id)
+                .Select(sp => new
+                {
+                    id = sp.Id,
+                    tenSp = sp.TenSp,
+                    moTa = sp.MoTa,
+                    gia = sp.Gia,
+                    tonKho = sp.TonKho,
+                    slug = sp.Slug,
+                    ngayTao = sp.NgayTao,
+                    capNhat = sp.CapNhat,
+                    danhMuc = sp.DanhMuc == null ? null : new { id = sp.DanhMuc.Id, tenDanhMuc = sp.DanhMuc.TenDm },
+                    anhs = sp.Anhs.Select(a => new { id = a.Id, duongDan = a.Url })
+                })
+                .FirstOrDefault();
 
-        // // POST: api/SanPham
-        // [HttpPost]
-        // public IActionResult Create([FromBody] Sanpham sp)
-        // {
-        //     try
-        //     {
-        //         sp.NgayTao = DateTime.Now;
-        //         db.Sanphams.Add(sp);
-        //         db.SaveChanges();
-        //         return Ok("Thêm sản phẩm thành công");
-        //     }
-        //     catch (Exception ex)
-        //     {
-        //         return BadRequest($"Lỗi: {ex.Message}");
-        //     }
-        // }
+            if (s == null) return NotFound();
+            return Ok(s);
+        }
 
-        // // PUT: api/SanPham/5
-        // [HttpPut("{id}")]
-        // public IActionResult Update(int id, [FromBody] Sanpham input)
-        // {
-        //     if (input == null) return BadRequest("Invalid product payload.");
-        //     if (id != input.Id) return BadRequest("Id in URL and payload do not match.");
+        // POST: api/SanPham
+        [HttpPost]
+        public IActionResult CreateSP([FromBody] Sanpham model)
+        {
+            if (model == null) return BadRequest();
 
-        //     var sp = db.Sanphams.Find(id);
-        //     if (sp == null) return NotFound();
+            model.NgayTao = DateTime.Now;
+            db.Sanphams.Add(model);
+            db.SaveChanges();
 
-        //     // update allowed fields
-        //     sp.TenSp = input.TenSp;
-        //     sp.MoTa = input.MoTa;
-        //     sp.Gia = input.Gia;
-        //     sp.DanhMucId = input.DanhMucId;
-        //     sp.Slug = input.Slug;
-        //     sp.TonKho = input.TonKho;
-        //     sp.AnhId = input.AnhId;
-        //     sp.KichThuocId = input.KichThuocId;
-        //     sp.CapNhat = DateTime.Now;
+            // Return created resource (projected)
+            return CreatedAtAction(nameof(GetSP), new { id = model.Id }, new { id = model.Id });
+        }
 
-        //     db.SaveChanges();
+        // PUT: api/SanPham/5
+        [HttpPut("{id}")]
+        public IActionResult UpdateSP(int id, [FromBody] Sanpham model)
+        {
+            if (model == null || id != model.Id) return BadRequest();
 
-        //     // return 204 No Content for a successful update
-        //     return NoContent();
-        // }
+            var existing = db.Sanphams.Find(id);
+            if (existing == null) return NotFound();
 
-        // // DELETE: api/SanPham/5
-        // [HttpDelete("{id}")]
-        // public IActionResult Delete(int id)
-        // {
-        //     var sp = db.Sanphams.Find(id);
-        //     if (sp == null) return NotFound();
+            // Update scalar properties only; do not overwrite navigation collections here
+            existing.TenSp = model.TenSp;
+            existing.MoTa = model.MoTa;
+            existing.Gia = model.Gia;
+            existing.DanhMucId = model.DanhMucId;
+            existing.Slug = model.Slug;
+            existing.TonKho = model.TonKho;
+            existing.CapNhat = DateTime.Now;
 
-        //     db.Sanphams.Remove(sp);
-        //     db.SaveChanges();
+            db.Sanphams.Update(existing);
+            db.SaveChanges();
 
-        //     return NoContent();
-        // }
+            return NoContent();
+        }
 
-        // NOTE: For admin-only access, apply [Authorize(Roles = "Admin")] to this controller or methods        
+        // DELETE: api/SanPham/5
+        [HttpDelete("{id}")]
+        public IActionResult DeleteSP(int id)
+        {
+            var sp = db.Sanphams
+                .Include(s => s.Anhs)
+                .FirstOrDefault(s => s.Id == id);
 
+            if (sp == null) return NotFound();
+
+            // Remove related images first (optional: also delete files from disk)
+            if (sp.Anhs != null && sp.Anhs.Any())
+            {
+                db.Anhs.RemoveRange(sp.Anhs);
+            }
+
+            db.Sanphams.Remove(sp);
+            db.SaveChanges();
+
+            return NoContent();
+        }
+
+        // POST: api/SanPham/upload-image
+        // Accepts a single file, saves it under wwwroot/uploads and creates an Anh record
+        [HttpPost("upload-image")]
+        public async Task<IActionResult> UploadImage(IFormFile image)
+        {
+            if (image == null || image.Length == 0) return BadRequest("No file provided");
+
+            var uploadsRoot = Path.Combine(_env.WebRootPath ?? Path.Combine(Directory.GetCurrentDirectory(), "wwwroot"), "uploads");
+            if (!Directory.Exists(uploadsRoot)) Directory.CreateDirectory(uploadsRoot);
+
+            var fileName = Guid.NewGuid().ToString("N") + Path.GetExtension(image.FileName);
+            var filePath = Path.Combine(uploadsRoot, fileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await image.CopyToAsync(stream);
+            }
+
+            var relativeUrl = $"/uploads/{fileName}";
+            var anh = new Anh { Url = relativeUrl, SanPhamId = null };
+            db.Anhs.Add(anh);
+            db.SaveChanges();
+
+            return Ok(new { id = anh.Id, url = anh.Url });
+        }
     }
 }

@@ -483,7 +483,11 @@ $RECYCLE.BIN/
 # Vim temporary swap files
 *.swp
 <<<<<<< HEAD
+<<<<<<< HEAD
 CsdlFinal1Context.cs
 =======
 DACN_Web_API/Models/CsdlFinal1Context.cs
 >>>>>>> 8e6739d1997f82d73b13df2ad5c9b95b8209941c
+=======
+DACN_Web_API/Models/CsdlFinal1Context.cs
+>>>>>>> 06ed10b9426445790861e795b87744a15421f477
