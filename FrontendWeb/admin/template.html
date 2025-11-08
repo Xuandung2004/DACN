@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Admin - Sản phẩm</title>
+    <title>Admin - AURORA</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -15,7 +15,6 @@
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/dataTables.dataTables.min.css">
 </head>
 
 <body id="page-top">
@@ -65,17 +64,16 @@
                 </div>
             </li>
 
-            <li class="nav-item active">
-                <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseThere" aria-expanded="true"
-                    aria-controls="collapseTwo">
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThere"
+                    aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fab fa-product-hunt"></i>
                     <span>Sản phẩm</span>
                 </a>
-                <div id="collapseThere" class="collapse show" aria-labelledby="headingTwo"
-                    data-parent="#accordionSidebar">
+                <div id="collapseThere" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Các chức năng</h6>
-                        <a class="collapse-item active" href="listsp.html">Liệt kê</a>
+                        <a class="collapse-item" href="listsp.html">Liệt kê</a>
                         <a class="collapse-item" href="#" data-toggle="modal" data-target="#productModal">Thêm mới</a>
                     </div>
                 </div>
@@ -132,8 +130,45 @@
                         <i class="fa fa-bars"></i>
                     </button>
 
+                    <!-- Topbar Search -->
+                    <form
+                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                        <div class="input-group">
+                            <input type="text" class="form-control bg-light border-0 small" placeholder="Tìm kiếm..."
+                                aria-label="Search" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
+                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                        <li class="nav-item dropdown no-arrow d-sm-none">
+                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-search fa-fw"></i>
+                            </a>
+                            <!-- Dropdown - Messages -->
+                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                                aria-labelledby="searchDropdown">
+                                <form class="form-inline mr-auto w-100 navbar-search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control bg-light border-0 small"
+                                            placeholder="Tìm kiếm..." aria-label="Search"
+                                            aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
                         <div class="topbar-divider d-none d-sm-block"></div>
 
                         <!-- Nav Item - User Information -->
@@ -163,92 +198,8 @@
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h3>Quản lý Sản phẩm</h3>
-                        <!-- <div>
-                            <button id="btnNew" class="btn btn-primary">Thêm sản phẩm</button>
-                        </div> -->
-                    </div>
+                    <!-- Nội dung trang web sẽ được thêm vào đây -->
 
-                    <div class="card shadow mb-4">
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="productsTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Tên</th>
-                                            <th>Giá</th>
-                                            <th>Danh mục</th>
-                                            <th>Tồn kho</th>
-                                            <th>Hành động</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="productsBody"></tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Modal for create/edit -->
-                    <div class="modal fade" id="productModal" tabindex="-1" role="dialog">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="modalTitle">Thêm sản phẩm</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <form id="productForm">
-                                        <input type="hidden" id="Id" />
-                                        <div class="form-group">
-                                            <label for="TenSp">Tên</label>
-                                            <input class="form-control" id="TenSp" required />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="MoTa">Mô tả</label>
-                                            <textarea class="form-control" id="MoTa"></textarea>
-                                        </div>
-                                        <div class="form-row">
-                                            <div class="form-group col-md-6">
-                                                <label for="Gia">Giá</label>
-                                                <input type="number" step="0.01" class="form-control" id="Gia" />
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label for="TonKho">Tồn kho</label>
-                                                <input type="number" class="form-control" id="TonKho" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="DanhMucId">Danh mục</label>
-                                            <select class="form-control" id="DanhMucId" required>
-                                                <option value="">-- Chọn danh mục --</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="Slug">Slug</label>
-                                            <input type="text" class="form-control" id="Slug" required />
-                                            <small class="form-text text-muted">URL thân thiện của sản phẩm (không
-                                                dấu)</small>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="imageInput">Hình ảnh</label>
-                                            <input type="file" class="form-control-file" id="imageInput"
-                                                accept="image/*">
-                                            <img id="imagePreview" class="mt-2"
-                                                style="max-width: 200px; display: none;">
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                                    <button id="saveBtn" type="button" class="btn btn-primary">Lưu</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <!-- /.container-fluid -->
 
@@ -305,11 +256,6 @@
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
-
-    <!-- Page specific scripts -->
-    <script src="js/dataTables.min.js"></script>
-    <script src="js/quanlysanpham/admin-products.js"></script>
-
 
 </body>
 
