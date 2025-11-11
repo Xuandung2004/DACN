@@ -65,48 +65,33 @@
                 </div>
             </li>
 
-            <li class="nav-item active">
-                <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseThere" aria-expanded="true"
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThere" aria-expanded="true"
                     aria-controls="collapseTwo">
                     <i class="fab fa-product-hunt"></i>
                     <span>Sản phẩm</span>
                 </a>
-                <div id="collapseThere" class="collapse show" aria-labelledby="headingTwo"
-                    data-parent="#accordionSidebar">
+                <div id="collapseThere" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Các chức năng</h6>
-                        <a class="collapse-item active" href="listsp.html">Liệt kê</a>
+                        <a class="collapse-item" href="listsp.html">Liệt kê</a>
                         <a class="collapse-item" href="#" data-toggle="modal" data-target="#productModal">Thêm mới</a>
                     </div>
                 </div>
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFour"
-                    aria-expanded="true" aria-controls="collapseTwo">
+            <li class="nav-item active">
+                <a class="nav-link collapsed" href="listdonhang.html" aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-wallet"></i>
                     <span>Đơn hàng</span>
                 </a>
-                <div id="collapseFour" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Các chức năng</h6>
-                        <a class="collapse-item" href="listdonhang.html">Quản lý đơn hàng</a>
-                    </div>
-                </div>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFive"
-                    aria-expanded="true" aria-controls="collapseTwo">
+                <a class="nav-link" href="listnguoidung.html" aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-users"></i>
                     <span>Người dùng</span>
                 </a>
-                <div id="collapseFive" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Các chức năng</h6>
-                        <a class="collapse-item" href="listnguoidung.html">Quản lý người dùng</a>
-                    </div>
-                </div>
             </li>
 
             <!-- Divider -->
@@ -159,99 +144,76 @@
                 </nav>
                 <!-- End of Topbar -->
 
-                <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h3>Quản lý Sản phẩm</h3>
-                        <!-- <div>
-                            <button id="btnNew" class="btn btn-primary">Thêm sản phẩm</button>
-                        </div> -->
-                    </div>
+    <div class="d-flex mb-3">
+        <input type="number" id="searchId" class="form-control w-25 mr-2" placeholder="Nhập ID đơn hàng...">
+        <button class="btn btn-primary" id="searchBtn">Tìm kiếm</button>
+    </div>
 
-                    <div class="card shadow mb-4">
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="productsTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Tên</th>
-                                            <th>Giá</th>
-                                            <th>Danh mục</th>
-                                            <th>Tồn kho</th>
-                                            <th>Hành động</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="productsBody"></tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Modal for create/edit -->
-                    <div class="modal fade" id="productModal" tabindex="-1" role="dialog">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="modalTitle">Thêm sản phẩm</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <form id="productForm">
-                                        <input type="hidden" id="Id" />
-                                        <div class="form-group">
-                                            <label for="TenSp">Tên</label>
-                                            <input class="form-control" id="TenSp" required />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="MoTa">Mô tả</label>
-                                            <textarea class="form-control" id="MoTa"></textarea>
-                                        </div>
-                                        <div class="form-row">
-                                            <div class="form-group col-md-6">
-                                                <label for="Gia">Giá</label>
-                                                <input type="number" step="0.01" class="form-control" id="Gia" />
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label for="TonKho">Tồn kho</label>
-                                                <input type="number" class="form-control" id="TonKho" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="DanhMucId">Danh mục</label>
-                                            <select class="form-control" id="DanhMucId" required>
-                                                <option value="">-- Chọn danh mục --</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="Slug">Slug</label>
-                                            <input type="text" class="form-control" id="Slug" required />
-                                            <small class="form-text text-muted">URL thân thiện của sản phẩm (không
-                                                dấu)</small>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="imageInput">Hình ảnh</label>
-                                            <input type="file" class="form-control-file" id="imageInput"
-                                                accept="image/*">
-                                            <img id="imagePreview" class="mt-2"
-                                                style="max-width: 200px; display: none;">
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                                    <button id="saveBtn" type="button" class="btn btn-primary">Lưu</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- /.container-fluid -->
-
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="ordersTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Ngày đặt</th>
+                            <th>Người dùng</th>
+                            <th>Địa chỉ</th>
+                            <th>Tổng tiền</th>
+                            <th>Trạng thái</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersBody"></tbody>
+                </table>
             </div>
-            <!-- End of Main Content -->
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="orderDetailModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Chi tiết đơn hàng</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="orderDetails"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="statusModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cập nhật trạng thái</h5>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="updateOrderId">
+                <div class="form-group">
+                    <label>Trạng thái mới</label>
+                    <select class="form-control" id="newStatus">
+                        <option value="">-- Chọn trạng thái --</option>
+                        <option value="đang xử lý">Đang xử lý</option>
+                        <option value="đã giao">Đã giao</option>
+                        <option value="đã vận chuyển ">Đã vận chuyển</option>
+                        <option value="đã hủy">Đã hủy</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                <button class="btn btn-primary" id="saveStatusBtn">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
 
             <!-- Footer -->
             <footer class="sticky-footer bg-white">
@@ -306,8 +268,7 @@
 
     <!-- Page specific scripts -->
     <script src="js/dataTables.min.js"></script>
-    <script src="js/quanlysanpham/admin-products.js"></script>
-
+    <script src="js/quanlydonhang/listdonhang.js"></script>
 
 </body>
 
