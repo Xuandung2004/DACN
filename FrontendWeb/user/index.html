@@ -109,6 +109,20 @@
 							<li>
 								<a href="contact.html">Contact</a>
 							</li>
+
+
+							<!-- them dat lich -->
+							<li>
+								<a href="/FrontendWeb/user/ngayhenfinal1.html" class="btn btn-primary">
+									Đặt lịch
+								</a>
+							</li>
+
+
+							<li class="d-flex align-items-center">
+								<span id="userDisplay" class="text-white mr-3"></span>
+								<a href="#" onclick="dangXuat()" class="text-white">Đăng xuất</a>
+							</li>
 						</ul>
 					</div>
 
@@ -1766,6 +1780,38 @@
 	<script src="js/main.js"></script>
 	<script src="js/homePage/dsSanPham.js"></script>
 	<script src="js/GioHang/GioHang.js"></script>
+
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			const raw = localStorage.getItem("currentUser");
+			let user = null;
+			try {
+				user = raw ? JSON.parse(raw) : null;
+			} catch (e) {
+				user = null;
+			}
+
+			const userDisplay = document.getElementById("userDisplay");
+			if (!userDisplay) return;
+
+			// Support different JSON naming conventions coming from backend
+			const displayName = (user && (user.hoTen || user.HoTen || user.hoten || user.name)) || null;
+			const userId = (user && (user.id || user.Id || user.ID)) || null;
+
+			if (displayName) {
+				userDisplay.innerHTML = `<strong>Xin chào, ${displayName}</strong>` + (userId ? ` (ID: ${userId})` : "");
+			} else {
+				userDisplay.innerHTML = `<a href="/FrontendWeb/user/myloginfinal1.html" class="text-white">Đăng nhập</a>`;
+			}
+		});
+
+		// Đăng xuất
+		function dangXuat() {
+			localStorage.removeItem("currentUser");
+			window.location.href = "/FrontendWeb/user/myloginfinal1.html";
+		}
+	</script>
 
 </body>
 
