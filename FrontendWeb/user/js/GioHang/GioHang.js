@@ -1,19 +1,20 @@
 $(document).ready(function () {
-    const nguoiDungId = 11; // ID người dùng đang đăng nhập
-    const apiUrl = `https://localhost:7109/api/giohang/chitiet/${nguoiDungId}`;
-    const updateUrl = `https://localhost:7109/api/giohang/update`;
-	const delAllUrl = `https://localhost:7109/api/GioHang/DelAllItem/${nguoiDungId}`;
+    const nguoiDungId = 4; // ID người dùng đang đăng nhập
+    const apiGioHang = `https://localhost:7109/api/giohang/chitiet/${nguoiDungId}`;
+    const updateapiGioHang = `https://localhost:7109/api/giohang/update`;
+    const delAllUrl = `https://localhost:7109/api/GioHang/DelAllItem/${nguoiDungId}`;
+    const apiDatHang = "https://localhost:7109/api/giohang/DatHang";
 
-        function loadNavCart(){
+    function loadNavCart() {
         $.ajax({
-            url: apiUrl,
+            url: apiGioHang,
             method: "GET",
             dataType: "json",
-            success: function(res){
+            success: function (res) {
                 console.log("Dữ liệu giỏ hàng", res);
                 $(".header-cart-wrapitem .header-cart-item").remove();
 
-                if(!res.items || res.items.length === 0){
+                if (!res.items || res.items.length === 0) {
                     $(".header-cart-wrapitem").append(`
                         <li class="header-cart-item flex-w flex-t m-b-12">
                         <div class="header-cart-item-txt p-t-8">
@@ -48,11 +49,11 @@ $(document).ready(function () {
 
                 });
             },
-            error: function(xhr){
+            error: function (xhr) {
                 console.error("❌ Lỗi tải giỏ hàng:", xhr);
             }
         });
-    
+
     }
     loadNavCart();
 
@@ -60,7 +61,7 @@ $(document).ready(function () {
     // ====== Hàm load giỏ hàng ======
     function loadCart() {
         $.ajax({
-            url: apiUrl,
+            url: apiGioHang,
             method: "GET",
             dataType: "json",
             success: function (res) {
@@ -78,7 +79,7 @@ $(document).ready(function () {
                     $(".mtext-110.cl2").text("0 ₫");
                     return;
                 }
-
+                //item.anh
                 res.items.forEach(item => {
                     const row = `
                         <tr class="table_row" 
@@ -138,7 +139,7 @@ $(document).ready(function () {
 
         // ====== Gửi request cập nhật ======
         $.ajax({
-            url: updateUrl,
+            url: updateapiGioHang,
             method: "PUT",
             contentType: "application/json",
             data: JSON.stringify({
@@ -156,41 +157,139 @@ $(document).ready(function () {
             }
         });
     });
-	$(document).on("click", ".ClearCart", function(){
-		if(confirm("Xoá toàn bộ giỏ hàng?")){
-			$.ajax({
-				url: delAllUrl,
-				method: "DELETE",
-				success: function(res){
-					loadCart();
-				},
-				error: function(err){
-					console.log("Lỗi xoá");
-				}
-			});
-		}
-	});
-	$(document).on("click", ".DelItem", function(){
-		const row = $(this).closest("tr");
-		const sanPhamId = row.data("sanpham");
+    $(document).on("click", ".ClearCart", function () {
+        if (confirm("Xoá toàn bộ giỏ hàng?")) {
+            $.ajax({
+                url: delAllUrl,
+                method: "DELETE",
+                success: function (res) {
+                    loadCart();
+                },
+                error: function (err) {
+                    console.log("Lỗi xoá");
+                }
+            });
+        }
+    });
+    $(document).on("click", ".DelItem", function () {
+        const row = $(this).closest("tr");
+        const sanPhamId = row.data("sanpham");
         const kichThuocId = row.data("kichthuoc");
-		const delItemUrl = `https://localhost:7109/api/GioHang/delItem/${nguoiDungId}/${sanPhamId}/${kichThuocId}`;
-		console.log("Xoá");
-		if(confirm("Bạn có muốn xoá sản phẩm này khỏi giỏ hàng?")){
-			$.ajax({
-				url: delItemUrl,
-				method: "DELETE",
-				success: function(){
-					loadCart();
-					console.log("Xoá thành công!");
-				},
-				error: function(err){
-					console.log("Lỗi");
-				}
-			});
-		}
-	});
-    $(document).on("click", ".js-show-cart", function(){
+        const delItemUrl = `https://localhost:7109/api/GioHang/delItem/${nguoiDungId}/${sanPhamId}/${kichThuocId}`;
+        console.log("Xoá");
+        if (confirm("Bạn có muốn xoá sản phẩm này khỏi giỏ hàng?")) {
+            $.ajax({
+                url: delItemUrl,
+                method: "DELETE",
+                success: function () {
+                    loadCart();
+                    console.log("Xoá thành công!");
+                },
+                error: function (err) {
+                    console.log("Lỗi");
+                }
+            });
+        }
+    });
+    $(document).on("click", ".js-show-cart", function () {
         loadNavCart();
+    });
+    //add to cart
+    $(document).on('click', '.js-addcart-detail', function () {
+        const userId = nguoiDungId; // hoặc localStorage.getItem("userId")
+        const productId = $('.js-modal1').data('product-id');
+        const kichThuocId = $('.js-modal1 select[name="time"]').val(); // dropdown size
+        const soLuong = parseInt($('.js-modal1 input[name="num-product"]').val() || 1);
+
+        if (!userId) {
+            alert("Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng!");
+            return;
+        }
+
+        if (!kichThuocId) {
+            alert("Vui lòng chọn size trước khi thêm vào giỏ hàng!");
+            return;
+        }
+
+        const data = {
+            NguoiDungId: parseInt(userId),
+            SanPhamId: parseInt(productId),
+            KichThuocId: parseInt(kichThuocId),
+            SoLuong: soLuong
+        };
+
+        console.log("Add to cart:", data);
+
+        $.ajax({
+            url: "https://localhost:7109/api/GioHang/AddToCart",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            success: function (res) {
+                swal("Sản phẩm", "đã được thêm vào giỏ hàng thành công !", "success");
+            },
+            error: function (xhr) {
+                console.error(xhr);
+                swal("Lỗi", "thêm vào giỏ hàng thất bại !", "error");
+            }
+        });
+    });
+
+    //Đặt hàng 
+    document.getElementById("btnOpenOrder").onclick = function () {
+
+        $.get("https://localhost:7109/api/giohang/chitiet/" + nguoiDungId, function (res) {
+
+            $("#tongTien").val(res.tongTien.toLocaleString() + " ₫");
+
+            document.getElementById("orderModal").style.display = "flex";
+        });
+    };
+
+    // Đóng modal
+    document.querySelector(".modal-close").onclick = function () {
+        document.getElementById("orderModal").style.display = "none";
+    };
+
+    // Click ra ngoài để đóng
+    window.onclick = function (e) {
+        if (e.target.id === "orderModal") {
+            document.getElementById("orderModal").style.display = "none";
+        }
+    };
+
+    // Xác nhận đặt hàng
+    $("#btnDatHang").click(function () {
+
+        if ($("#tenNguoiNhan").val().trim() === "" ||
+            $("#soDienThoai").val().trim() === "" ||
+            $("#diaChiNhan").val().trim() === "") {
+
+            alert("Vui lòng nhập đầy đủ thông tin!");
+            return;
+        }
+
+        const data = {
+            nguoiDungId: nguoiDungId,
+            diaChiId: 3,//Địa chỉ nhận
+            ghiChu: $("#ghiChu").val(),
+            phuongThucThanhToan: $("#phuongThuc").val()
+        };
+
+        $.ajax({
+            url: "https://localhost:7109/api/DatHang/DatHang",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            success: function (res) {
+                alert("Đặt hàng thành công! Mã đơn: " + res.donHangId);
+                document.getElementById("orderModal").style.display = "none";
+                loadCart();
+            },
+            error: function (err) {
+                alert("Lỗi đặt hàng!");
+                console.log(err);
+            }
+        });
     });
 });

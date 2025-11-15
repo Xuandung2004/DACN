@@ -275,6 +275,11 @@
         // Lấy id sản phẩm từ data-id
         let productId = $(this).data('id');
 
+        
+        // Lưu productId vào modal để sau này nút Add to Cart biết lấy
+        $('.js-modal1').attr('data-product-id', productId);
+        console.log('Đã lưu productId vào modal:', productId);
+
         // Gọi API lấy chi tiết sản phẩm
         $.ajax({
             url: `https://localhost:7109/api/DanhSachSanPham/${productId}`,

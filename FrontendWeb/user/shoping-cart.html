@@ -30,6 +30,89 @@
 <!--===============================================================================================-->
 </head>
 <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--Style-->
+<style>
+	/* Overlay */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    z-index: 99999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.55);
+    justify-content: center;
+    align-items: center;
+}
+
+/* Box */
+.modal-box {
+    background: white;
+    width: 90%;
+    max-width: 450px;
+    padding: 25px;
+    border-radius: 10px;
+    position: relative;
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+}
+
+.modal-title {
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+.modal-group {
+    margin-bottom: 12px;
+}
+
+.modal-group label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.modal-group input,
+.modal-group select,
+.modal-group textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Close button */
+.modal-close {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* Button */
+.btn-order {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-order:hover {
+    background: #219150;
+}
+
+</style>
 
 
 <body class="animsition">
@@ -412,8 +495,8 @@
 								</div>
 							</div>
 
-							<div class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10">
-								Update Cart
+							<div id="btnOpenOrder" class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10 ">
+									Đặt hàng
 							</div>
 						</div>
 					</div>
@@ -661,7 +744,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 			<i class="zmdi zmdi-chevron-up"></i>
 		</span>
 	</div>
-
+	
 <!--===============================================================================================-->	
 	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
@@ -701,7 +784,52 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 <!--===============================================================================================-->
 	<script src="js/main.js"></script>
 
+<div id="orderModal" class="modal-overlay">
+    <div class="modal-box">
+        <span class="modal-close">&times;</span>
+        <h3 class="modal-title">Thông Tin Đặt Hàng</h3>
+
+        <div class="modal-group">
+            <label>Họ tên người nhận:</label>
+            <input type="text" id="tenNguoiNhan">
+        </div>
+
+        <div class="modal-group">
+            <label>Số điện thoại:</label>
+            <input type="text" id="soDienThoai">
+        </div>
+
+        <div class="modal-group">
+            <label>Địa chỉ nhận hàng:</label>
+            <input type="text" id="diaChiNhan">
+        </div>
+
+        <div class="modal-group">
+            <label>Ghi chú:</label>
+            <textarea id="ghiChu"></textarea>
+        </div>
+
+        <div class="modal-group">
+            <label>Phương thức thanh toán:</label>
+            <select id="phuongThuc">
+                <option value="COD">Thanh toán khi nhận hàng (COD)</option>
+                <option value="Banking">Chuyển khoản ngân hàng</option>
+            </select>
+        </div>
+
+        <div class="modal-group">
+            <label>Tổng tiền:</label>
+            <input type="text" id="tongTien" readonly>
+        </div>
+
+        <button id="btnDatHang" class="btn-order">Xác nhận đặt hàng</button>
+    </div>
+</div>
+
+
+
 </body>
+
 <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
 <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
 <script src="js/main.js"></script>
