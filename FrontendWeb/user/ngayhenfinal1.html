@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lịch hẹn của bạn</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css"> <!-- Nếu cần style chung -->
+</head>
+
+<body class="bg-light">
+    <div class="container py-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Quản lý lịch hẹn</h2>
+            <a href="index.html" class="btn btn-secondary">Quay lại trang chủ</a>
+        </div>
+
+        <div class="alert alert-info text-center" id="userInfo">Đang tải...</div>
+
+        <!-- Lịch hiện tại -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5>Lịch hiện tại</h5>
+                <div id="lichHienTai">
+                    <p>Đang tải...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form thao tác -->
+        <div class="card">
+            <div class="card-body">
+                <select id="actionSelect" class="form-select mb-3" onchange="showForm()">
+                    <option value="dat">Đặt lịch</option>
+                    <option value="update">Cập nhật</option>
+                    <option value="huy">Hủy lịch</option>
+                </select>
+
+                <div id="formDat">
+                    <input type="date" id="ngayDat" class="form-control mb-2">
+                    <input type="time" id="gioDat" class="form-control mb-2">
+                    <button class="btn btn-success" onclick="datLich()">Đặt lịch</button>
+                </div>
+
+                <div id="formUpdate" style="display:none;">
+                    <input type="date" id="ngayUpdate" class="form-control mb-2">
+                    <input type="time" id="gioUpdate" class="form-control mb-2">
+                    <button class="btn btn-warning" onclick="updateLich()">Cập nhật</button>
+                </div>
+
+                <div id="formHuy" style="display:none;">
+                    <button class="btn btn-danger" onclick="huyLich()">Hủy lịch</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast -->
+        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+            <div id="toast" class="toast align-items-center text-bg-primary border-0">
+                <div class="d-flex">
+                    <div class="toast-body" id="toastMessage"></div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Adjust API URL to the running backend port (change if your API uses a different port)
+        const API_URL = "https://localhost:7109/api/Ngayhen";
+        const toast = new bootstrap.Toast(document.getElementById('toast'));
+
+        function getUserId() {
+            try {
+                const user = JSON.parse(localStorage.getItem("currentUser"));
+                const id = user && (user.id || user.Id || user.ID);
+                if (!user || !id) {
+                    alert("Chưa đăng nhập!");
+                    window.location.href = "/FrontendWeb/user/myloginfinal1.html";
+                    return null;
+                }
+                return id;
+            } catch (e) {
+                alert("Lỗi lưu trữ, vui lòng đăng nhập lại!");
+                localStorage.removeItem("currentUser");
+                window.location.href = "/FrontendWeb/user/myloginfinal1.html";
+                return null;
+            }
+        }
+
+        // Gọi API với userId
+        async function callApi(url, options = {}) {
+            const userId = getUserId();
+            if (!userId) return null;
+
+            const fullUrl = url.includes('?') ? `${url}&userId=${userId}` : `${url}?userId=${userId}`;
+
+            const res = await fetch(fullUrl, {
+                ...options,
+                headers: { 'Content-Type': 'application/json', ...options.headers }
+            });
+
+            const text = await res.text();
+            try {
+                const data = text ? JSON.parse(text) : null;
+                if (!res.ok) {
+                    const msg = data?.message || data?.error || res.statusText || "Lỗi không xác định";
+                    showToast(msg, "danger");
+                }
+                return { res, data };
+            } catch (err) {
+                showToast("Lỗi phân tích dữ liệu từ server", "danger");
+                return { res, data: null };
+            }
+        }
+
+        function showToast(msg, type = "primary") {
+            document.getElementById('toastMessage').innerText = msg;
+            document.getElementById('toast').className = `toast align-items-center text-bg-${type} border-0`;
+            toast.show();
+        }
+
+        function getUser() {
+            try {
+                const user = JSON.parse(localStorage.getItem("currentUser"));
+                if (!user) { window.location.href = "/FrontendWeb/dangnhap_dangky_dangxuat/myloginfinal1.html"; return null; }
+                return user;
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function hienThiUser() {
+            const user = getUser();
+            if (!user) {
+                document.getElementById("userInfo").innerHTML = "Chưa đăng nhập";
+                return;
+            }
+            const name = user.hoTen || user.HoTen || user.tenDn || user.TenDn || user.name || "Người dùng";
+            const id = user.id || user.Id || user.ID || "";
+            document.getElementById("userInfo").innerHTML = `<strong>Xin chào, ${name}</strong> ${id ? `(ID: ${id})` : ''}`;
+        }
+
+        function showForm() {
+            const v = document.getElementById("actionSelect").value;
+            document.getElementById("formDat").style.display = v === "dat" ? "block" : "none";
+            document.getElementById("formUpdate").style.display = v === "update" ? "block" : "none";
+            document.getElementById("formHuy").style.display = v === "huy" ? "block" : "none";
+        }
+
+        // keep track of selected appointment id for update/delete
+        let selectedAppointmentId = null;
+
+        async function layLichHienTai() {
+            const { res, data } = await callApi(`${API_URL}/cua-toi`) || {};
+            const container = document.getElementById("lichHienTai");
+            container.innerHTML = '';
+
+            if (!res) return container.innerHTML = `<p class="text-muted">Lỗi xác thực</p>`;
+            if (!res.ok) return container.innerHTML = `<p class="text-danger">${data?.message || 'Lỗi khi lấy lịch'}</p>`;
+
+            // data is expected to be an array
+            const arr = Array.isArray(data) ? data : (data ? [data] : []);
+            if (arr.length === 0) {
+                container.innerHTML = `<p class="text-muted">Chưa có lịch</p>`;
+                selectedAppointmentId = null;
+                return;
+            }
+
+            // Render list with radio buttons to select appointment
+            const list = document.createElement('div');
+            arr.forEach((item, idx) => {
+                const dateStr = item.ngay || item.Ngay || item.Ngayhen || null;
+                const d = dateStr ? new Date(dateStr) : null;
+                const id = item.id || item.Id;
+
+                const wrapper = document.createElement('div');
+                wrapper.className = 'form-check mb-2';
+
+                const radio = document.createElement('input');
+                radio.className = 'form-check-input';
+                radio.type = 'radio';
+                radio.name = 'lichSelect';
+                radio.id = `lich_${id}`;
+                radio.value = id;
+                if (idx === 0) {
+                    radio.checked = true;
+                    selectedAppointmentId = id;
+                }
+                radio.addEventListener('change', () => {
+                    selectedAppointmentId = id;
+                    // populate update form with selected date/time
+                    if (d) {
+                        document.getElementById('ngayUpdate').value = d.toISOString().split('T')[0];
+                        document.getElementById('gioUpdate').value = d.toTimeString().split(':').slice(0, 2).join(':');
+                    }
+                });
+
+                const label = document.createElement('label');
+                label.className = 'form-check-label';
+                label.htmlFor = radio.id;
+                label.innerHTML = `<strong>Lịch #${id}:</strong> ${d ? d.toLocaleString('vi-VN') : 'Không có ngày'} `;
+
+                wrapper.appendChild(radio);
+                wrapper.appendChild(label);
+                list.appendChild(wrapper);
+            });
+
+            container.appendChild(list);
+
+            // also populate update form with first appointment
+            const first = arr[0];
+            const firstDate = first?.ngay || first?.Ngay;
+            if (firstDate) {
+                const d0 = new Date(firstDate);
+                document.getElementById('ngayUpdate').value = d0.toISOString().split('T')[0];
+                document.getElementById('gioUpdate').value = d0.toTimeString().split(':').slice(0, 2).join(':');
+            }
+        }
+
+        async function datLich() {
+            const n = document.getElementById("ngayDat").value;
+            const g = document.getElementById("gioDat").value;
+            if (!n || !g) return showToast("Chọn ngày giờ", "danger");
+            const payload = { Ngay: `${n}T${g}:00` };
+            const { res, data } = await callApi(`${API_URL}/datlich`, {
+                method: "POST",
+                body: JSON.stringify(payload)
+            }) || {};
+            showToast(data?.message || "Thành công", res?.ok ? "success" : "danger");
+            await layLichHienTai();
+        }
+
+        async function updateLich() {
+            const id = selectedAppointmentId;
+            if (!id) return showToast('Chọn lịch để cập nhật', 'danger');
+            const n = document.getElementById("ngayUpdate").value;
+            const g = document.getElementById("gioUpdate").value;
+            if (!n || !g) return showToast("Chọn ngày giờ mới", "danger");
+            const payload = { Ngay: `${n}T${g}:00` };
+            const { res, data } = await callApi(`${API_URL}/update/${id}`, {
+                method: "PUT",
+                body: JSON.stringify(payload)
+            }) || {};
+            showToast(data?.message || "Thành công", res?.ok ? "success" : "danger");
+            await layLichHienTai();
+        }
+
+        async function huyLich() {
+            const id = selectedAppointmentId;
+            if (!id) return showToast('Chọn lịch để hủy', 'danger');
+            if (!confirm("Hủy lịch?")) return;
+            const { res, data } = await callApi(`${API_URL}/huy/${id}`, { method: "DELETE" }) || {};
+            showToast(data?.message || "Đã hủy", res?.ok ? "success" : "danger");
+            await layLichHienTai();
+        }
+
+        // Khởi chạy
+        document.addEventListener("DOMContentLoaded", () => {
+            hienThiUser();
+            layLichHienTai();
+            showForm();
+        });
+    </script>
+</body>
+
+</html>
