@@ -1,5 +1,13 @@
 $(document).ready(function () {
-    const nguoiDungId = 4; // ID người dùng đang đăng nhập
+    const raw = localStorage.getItem("currentUser");
+    let user = null;
+    try {
+        user = raw ? JSON.parse(raw) : null;
+    } catch (e) {
+        user = null;
+    }
+    const userId = (user && (user.id || user.Id || user.ID)) || null;
+    const nguoiDungId = userId; // ID người dùng đang đăng nhập
     const apiGioHang = `https://localhost:7109/api/giohang/chitiet/${nguoiDungId}`;
     const updateapiGioHang = `https://localhost:7109/api/giohang/update`;
     const delAllUrl = `https://localhost:7109/api/GioHang/DelAllItem/${nguoiDungId}`;
