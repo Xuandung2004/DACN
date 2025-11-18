@@ -38,8 +38,8 @@ $(document).ready(function () {
                 res.items.forEach(item => {
                     const row = `
                         <li class="header-cart-item flex-w flex-t m-b-12">
-						<div class="header-cart-item-img">
-							<img src="${item.anh}" alt="IMG">
+						<div>
+							<img src="../image/${item.anh}" alt="IMG">
 						</div>
 
 						<div class="header-cart-item-txt p-t-8">
@@ -56,6 +56,7 @@ $(document).ready(function () {
                     $(".header-cart-wrapitem").append(row);
 
                 });
+                $(".header-cart-total.p-tb-40").text('Total: ' + res.tongTien.toLocaleString() + " ₫");
             },
             error: function (xhr) {
                 console.error("❌ Lỗi tải giỏ hàng:", xhr);
@@ -95,7 +96,7 @@ $(document).ready(function () {
                             data-kichthuoc="${item.kichThuocID}">
                             <td class="column-1">
                                 <div class="DelItem how-itemcart1">
-                                    <img src="${item.anh}" alt="${item.tenSp}">
+                                    <img src="../image/${item.anh}" alt="${item.tenSp}">
                                 </div>
                             </td>
                             <td class="column-2">${item.tenSp}</td>
@@ -116,7 +117,8 @@ $(document).ready(function () {
                                     </div>
                                 </div>
                             </td>
-                            <td class="column-5 thanh-tien">${item.thanhTien.toLocaleString()} ₫</td>
+                            <td class="column-5 size">${item.kichThuoc}</td>
+                            <td class="column-6 thanh-tien">${item.thanhTien.toLocaleString()} ₫</td>
                         </tr>`;
                     $(".table-shopping-cart").append(row);
                 });
@@ -132,6 +134,22 @@ $(document).ready(function () {
     // Gọi lần đầu
     loadCart();
 
+    function formatCurrency(num) {
+        return num.toLocaleString("vi-VN") + "₫";
+    }
+
+    function updateTotal() {
+        let sum = 0;
+
+        $(".table_row").each(function () {
+            const totalText = $(this).find(".column-6").text().replace("₫", "").replace(/\./g, "").trim();
+            const total = parseFloat(totalText);
+            if (!isNaN(total)) sum += total;
+        });
+
+        $(".subtotal-value").text(formatCurrency(sum));
+    }
+
     // ====== Sự kiện tăng giảm ======
     $(document).on("click", ".btn-num-product-up, .btn-num-product-down", function () {
         const row = $(this).closest(".table_row");
@@ -141,6 +159,17 @@ $(document).ready(function () {
 
         const newQty = isUp ? current + 1 : Math.max(1, current - 1);
         input.val(newQty);
+
+        const priceText = row.find(".column-3").text().replace("₫", "").replace(/\./g, "").trim();
+        const price = parseFloat(priceText);
+        console.log(price);
+
+        // ====== Cập nhật total dòng ngay lập tức ======
+        const newTotal = (price * newQty);
+        row.find(".column-6").text(formatCurrency(newTotal));
+
+        // ====== Cập nhật subtotal ======
+        updateTotal();
 
         const sanPhamId = row.data("sanpham");
         const kichThuocId = row.data("kichthuoc");
@@ -158,7 +187,7 @@ $(document).ready(function () {
             }),
             success: function () {
                 console.log("✅ Cập nhật thành công sản phẩm", sanPhamId);
-                loadCart(); // reload lại giỏ
+                //loadCart(); // reload lại giỏ
             },
             error: function (xhr) {
                 console.error("❌ Lỗi cập nhật:", xhr);
@@ -191,6 +220,7 @@ $(document).ready(function () {
                 method: "DELETE",
                 success: function () {
                     loadCart();
+                    loadNavCart();
                     console.log("Xoá thành công!");
                 },
                 error: function (err) {
