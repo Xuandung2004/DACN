@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login</title>
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gradient-primary">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-10 col-lg-12 col-md-9">
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <div class="row">
+                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                            <div class="col-lg-6">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h1 class="h4 text-gray-900 mb-4">Chào mừng bạn trở lại!</h1>
+                                    </div>
+                                    <form id="loginForm" class="user">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control form-control-user" id="tenDn"
+                                                placeholder="Tên đăng nhập..." required>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" class="form-control form-control-user" id="matKhau"
+                                                placeholder="Mật khẩu..." required>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary btn-user btn-block">
+                                            Đăng nhập
+                                        </button>
+                                    </form>
+                                    <hr>
+                                    <div class="text-center">
+                                        <a class="small" href="myregister.html">Tạo tài khoản!</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const username = document.getElementById("tenDn").value; // ở đây form bạn đang dùng input email
+            const password = document.getElementById("matKhau").value;
+
+            try {
+                // const res = await fetch("https://localhost:7109/api/auth/login", {
+                //     method: "POST",
+                //     headers: { "Content-Type": "application/json" },
+                //     body: JSON.stringify({ TenDn: username, MatKhau: password })
+                // });
+
+                // const data = await res.json();
+
+                // if (res.ok) {
+                //     alert(data.message);
+                //     // Lưu thông tin user để dùng ở trang khác
+                //     localStorage.setItem("user", JSON.stringify(data.user));
+                //     window.location.href = "index.html";
+                // } else {
+                //     alert(data.message || "Đăng nhập thất bại");
+                // }
+
+
+
+
+                const res = await fetch("https://localhost:7109/api/auth/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ TenDn: username, MatKhau: password })
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                    // lưu user hoặc token nếu có (dùng key `currentUser` để các trang khác đọc)
+                    localStorage.setItem("currentUser", JSON.stringify(data.user));
+                    // điều hướng tới trang tương ứng mà backend trả
+                    if (data.redirectUrl) {
+                        window.location.href = data.redirectUrl;
+                    } else if (data.user && data.user.role === "admin") {
+                        window.location.href = "/FrontendWeb/admin/index.html";
+                    } else {
+                        window.location.href = "/FrontendWeb/user/index.html";
+                        // window.location.href = "myindex.html";
+
+                    }
+                } else {
+                    alert(data.message || "Đăng nhập thất bại");
+                }
+            } catch (error) {
+                alert("Không thể kết nối đến server");
+                // console.error(error);
+            }
+        });
+    </script>
+    <!-- jQuery & Bootstrap -->
+    <script src="/FrontendWeb/admin/vendor/jquery/jquery.min.js"></script>
+    <script src="/FrontendWeb/admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
