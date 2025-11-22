@@ -145,131 +145,154 @@
                 </nav>
                 <!-- End of Topbar -->
 
-                <!-- =========================
-        📄 QUẢN LÝ NGƯỜI DÙNG
-        ========================= -->
-        <div class="container-fluid">
-            <div class="d-flex mb-3">
-                <button class="btn btn-success" id="addUserBtn">
-                    <i class="fas fa-plus"></i> Thêm người dùng mới
-                </button>
-            </div>
-
-            <div class="card shadow mb-4">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered" id="usersTable" width="100%" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Họ tên</th>
-                                    <th>Tên ĐN</th>
-                                    <th>Email</th>
-                                    <th>Số điện thoại</th>
-                                    <th>Vị trí</th>
-                                    <th>Trạng thái</th>
-                                    <th>Hành động</th>
-                                </tr>
-                            </thead>
-                            <tbody id="usersBody"></tbody>
-                        </table>
-                    </div>
+            <!-- =========================
+            📄 QUẢN LÝ NGƯỜI DÙNG
+            ========================= -->
+            <div class="container-fluid">
+                <div class="d-flex mb-3">
+                    <button class="btn btn-success" id="addUserBtn">
+                        <i class="fas fa-plus"></i> Thêm người dùng mới
+                    </button>
                 </div>
-            </div>
-        </div>
 
-        <!-- =========================
-        🧩 MODAL NGƯỜI DÙNG
-        ========================= -->
-        <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalTitle">Thêm người dùng mới</h5>
-                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="userForm">
-                            <input type="hidden" id="Id">
-                            <div class="form-group">
-                                <label>Họ tên (*)</label>
-                                <input type="text" id="HoTen" class="form-control" required>
-                            </div>
-
-                            <div class="form-group" id="tenDnGroup">
-                                <label>Tên đăng nhập (*)</label>
-                                <input type="text" id="TenDn" class="form-control" required minlength="4">
-                            </div>
-
-                            <div class="form-group" id="passwordGroup">
-                                <label>Mật khẩu (*)</label>
-                                <input type="password" id="MatKhau" class="form-control" required minlength="6">
-                            </div>
-
-                            <div class="form-group">
-                                <label>Email</label>
-                                <input type="email" id="Email" class="form-control">
-                            </div>
-
-                            <div class="form-group">
-                                <label>Số điện thoại</label>
-                                <input type="tel" id="Sdt" class="form-control">
-                            </div>
-
-                            <div class="form-group">
-                                <label>Vị trí (*)</label>
-                                <select class="form-control" id="ViTri" required>
-                                    <option value="khachhang">Khách hàng</option>
-                                    <option value="nhan vien">Nhân viên</option>
-                                    <option value="admin">Admin</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group" id="trangThaiGroup" style="display:none;">
-                                <label>Trạng thái</label>
-                                <select class="form-control" id="TrangThai">
-                                    <option value="đang hoạt động">Đang hoạt động</option>
-                                    <option value="ngừng hoạt động">Ngừng hoạt động</option>
-                                </select>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                        <button type="button" class="btn btn-primary" id="saveBtn">Lưu</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- =========================
-        🔐 MODAL ĐỔI MẬT KHẨU
-        ========================= -->
-        <div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="changePassModalTitle">Đổi mật khẩu</h5>
-                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-                    </div>
-                    <div class="modal-body">
-                        <input type="hidden" id="ChangePassId">
-                        <div class="form-group">
-                            <label>Mật khẩu mới (*)</label>
-                            <input type="password" class="form-control" id="NewMatKhau" required minlength="6">
-                        </div>
-                        <div class="form-group">
-                            <label>Xác nhận mật khẩu mới (*)</label>
-                            <input type="password" class="form-control" id="NewMatKhauConfirm" required minlength="6">
+                <div class="card shadow mb-4">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="usersTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Họ tên</th>
+                                        <th>Tên ĐN</th>
+                                        <th>Email</th>
+                                        <th>SĐT</th>
+                                        <th>Vị trí</th>
+                                        <th>Trạng thái</th>
+                                        <th>Hành động</th>
+                                    </tr>
+                                </thead>
+                            </table>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                        <button type="button" class="btn btn-primary" id="saveNewPassBtn">Đổi mật khẩu</button>
+                </div>
+            </div>
+
+            <!-- =========================
+            🧩 MODAL NGƯỜI DÙNG (BS4)
+            ========================= -->
+            <div class="modal fade" id="userModal" tabindex="-1" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalTitle">Thêm người dùng mới</h5>
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span>&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body">
+
+                            <form id="userForm">
+                                <input type="hidden" id="Id">
+
+                                <div class="form-group">
+                                    <label>Họ tên (*)</label>
+                                    <input type="text" id="HoTen" class="form-control">
+                                </div>
+
+                                <div class="form-group" id="tenDnGroup">
+                                    <label>Tên đăng nhập (*)</label>
+                                    <input type="text" id="TenDn" class="form-control">
+                                </div>
+
+                                <div class="form-group" id="passwordGroup">
+                                    <label>Mật khẩu (*)</label>
+                                    <input type="password" id="MatKhau" class="form-control">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input type="email" id="Email" class="form-control">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>SĐT</label>
+                                    <input type="tel" id="Sdt" class="form-control">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Vị trí</label>
+                                    <select id="ViTri" class="form-control">
+                                        <option value="khachhang">Khách hàng</option>
+                                        <option value="nhan vien">Nhân viên</option>
+                                        <option value="admin">Admin</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group" id="trangThaiGroup" style="display:none;">
+                                    <label>Trạng thái</label>
+                                    <select id="TrangThai" class="form-control">
+                                        <option value="đang hoạt động">Đang hoạt động</option>
+                                        <option value="ngừng hoạt động">Ngừng hoạt động</option>
+                                    </select>
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                            <button class="btn btn-primary" id="saveBtn">Lưu</button>
+                        </div>
+
                     </div>
                 </div>
             </div>
-        </div>
+
+
+            <!-- =========================
+            🔐 MODAL ĐỔI MẬT KHẨU
+            ========================= -->
+            <div class="modal fade" id="changePasswordModal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="changePassModalTitle">Đổi mật khẩu</h5>
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span>&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body">
+                            <input type="hidden" id="ChangePassId">
+
+                            <div class="form-group">
+                                <label>Mật khẩu mới</label>
+                                <input type="password" id="NewMatKhau" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Xác nhận mật khẩu</label>
+                                <input type="password" id="NewMatKhauConfirm" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                            <button class="btn btn-primary" id="saveNewPassBtn">Đổi mật khẩu</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Toast (BS4) -->
+            <div aria-live="polite" aria-atomic="true" style="position: fixed; top: 80px; right: 15px; z-index: 9999;">
+                <div id="toastContainer"></div>
+            </div>
 
             <!-- Footer -->
             <footer class="sticky-footer bg-white">

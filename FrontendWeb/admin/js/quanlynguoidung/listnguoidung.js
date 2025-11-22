@@ -37,8 +37,6 @@ function escapeHtml(str) {
 async function loadUsers() {
     const users = await fetchJson(userBaseUrl);
     const table = $('#usersTable').DataTable();
-
-    // Xóa toàn bộ dữ liệu cũ trong bảng
     table.clear();
 
     const viTriMap = {
@@ -47,178 +45,229 @@ async function loadUsers() {
         'khachhang': 'Khách hàng'
     };
 
-    // Thêm dữ liệu mới
     users.forEach(u => {
         table.row.add([
-            u.id,   
+            u.id,
             escapeHtml(u.hoTen),
             escapeHtml(u.tenDn),
             escapeHtml(u.email),
             escapeHtml(u.sdt.replace(/(\d{4})(?=\d)/g, '$1 ')),
             escapeHtml(viTriMap[u.viTri?.toLowerCase()] || u.viTri),
+
             (() => {
                 const status = (u.trangThai || '').toLowerCase();
                 let colorClass = 'badge-secondary';
-                let text = escapeHtml(u.trangThai);
-    
                 if (status.includes('đang')) colorClass = 'badge-success';
                 else if (status.includes('ngừng')) colorClass = 'badge-danger';
-    
-                return `<span class="badge ${colorClass} px-3 py-2">${text}</span>`;
+                return `<span class="badge ${colorClass} px-3 py-2">${escapeHtml(u.trangThai)}</span>`;
             })(),
+
             `
             <button class="btn btn-sm btn-info edit-btn" data-id="${u.id}">
-                <i class="fas fa-edit"></i>
+                <i class="fas fa-edit"></i> Sửa
             </button>
             <button class="btn btn-sm btn-warning password-btn" data-id="${u.id}" data-ten-dn="${u.tenDn}">
-                <i class="fas fa-key"></i>
+                <i class="fas fa-key"></i> Đổi mật khẩu
             </button>
             `
         ]);
     });
 
-    // Cập nhật lại bảng
     table.draw();
 }
 
 // =========================
-// 🏁 Khởi tạo DataTable (chỉ 1 lần)
+// 🏁 Khởi tạo DataTable
 // =========================
 function initDataTable() {
     $('#usersTable').DataTable({
         order: [[0, 'desc']],
-        autoWidth: true,  // ✅ Cho phép DataTables tự tính lại độ rộng
-        responsive: true, // ✅ Co giãn linh hoạt trên mọi kích thước màn hình
-        columnDefs: [
-            { orderable: false, targets: -1 } // chỉ tắt sắp xếp ở cột Hành động
-        ],
-        drawCallback: function () {
-            // ✅ Sau mỗi lần vẽ lại bảng, điều chỉnh lại cột
-            this.api().columns.adjust();
+        columnDefs: [{ orderable: false, targets: -1 }],
+        autoWidth: true,
+        responsive: true,
+        language: {
+            url: 'https://cdn.datatables.net/plug-ins/2.0.7/i18n/vi.json'
         }
     });
 }
-
 
 // =========================
 // ➕ Mở modal thêm mới
 // =========================
 function openModalForCreate() {
-    document.getElementById('modalTitle').innerText = 'Thêm người dùng mới';
-    document.getElementById('userForm').reset();
-    document.getElementById('Id').value = '';
+    $("#modalTitle").text("Thêm người dùng mới");
+    $("#userForm")[0].reset();
 
-    document.getElementById('passwordGroup').style.display = 'block';
-    document.getElementById('tenDnGroup').style.display = 'block';
-    document.getElementById('trangThaiGroup').style.display = 'none';
+    $("#Id").val("");
+    $("#passwordGroup").show();
+    $("#tenDnGroup").show();
+    $("#trangThaiGroup").hide();
 
-    $('#userModal').modal('show');
+    $("#userModal").modal("show");
 }
 
 // =========================
-// ✏️ Chỉnh sửa người dùng
+// ✏️ Chỉnh sửa
 // =========================
 async function editUser(id) {
     const u = await fetchJson(`${userBaseUrl}/${id}`);
-    document.getElementById('modalTitle').innerText = 'Sửa thông tin người dùng';
-    document.getElementById('userForm').reset();
 
-    document.getElementById('Id').value = u.id;
-    document.getElementById('HoTen').value = u.hoTen || '';
-    document.getElementById('Email').value = u.email || '';
-    document.getElementById('Sdt').value = u.sdt || '';
-    document.getElementById('ViTri').value = u.viTri || 'khachhang';
-    document.getElementById('TrangThai').value = u.trangThai || 'đang hoạt động';
+    $("#modalTitle").text("Sửa thông tin người dùng");
+    $("#userForm")[0].reset();
 
-    document.getElementById('passwordGroup').style.display = 'none';
-    document.getElementById('tenDnGroup').style.display = 'none';
-    document.getElementById('trangThaiGroup').style.display = 'block';
+    $("#Id").val(u.id);
+    $("#HoTen").val(u.hoTen);
+    $("#Email").val(u.email);
+    $("#Sdt").val(u.sdt);
+    $("#ViTri").val(u.viTri);
+    $("#TrangThai").val(u.trangThai);
 
-    $('#userModal').modal('show');
+    $("#passwordGroup").hide();
+    $("#tenDnGroup").hide();
+    $("#trangThaiGroup").show();
+
+    $("#userModal").modal("show");
 }
 
 // =========================
-// 💾 Lưu người dùng (POST/PUT)
+// 💾 Lưu người dùng
 // =========================
 async function saveUser() {
-    const id = document.getElementById('Id').value;
+    const id = $("#Id").val().trim();
 
-    const payload = id
-        ? {
-            hoTen: HoTen.value.trim(),
-            email: Email.value.trim(),
-            sdt: Sdt.value.trim(),
-            viTri: ViTri.value.trim(),
-            trangThai: TrangThai.value.trim()
-        }
-        : {
-            hoTen: HoTen.value.trim(),
-            tenDn: TenDn.value.trim(),
-            matKhau: MatKhau.value,
-            email: Email.value.trim(),
-            sdt: Sdt.value.trim(),
-            viTri: ViTri.value.trim()
+    const hoTen = $("#HoTen").val().trim();
+    const tenDn = $("#TenDn").val().trim();
+    const matKhau = $("#MatKhau").val().trim();
+    const email = $("#Email").val().trim();
+    const sdt = $("#Sdt").val().trim();
+
+    // Validation
+    if (!hoTen) return showToast("Họ tên không được để trống!", "error");
+
+    if (!id) {
+        if (!tenDn || tenDn.length < 4)
+            return showToast("Tên đăng nhập phải từ 4 ký tự!", "error");
+
+        if (!matKhau || matKhau.length < 6)
+            return showToast("Mật khẩu phải từ 6 ký tự!", "error");
+    }
+
+    if (email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email))
+            return showToast("Email không hợp lệ!", "error");
+    }
+
+    if (sdt) {
+        const phoneRegex = /^[0-9]{9,11}$/;
+        if (!phoneRegex.test(sdt))
+            return showToast("Số điện thoại phải từ 9–11 số!", "error");
+    }
+
+    try {
+        const list = await fetchJson(userBaseUrl);
+
+        if (!id && list.some(u => u.tenDn.toLowerCase() === tenDn.toLowerCase()))
+            return showToast("Tên đăng nhập đã tồn tại!", "error");
+
+        if (list.some(u => u.id != id && u.email === email))
+            return showToast("Email đã tồn tại!", "error");
+
+        if (list.some(u => u.id != id && u.sdt === sdt))
+            return showToast("SĐT đã tồn tại!", "error");
+
+        const payload = id ? {
+            hoTen, email, sdt,
+            viTri: $("#ViTri").val(),
+            trangThai: $("#TrangThai").val()
+        } : {
+            hoTen, tenDn, matKhau, email, sdt,
+            viTri: $("#ViTri").val()
         };
 
-    const method = id ? 'PUT' : 'POST';
-    const url = id ? `${userBaseUrl}/${id}` : userBaseUrl;
+        const method = id ? 'PUT' : 'POST';
+        const url = id ? `${userBaseUrl}/${id}` : userBaseUrl;
 
-    await fetchJson(url, {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-    });
+        await fetchJson(url, {
+            method,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
 
-    $('#userModal').modal('hide');
-    alert(id ? 'Cập nhật thành công!' : 'Thêm mới thành công!');
+        $("#userModal").modal("hide"); // BS4 chuẩn
+        showToast(id ? "Cập nhật thành công!" : "Thêm mới thành công!", "success");
+        await loadUsers();
 
-    // 🔄 Gọi lại loadUsers sau khi lưu
-    await loadUsers();
+    } catch (err) {
+        showToast(err.message || "Lỗi lưu người dùng!", "error");
+    }
 }
 
 // =========================
 // 🔐 Đổi mật khẩu
 // =========================
 async function changePassword() {
-    const id = ChangePassId.value;
-    const pass1 = NewMatKhau.value;
-    const pass2 = NewMatKhauConfirm.value;
+    const id = $("#ChangePassId").val();
+    const pass1 = $("#NewMatKhau").val().trim();
+    const pass2 = $("#NewMatKhauConfirm").val().trim();
 
-    if (pass1 !== pass2) return alert('Mật khẩu xác nhận không khớp!');
+    if (pass1.length < 6) return showToast("Mật khẩu phải từ 6 ký tự!", "error");
+    if (pass1 !== pass2) return showToast("Mật khẩu xác nhận không khớp!", "error");
 
-    await fetchJson(`${userBaseUrl}/${id}/doimatkhau`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ matKhauMoi: pass1 })
+    try {
+        await fetchJson(`${userBaseUrl}/${id}/doimatkhau`, {
+            method: "PUT",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ matKhauMoi: pass1 })
+        });
+
+        $("#changePasswordModal").modal("hide");
+        showToast("Đổi mật khẩu thành công!", "success");
+
+    } catch (err) {
+        showToast(err.message || "Lỗi đổi mật khẩu!", "error");
+    }
+}
+
+// =========================
+// 🔔 Toast Bootstrap 4
+// =========================
+function showToast(message, type = "success") {
+    const bg = type === "success" ? "bg-success" : "bg-danger";
+    const id = "toast" + Date.now();
+
+    const html = `
+        <div id="${id}" class="toast ${bg} text-white" role="alert" data-delay="3000">
+            <div class="toast-body">
+                ${message}
+            </div>
+        </div>
+    `;
+
+    $("#toastContainer").append(html);
+    $("#" + id).toast("show").on("hidden.bs.toast", function () {
+        $(this).remove();
     });
-
-    $('#changePasswordModal').modal('hide');
-    alert('Đổi mật khẩu thành công!');
 }
 
 // =========================
 // ⚡ Gắn sự kiện
 // =========================
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener("DOMContentLoaded", async () => {
     initDataTable();
     await loadUsers();
 
-    document.getElementById('addUserBtn').addEventListener('click', openModalForCreate);
-    document.getElementById('saveBtn').addEventListener('click', saveUser);
-    document.getElementById('saveNewPassBtn').addEventListener('click', changePassword);
+    $("#addUserBtn").click(openModalForCreate);
+    $("#saveBtn").click(saveUser);
+    $("#saveNewPassBtn").click(changePassword);
 
-    $(document).on('click', '.edit-btn', function () {
-        editUser($(this).data('id'));
+    $(document).on("click", ".edit-btn", function () {
+        editUser($(this).data("id"));
     });
 
-    $(document).on('click', '.delete-btn', function () {
-        deleteUser($(this).data('id'));
-    });
-
-    $(document).on('click', '.password-btn', function () {
-        document.getElementById('changePassModalTitle').innerText =
-            `Đổi mật khẩu cho: ${$(this).data('ten-dn')}`;
-        document.getElementById('ChangePassId').value = $(this).data('id');
-        $('#changePasswordModal').modal('show');
+    $(document).on("click", ".password-btn", function () {
+        $("#changePassModalTitle").text("Đổi mật khẩu cho: " + $(this).data("ten-dn"));
+        $("#ChangePassId").val($(this).data("id"));
+        $("#changePasswordModal").modal("show");
     });
 });

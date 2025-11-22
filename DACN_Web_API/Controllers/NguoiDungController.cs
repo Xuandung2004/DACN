@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Security.Cryptography; 
+using System.Text;
 
 namespace DACN_Web_API.Controllers
 {
@@ -12,6 +14,13 @@ namespace DACN_Web_API.Controllers
     public class NguoiDungController : ControllerBase
     {
         private readonly CsdlFinal1Context db = new CsdlFinal1Context();
+
+        private string HashPassword(string password)
+    {
+        using var sha256 = SHA256.Create();
+        var bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+        return Convert.ToBase64String(bytes);
+    }
 
         // ------------------ DTOs ------------------
         public class NguoiDungCreateModel
@@ -64,12 +73,27 @@ namespace DACN_Web_API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new
-                {
-                    message = "Lỗi khi tải danh sách người dùng.",
-                    error = ex.Message
-                });
+                return StatusCode(500, new { message = "Lỗi khi tải danh sách người dùng.", error = ex.Message });
             }
+        }
+        // ✅ Thêm endpoint GET theo ID để nút Sửa
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetNguoiDungById(int id)
+        {
+            var nguoiDung = await db.Nguoidungs.FindAsync(id);
+            if (nguoiDung == null)
+                return NotFound(new { message = "Không tìm thấy người dùng" });
+
+            return Ok(new
+            {
+                nguoiDung.Id,
+                nguoiDung.HoTen,
+                nguoiDung.TenDn,
+                nguoiDung.Email,
+                nguoiDung.Sdt,
+                nguoiDung.ViTri,
+                nguoiDung.TrangThai
+            });
         }
 
         // --- 2. Thêm Người dùng mới ---
@@ -92,7 +116,7 @@ namespace DACN_Web_API.Controllers
                 {
                     HoTen = model.HoTen,
                     TenDn = model.TenDn,
-                    MatKhau = model.MatKhau,
+                    MatKhau = HashPassword(model.MatKhau),
                     Email = model.Email,
                     Sdt = model.Sdt,
                     ViTri = model.ViTri ?? "khachhang",
@@ -103,7 +127,7 @@ namespace DACN_Web_API.Controllers
                 db.Nguoidungs.Add(nguoiDungMoi);
                 await db.SaveChangesAsync();
 
-                return CreatedAtAction(nameof(GetChiTietNguoiDung), new { id = nguoiDungMoi.Id }, new
+                return CreatedAtAction(nameof(ThemNguoiDung), new { id = nguoiDungMoi.Id }, new
                 {
                     message = "Thêm người dùng thành công.",
                     nguoiDungMoi.Id,
@@ -115,36 +139,6 @@ namespace DACN_Web_API.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, new { message = "Lỗi khi thêm người dùng mới.", error = ex.Message });
-            }
-        }
-
-        // --- 3. Xem chi tiết 1 Người dùng ---
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetChiTietNguoiDung(int id)
-        {
-            try
-            {
-                var nguoiDung = await db.Nguoidungs.FindAsync(id);
-                if (nguoiDung == null)
-                    return NotFound(new { message = "Không tìm thấy người dùng." });
-
-                var result = new
-                {
-                    nguoiDung.Id,
-                    nguoiDung.HoTen,
-                    nguoiDung.TenDn,
-                    nguoiDung.Email,
-                    nguoiDung.Sdt,
-                    nguoiDung.ViTri,
-                    nguoiDung.NgayTao,
-                    nguoiDung.TrangThai
-                };
-
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = "Lỗi khi lấy thông tin chi tiết người dùng.", error = ex.Message });
             }
         }
 
@@ -205,7 +199,7 @@ namespace DACN_Web_API.Controllers
                 if (nguoiDung == null)
                     return NotFound(new { message = "Không tìm thấy người dùng để đổi mật khẩu." });
 
-                nguoiDung.MatKhau = model.MatKhauMoi;
+                nguoiDung.MatKhau = HashPassword(model.MatKhauMoi);
                 await db.SaveChangesAsync();
 
                 return Ok(new { message = "Đổi mật khẩu thành công." });

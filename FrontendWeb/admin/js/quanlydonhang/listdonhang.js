@@ -101,7 +101,7 @@ async function loadOrders() {
 
     } catch (err) {
         console.error('Load orders failed', err);
-        alert('Không thể tải danh sách đơn hàng: ' + err.message);
+        showToast('Không thể tải danh sách đơn hàng: ' + err.message, 'danger');
         // Nếu có lỗi, đảm bảo bảng trống (dành cho lần khởi tạo đầu tiên)
         const tbody = document.getElementById('ordersBody');
         if (tbody) tbody.innerHTML = `
@@ -116,13 +116,12 @@ async function loadOrders() {
     // =========================
     async function searchOrder() {
         const id = document.getElementById('searchId').value.trim();
-        if (!id) return alert('Vui lòng nhập ID đơn hàng!');
-
+        if (!id) return showToast('Vui lòng nhập ID đơn hàng!', 'warning');
         try {
             const order = await fetchJson(`${baseUrl}/${id}`);
             showOrderDetails(order);
         } catch (err) {
-            alert('Không tìm thấy đơn hàng hoặc lỗi: ' + err.message);
+            showToast('Không tìm thấy đơn hàng: ' + err.message, 'danger');
         }
     }
 
@@ -174,37 +173,42 @@ async function loadOrders() {
     // =========================
     function showUpdateModal(id) {
         document.getElementById('updateOrderId').value = id;
-        document.getElementById('newStatus').value = ''; // reset select
+        document.getElementById('newStatus').value = ""; // reset
         $('#statusModal').modal('show');
-    }
+    }    
 
     // =========================
     // ✅ Cập nhật trạng thái đơn hàng
     // =========================
     async function updateStatus() {
         const id = document.getElementById('updateOrderId').value;
-        
-        // [SỬA LỖI] Bỏ .trim() để giữ lại dấu cách ở cuối của "đã vận chuyển "
+    
+        // Không trim để giữ đúng “đã vận chuyển ”
         const newStatus = document.getElementById('newStatus').value;
-
-        if (!newStatus) return alert('Vui lòng chọn trạng thái mới!');
-
+    
+        if (!newStatus) return showToast('Vui lòng chọn trạng thái mới!', 'warning');
+    
         try {
-            // BE nhận [FromBody] string nên body là JSON.stringify(chuỗi)
             const res = await fetchJson(`${baseUrl}/${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newStatus)
             });
-
-            alert(res.message || 'Cập nhật trạng thái thành công!');
+    
+            showToast(res.message || 'Cập nhật trạng thái thành công!', 'success');
+    
+            // ✅ Đúng với Bootstrap 4
             $('#statusModal').modal('hide');
+    
+            // ✅ Bỏ cache khi reload
             await loadOrders();
+    
         } catch (err) {
             console.error('Update status failed', err);
-            alert('Lỗi khi cập nhật trạng thái: ' + err.message);
+            showToast('Lỗi khi cập nhật trạng thái: ' + err.message, 'danger');
         }
     }
+    
 
     // =========================
     // 🎨 Hàm tiện ích lấy lớp màu cho Badge
@@ -226,6 +230,34 @@ async function loadOrders() {
                 return 'badge-secondary'; // Màu xám (Mặc định)
         }
     }
+
+    function showToast(message, type = "success") {
+        const toastContainer = document.getElementById("toastContainer");
+    
+        const toast = document.createElement("div");
+        // Chuyển đổi type sang class tương thích BS4
+        let bgClass = "";
+        switch (type) {
+            case "success": bgClass = "bg-success text-white"; break;
+            case "danger": bgClass = "bg-danger text-white"; break;
+            case "warning": bgClass = "bg-warning text-dark"; break;
+            default: bgClass = "bg-secondary text-white";
+        }
+    
+        toast.className = `toast align-items-center ${bgClass} border-0 show mb-2`;
+        toast.role = "alert";
+        toast.innerHTML = `
+            <div class="d-flex">
+                <div class="toast-body">
+                    ${message}
+                </div>
+            </div>`;
+    
+        toastContainer.appendChild(toast);
+    
+        // Tự động ẩn sau 3.5 giây
+        setTimeout(() => toast.remove(), 3500);
+    }    
 
     // =========================
     // ⚡ Khởi động trang
