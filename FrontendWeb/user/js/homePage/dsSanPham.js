@@ -1,7 +1,7 @@
 $(document).ready(function() {
     // Gọi API để lấy danh sách sản phẩm
     $.ajax({
-        url: 'https://localhost:7109/api/DanhSachSanPham', // URL API
+        url: 'http://localhost:5150/api/DanhSachSanPham', // URL API
         method: 'GET',
         dataType: 'json',
         success: function(products) {

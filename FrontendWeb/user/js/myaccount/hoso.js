@@ -63,7 +63,9 @@ function showToast(message, type = "success") {
 // 🔑 Hàm lấy thông tin người dùng (GIẢ ĐỊNH)
 // =========================
 function getUserId() {
-    return 4; 
+    const userInfo = JSON.parse(localStorage.getItem("currentUser"));
+    const userId = userInfo.id;
+    return userId;
 }
 
 function getAuthToken() {
