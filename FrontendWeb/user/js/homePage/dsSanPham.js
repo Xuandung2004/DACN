@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
         grid.innerHTML = '<p class="text-center">Đang tải...</p>';
 
         try {
-            const res = await fetch(`https://localhost:7109/api/DanhSachSanPham?${query}`);
+            const res = await fetch(`http://localhost:5150/api/DanhSachSanPham?${query}`);
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             const data = await res.json();
             renderProducts(data.items || []);
@@ -155,7 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // LẤy danh sách các danh mục và load vào filter
     // URL API trả về danh mục
-    const apiUrl = 'https://localhost:7109/api/DanhSachSanPham/DanhMuc';
+    const apiUrl = 'http://localhost:5150/api/DanhSachSanPham/DanhMuc';
 
     // Lấy thẻ div container
     const dsDanhMuc = document.getElementById('category-container');
