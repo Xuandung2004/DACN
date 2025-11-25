@@ -10,7 +10,6 @@ namespace DACN_Web_API.Controllers
     [ApiController]
     public class DonHangController : ControllerBase
     {
-        // ✅ Giữ nguyên kiểu khởi tạo giống TestController
         private readonly CsdlFinal1Context db = new CsdlFinal1Context();
 
         // ✅ 1. Lấy danh sách tất cả đơn hàng
