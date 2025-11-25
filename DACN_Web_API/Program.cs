@@ -1,4 +1,4 @@
-﻿
+﻿﻿
 namespace DACN_Web_API
 {
     public class Program
@@ -33,10 +33,11 @@ namespace DACN_Web_API
                 app.UseSwaggerUI();
             }
 
-            // Use CORS (development only). If you want to restrict origins, change this policy.
-            app.UseCors("AllowAll");
 
             app.UseHttpsRedirection();
+
+            // Use CORS (development only). If you want to restrict origins, change this policy.
+            app.UseCors("AllowAll");
 
             app.UseAuthorization();
 
