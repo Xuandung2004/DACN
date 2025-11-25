@@ -1,3 +1,25 @@
+$(document).ready(function () {
+    // Gọi API để lấy danh sách sản phẩm
+    $.ajax({
+        url: 'http://localhost:5150/api/DanhSachSanPham', // URL API
+        method: 'GET',
+        dataType: 'json',
+        success: function (products) {
+            // Xóa nội dung cũ trong grid
+            $('.isotope-grid').empty();
+
+            // Duyệt qua từng sản phẩm và thêm vào HTML
+            $.each(products, function (index, sp) {
+                var html = `
+                    <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item">
+                        <div class="block2">
+                            <div class="block2-pic hov-img0">
+                                <img src="${sp.anh?.url || 'images/product-01.jpg'}" alt="${sp.tenSp}">
+                                <a href="#"
+                                    class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1" data-id="${sp.id}">
+                                    Quick View
+                                </a>
+                            </div>
 
 document.addEventListener("DOMContentLoaded", () => {
     let currentParams = {
@@ -111,7 +133,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 loadProducts({ page });
                 document.querySelector(".isotope-grid")?.scrollIntoView({ behavior: "smooth" });
             });
-            return a;
+        },
+        error: function (xhr, status, error) {
+            console.error('Lỗi khi gọi API:', error);
+            $('.isotope-grid').html('<p class="text-danger">Không thể tải sản phẩm.</p>');
         }
     }
 

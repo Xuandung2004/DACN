@@ -125,7 +125,7 @@
         function getUser() {
             try {
                 const user = JSON.parse(localStorage.getItem("currentUser"));
-                if (!user) { window.location.href = "/FrontendWeb/dangnhap_dangky_dangxuat/myloginfinal1.html"; return null; }
+                if (!user) { window.location.href = "/FrontendWeb/user/myloginfinal1.html"; return null; }
                 return user;
             } catch (e) {
                 return null;

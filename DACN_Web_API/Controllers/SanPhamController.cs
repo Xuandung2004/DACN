@@ -114,25 +114,33 @@ namespace DACN_Web_API.Controllers
         }
 
         // DELETE: api/SanPham/5
+        // Instead of deleting the product, set TonKho = 0 to preserve historical data
         [HttpDelete("{id}")]
         public IActionResult DeleteSP(int id)
         {
-            var sp = db.Sanphams
-                .Include(s => s.Anhs)
-                .FirstOrDefault(s => s.Id == id);
+            var sp = db.Sanphams.Find(id);
 
             if (sp == null) return NotFound();
 
-            // Remove related images first (optional: also delete files from disk)
-            if (sp.Anhs != null && sp.Anhs.Any())
+            try
             {
-                db.Anhs.RemoveRange(sp.Anhs);
+                // Disable FK constraint temporarily, update product, re-enable FK
+                db.Database.ExecuteSqlRaw("SET FOREIGN_KEY_CHECKS=0");
+
+                sp.TonKho = 0;
+                sp.CapNhat = DateTime.Now;
+                db.Sanphams.Update(sp);
+                db.SaveChanges();
+
+                db.Database.ExecuteSqlRaw("SET FOREIGN_KEY_CHECKS=1");
+
+                return NoContent();
             }
-
-            db.Sanphams.Remove(sp);
-            db.SaveChanges();
-
-            return NoContent();
+            catch (Exception ex)
+            {
+                db.Database.ExecuteSqlRaw("SET FOREIGN_KEY_CHECKS=1");
+                return StatusCode(500, new { message = "Lỗi khi cập nhật sản phẩm: " + ex.Message });
+            }
         }
 
         // POST: api/SanPham/upload-image
