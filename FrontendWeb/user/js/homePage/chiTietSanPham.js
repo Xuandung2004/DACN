@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
             try {
-                const res = fetch(`https://localhost:7109/api/DanhGia/AddDanhGia?nguoiDungId=${nguoiDungId}&sanPhamId=${sanPhamId}&rate=${rate}&noiDung=${noiDung}`, {
+                const res = fetch(`http://localhost:5150/api/DanhGia/AddDanhGia?nguoiDungId=${nguoiDungId}&sanPhamId=${sanPhamId}&rate=${rate}&noiDung=${noiDung}`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -91,7 +91,7 @@ async function loadReviews(productId) {
     const list = document.getElementById("review-list");
 
     try {
-        const res = await fetch(`https://localhost:7109/api/DanhGia/reviews/${productId}`);
+        const res = await fetch(`http://localhost:5150/api/DanhGia/reviews/${productId}`);
         const data = await res.json();
 
         list.innerHTML = ""; // xoá danh sách cũ
@@ -175,7 +175,7 @@ async function loadProductDetail() {
     if (!id) return;
 
     try {
-        const res = await fetch(`https://localhost:7109/api/DanhSachSanPham/${id}`);
+        const res = await fetch(`http://localhost:5150/api/DanhSachSanPham/${id}`);
         if (!res.ok) throw new Error("Không tìm thấy sản phẩm");
 
         const data = await res.json();

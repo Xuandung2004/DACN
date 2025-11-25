@@ -2,18 +2,22 @@ $(document).ready(function () {
     const nguoiDungId = 11; // ID người dùng đang đăng nhập
     const apiUrl = `http://localhost:5150/api/giohang/chitiet/${nguoiDungId}`;
     const updateUrl = `http://localhost:5150/api/giohang/update`;
+<<<<<<< Updated upstream
 	const delAllUrl = `http://localhost:5150/api/GioHang/DelAllItem/${nguoiDungId}`;
+=======
+    const delAllUrl = `http://localhost:5150/api/GioHang/DelAllItem/${nguoiDungId}`;
+>>>>>>> Stashed changes
 
-        function loadNavCart(){
+    function loadNavCart() {
         $.ajax({
             url: apiUrl,
             method: "GET",
             dataType: "json",
-            success: function(res){
+            success: function (res) {
                 console.log("Dữ liệu giỏ hàng", res);
                 $(".header-cart-wrapitem .header-cart-item").remove();
 
-                if(!res.items || res.items.length === 0){
+                if (!res.items || res.items.length === 0) {
                     $(".header-cart-wrapitem").append(`
                         <li class="header-cart-item flex-w flex-t m-b-12">
                         <div class="header-cart-item-txt p-t-8">
@@ -48,11 +52,11 @@ $(document).ready(function () {
 
                 });
             },
-            error: function(xhr){
+            error: function (xhr) {
                 console.error("❌ Lỗi tải giỏ hàng:", xhr);
             }
         });
-    
+
     }
     loadNavCart();
 
@@ -156,24 +160,25 @@ $(document).ready(function () {
             }
         });
     });
-	$(document).on("click", ".ClearCart", function(){
-		if(confirm("Xoá toàn bộ giỏ hàng?")){
-			$.ajax({
-				url: delAllUrl,
-				method: "DELETE",
-				success: function(res){
-					loadCart();
-				},
-				error: function(err){
-					console.log("Lỗi xoá");
-				}
-			});
-		}
-	});
-	$(document).on("click", ".DelItem", function(){
-		const row = $(this).closest("tr");
-		const sanPhamId = row.data("sanpham");
+    $(document).on("click", ".ClearCart", function () {
+        if (confirm("Xoá toàn bộ giỏ hàng?")) {
+            $.ajax({
+                url: delAllUrl,
+                method: "DELETE",
+                success: function (res) {
+                    loadCart();
+                },
+                error: function (err) {
+                    console.log("Lỗi xoá");
+                }
+            });
+        }
+    });
+    $(document).on("click", ".DelItem", function () {
+        const row = $(this).closest("tr");
+        const sanPhamId = row.data("sanpham");
         const kichThuocId = row.data("kichthuoc");
+<<<<<<< Updated upstream
 		const delItemUrl = `http://localhost:5150/api/GioHang/delItem/${nguoiDungId}/${sanPhamId}/${kichThuocId}`;
 		console.log("Xoá");
 		if(confirm("Bạn có muốn xoá sản phẩm này khỏi giỏ hàng?")){
@@ -191,6 +196,25 @@ $(document).ready(function () {
 		}
 	});
     $(document).on("click", ".js-show-cart", function(){
+=======
+        const delItemUrl = `http://localhost:5150/api/GioHang/delItem/${nguoiDungId}/${sanPhamId}/${kichThuocId}`;
+        console.log("Xoá");
+        if (confirm("Bạn có muốn xoá sản phẩm này khỏi giỏ hàng?")) {
+            $.ajax({
+                url: delItemUrl,
+                method: "DELETE",
+                success: function () {
+                    loadCart();
+                    console.log("Xoá thành công!");
+                },
+                error: function (err) {
+                    console.log("Lỗi");
+                }
+            });
+        }
+    });
+    $(document).on("click", ".js-show-cart", function () {
+>>>>>>> Stashed changes
         loadNavCart();
     });
 });
