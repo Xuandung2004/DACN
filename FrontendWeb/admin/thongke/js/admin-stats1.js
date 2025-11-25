@@ -232,7 +232,7 @@ async function renderOrderStatus() {
         { label: 'Đang Xử Lý', count: data.dangXuLy || 0, icon: 'fa-spinner', color: 'primary' },
         { label: 'Đã Xác Nhận', count: data.daXacNhan || 0, icon: 'fa-check-circle', color: 'info' },
         { label: 'Đang Giao', count: data.dangGiao || 0, icon: 'fa-truck', color: 'warning' },
-        { label: 'Hoàn Thành', count: data.hoanThanh || 0, icon: 'fa-box-open', color: 'success' },
+        { label: 'Hoàn Thành', count: data.daGiao || 0, icon: 'fa-box-open', color: 'success' },
         { label: 'Đã Hủy', count: data.daHuy || 0, icon: 'fa-times-circle', color: 'danger' },
     ];
 
