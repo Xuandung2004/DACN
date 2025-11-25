@@ -2,11 +2,8 @@ $(document).ready(function () {
     const nguoiDungId = 11; // ID người dùng đang đăng nhập
     const apiUrl = `http://localhost:5150/api/giohang/chitiet/${nguoiDungId}`;
     const updateUrl = `http://localhost:5150/api/giohang/update`;
-<<<<<<< Updated upstream
-	const delAllUrl = `http://localhost:5150/api/GioHang/DelAllItem/${nguoiDungId}`;
-=======
     const delAllUrl = `http://localhost:5150/api/GioHang/DelAllItem/${nguoiDungId}`;
->>>>>>> Stashed changes
+
 
     function loadNavCart() {
         $.ajax({
@@ -179,23 +176,23 @@ $(document).ready(function () {
         const sanPhamId = row.data("sanpham");
         const kichThuocId = row.data("kichthuoc");
 <<<<<<< Updated upstream
-		const delItemUrl = `http://localhost:5150/api/GioHang/delItem/${nguoiDungId}/${sanPhamId}/${kichThuocId}`;
-		console.log("Xoá");
-		if(confirm("Bạn có muốn xoá sản phẩm này khỏi giỏ hàng?")){
-			$.ajax({
-				url: delItemUrl,
-				method: "DELETE",
-				success: function(){
-					loadCart();
-					console.log("Xoá thành công!");
-				},
-				error: function(err){
-					console.log("Lỗi");
-				}
-			});
-		}
-	});
-    $(document).on("click", ".js-show-cart", function(){
+        const delItemUrl = `http://localhost:5150/api/GioHang/delItem/${nguoiDungId}/${sanPhamId}/${kichThuocId}`;
+        console.log("Xoá");
+        if (confirm("Bạn có muốn xoá sản phẩm này khỏi giỏ hàng?")) {
+            $.ajax({
+                url: delItemUrl,
+                method: "DELETE",
+                success: function () {
+                    loadCart();
+                    console.log("Xoá thành công!");
+                },
+                error: function (err) {
+                    console.log("Lỗi");
+                }
+            });
+        }
+    });
+    $(document).on("click", ".js-show-cart", function () {
 =======
         const delItemUrl = `http://localhost:5150/api/GioHang/delItem/${nguoiDungId}/${sanPhamId}/${kichThuocId}`;
         console.log("Xoá");
