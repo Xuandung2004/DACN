@@ -405,7 +405,8 @@
 
 					<div class="header-cart-buttons flex-w w-full">
 						<a href="shoping-cart.html"
-							class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-r-8 m-b-10" style="width: 100%; justify-content: center;">
+							class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-r-8 m-b-10"
+							style="width: 100%; justify-content: center;">
 							View Cart
 						</a>
 
@@ -823,7 +824,7 @@
 	<!--===============================================================================================-->
 	<script src="js/main.js"></script>
 
-	<div id="orderModal" class="modal-overlay">
+	<!-- <div id="orderModal" class="modal-overlay">
 		<div class="modal-box">
 			<span class="modal-close">&times;</span>
 			<h3 class="modal-title">Thông Tin Đặt Hàng</h3>
@@ -863,7 +864,57 @@
 
 			<button id="btnDatHang" class="btn-order">Xác nhận đặt hàng</button>
 		</div>
+	</div> -->
+	<div id="orderModal" class="modal-overlay">
+		<div class="modal-box">
+			<span class="modal-close">&times;</span>
+			<h3 class="modal-title">Thông Tin Đặt Hàng</h3>
+
+			<!-- Chọn địa chỉ đã lưu -->
+			<div class="modal-group">
+				<label>Chọn địa chỉ đã lưu:</label>
+				<select id="diaChiDaLuu">
+					<option value="">-- Chọn địa chỉ --</option>
+				</select>
+			</div>
+
+			<div class="modal-group">
+				<label>Họ tên người nhận:</label>
+				<input type="text" id="tenNguoiNhan">
+			</div>
+
+			<div class="modal-group">
+				<label>Số điện thoại:</label>
+				<input type="text" id="soDienThoai">
+			</div>
+
+			<div class="modal-group">
+				<label>Địa chỉ nhận hàng:</label>
+				<input type="text" id="diaChiNhan">
+			</div>
+
+			<div class="modal-group">
+				<label>Ghi chú:</label>
+				<textarea id="ghiChu"></textarea>
+			</div>
+
+			<div class="modal-group">
+				<label>Phương thức thanh toán:</label>
+				<select id="phuongThuc">
+					<option value="COD">Thanh toán khi nhận hàng (COD)</option>
+					<option value="Banking">Chuyển khoản ngân hàng</option>
+				</select>
+			</div>
+
+			<div class="modal-group">
+				<label>Tổng tiền:</label>
+				<input type="text" id="tongTien" readonly>
+			</div>
+
+			<button id="btnDatHang" class="btn-order">Xác nhận đặt hàng</button>
+		</div>
 	</div>
+
 
 
 

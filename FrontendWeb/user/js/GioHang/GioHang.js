@@ -31,7 +31,8 @@ $(document).ready(function () {
                             </span>
                         </div>
                         </li>
-                    `)
+                    `);
+                    $(".header-cart-total.p-tb-40").text('Total: 0₫');
                     return;
                 }
 
@@ -276,12 +277,22 @@ $(document).ready(function () {
     //Đặt hàng 
     document.getElementById("btnOpenOrder").onclick = function () {
 
+        //Tính tông tiền
         $.get("https://localhost:7109/api/giohang/chitiet/" + nguoiDungId, function (res) {
+            if(!res.items || res.items.length === 0){
+                alert("Vui lòng thêm sản phẩm vào giỏ hàng!!");
+                return;
+            }
 
             $("#tongTien").val(res.tongTien.toLocaleString() + " ₫");
 
             document.getElementById("orderModal").style.display = "flex";
         });
+        $("#tenNguoiNhan").val('').prop("readonly", true);
+        $("#soDienThoai").val('').prop("readonly", true);
+        $("#diaChiNhan").val('').prop("readonly", true);
+        //Load địa chỉ
+        loadDiaChi();
     };
 
     // Đóng modal
@@ -296,6 +307,44 @@ $(document).ready(function () {
         }
     };
 
+    //function load địa chỉ
+    function loadDiaChi() {
+        $.get("https://localhost:7109/api/DiaChi/NguoiDung/" + nguoiDungId, function (res) {
+            $("#diaChiDaLuu").empty().append(`
+                <option value="">-- Chọn địa chỉ --</option>`);
+            res.forEach(dc => {
+                $("#diaChiDaLuu").append(`
+                <option 
+                    value="${dc.id}"
+                    data-ten="${dc.tenNguoiNhan}"
+                    data-sdt="${dc.sdt}"
+                    data-diachi="${dc.diaChiCuThe}"
+                >
+                    ${dc.tenNguoiNhan} - ${dc.sdt}
+                </option>
+            `);
+            });
+        });
+
+    }
+    //Khi chọn địa chỉ tự động fill vào
+    $(document).on("change", "#diaChiDaLuu", function () {
+        let selected = $(this).find("option:selected");
+
+        if (selected.val() === "") {
+            // Không chọn gì → cho phép nhập tay
+            $("#tenNguoiNhan, #soDienThoai, #diaChiNhan")
+                .prop("readonly", false)
+                .val("");
+            return;
+        }
+
+        // Fill data
+        $("#tenNguoiNhan").val(selected.data("ten")).prop("readonly", true);
+        $("#soDienThoai").val(selected.data("sdt")).prop("readonly", true);
+        $("#diaChiNhan").val(selected.data("diachi")).prop("readonly", true);
+    });
+
     // Xác nhận đặt hàng
     $("#btnDatHang").click(function () {
 
@@ -306,10 +355,15 @@ $(document).ready(function () {
             alert("Vui lòng nhập đầy đủ thông tin!");
             return;
         }
+        var diaChiNhanId = $("#diaChiDaLuu").val();
+        if (!diaChiNhanId) {
+            alert("Vui lòng chọn địa chỉ nhận hàng!");
+            return;
+        }
 
         const data = {
             nguoiDungId: nguoiDungId,
-            diaChiId: 3,//Địa chỉ nhận
+            diaChiId: diaChiNhanId,//Địa chỉ nhận
             ghiChu: $("#ghiChu").val(),
             phuongThucThanhToan: $("#phuongThuc").val()
         };

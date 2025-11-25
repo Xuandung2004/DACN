@@ -299,8 +299,8 @@
                 const $select = $('.js-modal1 select[name="time"]');
                 $select.find('option:not(:first)').remove(); // xóa các option cũ (trừ dòng đầu tiên)
 
-                data.kichThuoc.forEach(size => {
-                    $select.append(`<option value="${size}">Size ${size}</option>`);
+                data.kichThuoc.forEach(kt => {
+                    $select.append(`<option value="${kt.id}">Size ${kt.size}</option>`);
                 });
 
                 // Làm mới Select2 nếu đang dùng
