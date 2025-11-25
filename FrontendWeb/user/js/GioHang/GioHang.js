@@ -13,6 +13,7 @@ $(document).ready(function () {
             url: apiUrl,
             method: "GET",
             dataType: "json",
+            success: function (res) {
                 console.log("Dữ liệu giỏ hàng", res);
                 $(".header-cart-wrapitem .header-cart-item").remove();
 
