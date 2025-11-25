@@ -1,4 +1,6 @@
 ﻿
+using DACN_Web_API.Services;
+
 namespace DACN_Web_API
 {
     public class Program
@@ -8,6 +10,15 @@ namespace DACN_Web_API
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+
+
+
+            // --- THÊM DÒNG DUY NHẤT NÀY VÀO ĐÂY ---
+            builder.Services.AddThongKeServices();
+            // ------------------------------------
+
+
+
 
             builder.Services.AddControllers();
             // Enable CORS for development/testing of the static admin pages
@@ -33,11 +44,11 @@ namespace DACN_Web_API
                 app.UseSwaggerUI();
             }
 
-
-            app.UseHttpsRedirection();
-
             // Use CORS (development only). If you want to restrict origins, change this policy.
             app.UseCors("AllowAll");
+            app.UseHttpsRedirection();
+
+            
 
             app.UseAuthorization();
 
