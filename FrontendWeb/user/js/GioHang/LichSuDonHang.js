@@ -3,7 +3,7 @@ $(document).ready(function () {
     const userInfo = JSON.parse(localStorage.getItem("currentUser"));
     const userId = userInfo.id;
     
-    const apiUrl = "https://localhost:7109/api/DatHang/LichSu/" + userId;
+    const apiUrl = "http://localhost:5150/api/DatHang/LichSu/" + userId;
 
     loadLichSu();
 

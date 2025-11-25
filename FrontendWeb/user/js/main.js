@@ -282,7 +282,7 @@
 
         // Gọi API lấy chi tiết sản phẩm
         $.ajax({
-            url: `https://localhost:7109/api/DanhSachSanPham/${productId}`,
+            url: `http://localhost:5150/api/DanhSachSanPham/${productId}`,
             method: 'GET',
             dataType: 'json',
             success: function (data) {

@@ -8,10 +8,10 @@ $(document).ready(function () {
     }
     const userId = (user && (user.id || user.Id || user.ID)) || null;
     const nguoiDungId = userId; // ID người dùng đang đăng nhập
-    const apiGioHang = `https://localhost:7109/api/giohang/chitiet/${nguoiDungId}`;
-    const updateapiGioHang = `https://localhost:7109/api/giohang/update`;
-    const delAllUrl = `https://localhost:7109/api/GioHang/DelAllItem/${nguoiDungId}`;
-    const apiDatHang = "https://localhost:7109/api/giohang/DatHang";
+    const apiGioHang = `http://localhost:5150/api/giohang/chitiet/${nguoiDungId}`;
+    const updateapiGioHang = `http://localhost:5150/api/giohang/update`;
+    const delAllUrl = `http://localhost:5150/api/GioHang/DelAllItem/${nguoiDungId}`;
+    const apiDatHang = "http://localhost:5150/api/giohang/DatHang";
 
     function loadNavCart() {
         $.ajax({
@@ -213,7 +213,7 @@ $(document).ready(function () {
         const row = $(this).closest("tr");
         const sanPhamId = row.data("sanpham");
         const kichThuocId = row.data("kichthuoc");
-        const delItemUrl = `https://localhost:7109/api/GioHang/delItem/${nguoiDungId}/${sanPhamId}/${kichThuocId}`;
+        const delItemUrl = `http://localhost:5150/api/GioHang/delItem/${nguoiDungId}/${sanPhamId}/${kichThuocId}`;
         console.log("Xoá");
         if (confirm("Bạn có muốn xoá sản phẩm này khỏi giỏ hàng?")) {
             $.ajax({
@@ -260,7 +260,7 @@ $(document).ready(function () {
         console.log("Add to cart:", data);
 
         $.ajax({
-            url: "https://localhost:7109/api/GioHang/AddToCart",
+            url: "http://localhost:5150/api/GioHang/AddToCart",
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify(data),
@@ -278,7 +278,7 @@ $(document).ready(function () {
     document.getElementById("btnOpenOrder").onclick = function () {
 
         //Tính tông tiền
-        $.get("https://localhost:7109/api/giohang/chitiet/" + nguoiDungId, function (res) {
+        $.get("http://localhost:5150/api/giohang/chitiet/" + nguoiDungId, function (res) {
             if(!res.items || res.items.length === 0){
                 alert("Vui lòng thêm sản phẩm vào giỏ hàng!!");
                 return;
@@ -309,7 +309,7 @@ $(document).ready(function () {
 
     //function load địa chỉ
     function loadDiaChi() {
-        $.get("https://localhost:7109/api/DiaChi/NguoiDung/" + nguoiDungId, function (res) {
+        $.get("http://localhost:5150/api/DiaChi/NguoiDung/" + nguoiDungId, function (res) {
             $("#diaChiDaLuu").empty().append(`
                 <option value="">-- Chọn địa chỉ --</option>`);
             res.forEach(dc => {
@@ -369,7 +369,7 @@ $(document).ready(function () {
         };
 
         $.ajax({
-            url: "https://localhost:7109/api/DatHang/DatHang",
+            url: "http://localhost:5150/api/DatHang/DatHang",
             method: "POST",
             contentType: "application/json",
             data: JSON.stringify(data),
