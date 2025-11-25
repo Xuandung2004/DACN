@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", () => {
     let currentParams = {
         search: "",
@@ -25,6 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
             grid.innerHTML = '<p class="text-danger">Không thể tải sản phẩm.</p>';
         }
     }
+
 
     function renderProducts(products) {
         const grid = document.querySelector(".isotope-grid");

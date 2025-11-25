@@ -1,8 +1,8 @@
 $(document).ready(function () {
     const nguoiDungId = 11; // ID người dùng đang đăng nhập
-    const apiUrl = `https://localhost:7109/api/giohang/chitiet/${nguoiDungId}`;
-    const updateUrl = `https://localhost:7109/api/giohang/update`;
-	const delAllUrl = `https://localhost:7109/api/GioHang/DelAllItem/${nguoiDungId}`;
+    const apiUrl = `http://localhost:5150/api/giohang/chitiet/${nguoiDungId}`;
+    const updateUrl = `http://localhost:5150/api/giohang/update`;
+	const delAllUrl = `http://localhost:5150/api/GioHang/DelAllItem/${nguoiDungId}`;
 
         function loadNavCart(){
         $.ajax({
@@ -174,7 +174,7 @@ $(document).ready(function () {
 		const row = $(this).closest("tr");
 		const sanPhamId = row.data("sanpham");
         const kichThuocId = row.data("kichthuoc");
-		const delItemUrl = `https://localhost:7109/api/GioHang/delItem/${nguoiDungId}/${sanPhamId}/${kichThuocId}`;
+		const delItemUrl = `http://localhost:5150/api/GioHang/delItem/${nguoiDungId}/${sanPhamId}/${kichThuocId}`;
 		console.log("Xoá");
 		if(confirm("Bạn có muốn xoá sản phẩm này khỏi giỏ hàng?")){
 			$.ajax({
