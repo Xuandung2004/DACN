@@ -1,15 +1,15 @@
-$(document).ready(function() {
+$(document).ready(function () {
     // Gọi API để lấy danh sách sản phẩm
     $.ajax({
-        url: 'https://localhost:7109/api/DanhSachSanPham', // URL API
+        url: 'http://localhost:5150/api/DanhSachSanPham', // URL API
         method: 'GET',
         dataType: 'json',
-        success: function(products) {
+        success: function (products) {
             // Xóa nội dung cũ trong grid
             $('.isotope-grid').empty();
 
             // Duyệt qua từng sản phẩm và thêm vào HTML
-            $.each(products, function(index, sp) {
+            $.each(products, function (index, sp) {
                 var html = `
                     <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item">
                         <div class="block2">
@@ -46,7 +46,7 @@ $(document).ready(function() {
                 $('.isotope-grid').append(html);
             });
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             console.error('Lỗi khi gọi API:', error);
             $('.isotope-grid').html('<p class="text-danger">Không thể tải sản phẩm.</p>');
         }

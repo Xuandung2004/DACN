@@ -1,4 +1,4 @@
-﻿
+﻿using DACN_Web_API.Models;
 namespace DACN_Web_API
 {
     public class Program
@@ -8,7 +8,9 @@ namespace DACN_Web_API
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
+            // Kết nối Vnpay API Service
+            builder.Services.AddScoped<Services.Vnpay.IVnPayService, Services.Vnpay.VnPayService>();
+            builder.Services.AddScoped<CsdlFinal1Context>(_ => new CsdlFinal1Context());
             builder.Services.AddControllers();
             // Enable CORS for development/testing of the static admin pages
             builder.Services.AddCors(options =>
