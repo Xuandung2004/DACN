@@ -82,6 +82,45 @@ namespace DACN_Web_API.Controllers
                 return StatusCode(500, new { message = "Lỗi hệ thống!", error = ex.Message });
             }
         }
+        [HttpGet("LichSu/{nguoiDungId}")]
+        public IActionResult LichSuDonHang(int nguoiDungId)
+        {
+            try
+            {
+                var donHangs = db.Donhangs
+                    .Where(d => d.NguoiDungId == nguoiDungId)
+                    .OrderByDescending(d => d.NgayDat)
+                    .Select(d => new
+                    {
+                        DonHangID = d.Id,
+                        NgayDat = d.NgayDat,
+                        TrangThai = d.TrangThai,
+                        TongTien = d.TongTien,
 
+                        SanPhams = d.DonhangChitiets.Select(ct => new
+                        {
+                            SanPhamID = ct.SanPhamId,
+                            TenSp = ct.SanPham.TenSp,
+                            SoLuong = ct.SoLuong,
+                            Gia = ct.Gia,
+                            ThanhTien = ct.SoLuong * ct.Gia,
+                            KichThuoc = ct.KichThuoc.SoLieu,
+
+                            Anh = db.Anhs
+                                .Where(a => a.SanPhamId == ct.SanPhamId)
+                                .OrderBy(a => a.Id)
+                                .Select(a => a.Url)
+                                .FirstOrDefault()
+                        }).ToList()
+                    })
+                    .ToList();
+
+                return Ok(donHangs);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Lỗi hệ thống", error = ex.Message });
+            }
+        }
     }
 }

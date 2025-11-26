@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Lịch sử đơn hàng</title>
+
+    <!-- CSS của Coza Store -->
+    <link rel="stylesheet" type="text/css" href="css/util.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+
+    <style>
+        .order-item {
+            border: 1px solid #e6e6e6;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        .order-product {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #f1f1f1;
+            padding: 10px 0;
+        }
+        .order-product img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header>
+        <!-- Nếu bạn có header chung thì include ở đây -->
+    </header>
+
+    <div class="container p-t-50 p-b-50">
+        <h3 class="ltext-103 cl5 p-b-20">Lịch Sử Đơn Hàng</h3>
+
+        <div id="orderList">
+            <!-- AJAX load vào đây -->
+        </div>
+    </div>
+
+    <!-- JS -->
+    <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+    <script src="js/LichSuDonHang.js"></script>
+
+</body>
+<script src="../user/js/GioHang/LichSuDonHang.js"></script>
+</html>
