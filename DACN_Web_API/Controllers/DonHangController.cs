@@ -1,8 +1,10 @@
 using DACN_Web_API.Models;
+using DACN_Web_API.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace DACN_Web_API.Controllers
 {
@@ -10,7 +12,6 @@ namespace DACN_Web_API.Controllers
     [ApiController]
     public class DonHangController : ControllerBase
     {
-        // ✅ Giữ nguyên kiểu khởi tạo giống TestController
         private readonly CsdlFinal1Context db = new CsdlFinal1Context();
 
         // ✅ 1. Lấy danh sách tất cả đơn hàng
@@ -150,6 +151,89 @@ namespace DACN_Web_API.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, new { message = "Lỗi không xác định khi cập nhật trạng thái.", error = ex.Message });
+            }
+        }
+
+        // ✅ 4. Tạo đơn hàng mới từ checkout
+        [HttpPost("create")]
+        [ProducesResponseType(typeof(object), 201)]
+        [ProducesResponseType(typeof(object), 400)]
+        [ProducesResponseType(typeof(object), 500)]
+        public IActionResult CreateDonHang([FromBody] CheckoutDTO dto)
+        {
+            if (dto == null || string.IsNullOrWhiteSpace(dto.TenNguoiNhan))
+                return BadRequest(new { message = "Thông tin đơn hàng không hợp lệ" });
+
+            try
+            {
+                // Kiểm tra người dùng tồn tại
+                var user = db.Nguoidungs.FirstOrDefault(u => u.Id == dto.NguoiDungId);
+                if (user == null)
+                    return BadRequest(new { message = "Người dùng không tồn tại" });
+
+                // Tạo thông tin giao hàng
+                var diaChi = new Thongtinnhan
+                {
+                    TenNguoiNhan = dto.TenNguoiNhan,
+                    Sdtnn = dto.SoDienThoai,
+                    DiaChiNhan = $"{dto.DiaChiNhan}, {dto.TinhThanh}"
+                    // Note: model `Thongtinnhan` in this project currently does not have Email property.
+                };
+                db.Thongtinnhans.Add(diaChi);
+                db.SaveChanges();
+
+                // Tạo đơn hàng
+                // Lưu đơn hàng. Note: current Donhang model stores TongTien as int? and
+                // does not have PhuongThucThanhToan property in this codebase,
+                // so we convert the decimal total to int and append payment method into GhiChu.
+                var donHang = new Donhang
+                {
+                    NguoiDungId = dto.NguoiDungId,
+                    DiaChiId = diaChi.Id,
+                    NgayDat = DateTime.Now,
+                    TrangThai = "Chờ xác nhận",
+                    TongTien = dto.TongTien != 0 ? (int?)Convert.ToInt32(Math.Round(dto.TongTien, 0)) : 0,
+                    GhiChu = string.IsNullOrWhiteSpace(dto.GhiChu) ? $"Phương thức: {dto.PhuongThuc}" : dto.GhiChu + $" | Phương thức: {dto.PhuongThuc}"
+                };
+                db.Donhangs.Add(donHang);
+                db.SaveChanges();
+
+                // Tạo chi tiết đơn hàng
+                if (dto.DanhSachSanPham != null && dto.DanhSachSanPham.Count > 0)
+                {
+                    foreach (var item in dto.DanhSachSanPham)
+                    {
+                        var chiTiet = new DonhangChitiet
+                        {
+                            DonHangId = donHang.Id,
+                            SanPhamId = item.SanPhamId,
+                            KichThuocId = item.KichThuocId,
+                            SoLuong = item.SoLuong,
+                            Gia = item.Gia
+                        };
+                        db.DonhangChitiets.Add(chiTiet);
+                    }
+                    db.SaveChanges();
+
+                    // Xoá giỏ hàng của user
+                    var cartItems = db.Giohangs.Where(g => g.NguoiDungId == dto.NguoiDungId).ToList();
+                    db.Giohangs.RemoveRange(cartItems);
+                    db.SaveChanges();
+                }
+
+                return Created($"/api/DonHang/{donHang.Id}", new
+                {
+                    success = true,
+                    message = "Tạo đơn hàng thành công",
+                    donHangId = donHang.Id,
+                    tongTien = donHang.TongTien,
+                    ngayDat = donHang.NgayDat,
+                    trangThai = donHang.TrangThai
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Lỗi khi tạo đơn hàng", error = ex.Message });
             }
         }
     }

@@ -40,6 +40,11 @@ async function fetchJson(url, options = {}) {
 
 async function loadProducts() {
     try {
+        // Destroy existing DataTable if it exists
+        if ($.fn.DataTable.isDataTable('#productsTable')) {
+            $('#productsTable').DataTable().destroy();
+        }
+
         const products = await fetchJson(baseUrl);
         const tbody = document.getElementById('productsBody');
         tbody.innerHTML = '';
@@ -64,10 +69,7 @@ async function loadProducts() {
             tbody.appendChild(tr);
         });
 
-        // Initialize DataTable with Vietnamese language
-        if ($.fn.DataTable.isDataTable('#productsTable')) {
-            $('#productsTable').DataTable().destroy();
-        }
+        // Reinitialize DataTable with Vietnamese language
         $('#productsTable').DataTable({
             language: {
                 url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json'
@@ -183,18 +185,24 @@ async function saveProduct() {
             return;
         }
 
+        let res;
         if (id) {
-            await fetchJson(`${baseUrl}/${id}`, {
+            res = await fetch(`${baseUrl}/${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
         } else {
-            await fetchJson(baseUrl, {
+            res = await fetch(baseUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
+        }
+
+        if (!res.ok) {
+            const errText = await res.text();
+            throw new Error(`${res.status} ${res.statusText} - ${errText}`);
         }
 
         $('#productModal').modal('hide');

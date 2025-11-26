@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Thanh toán - Kết quả</title>
+    <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.min.css" />
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fa;
+        }
+
+        .container {
+            max-width: 720px;
+            margin: 60px auto;
+        }
+
+        .card {
+            padding: 24px;
+            border-radius: 8px;
+            background: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        .success {
+            color: #16863b;
+        }
+
+        .fail {
+            color: #c53030;
+        }
+
+        .btn-back {
+            margin-top: 18px;
+        }
+
+        .small {
+            font-size: 13px;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="card text-center">
+            <h2 id="title">Kết quả thanh toán</h2>
+            <p id="message" class="small">Đang kiểm tra kết quả thanh toán...</p>
+
+            <div id="details" style="margin-top:16px; display:none; text-align:left;"></div>
+
+            <a id="btnHome" class="btn btn-primary btn-back" href="index.html">Về trang chủ</a>
+            <a id="btnOrders" class="btn btn-outline-secondary btn-back" href="shoping-cart.html">Quay lại giỏ hàng</a>
+        </div>
+    </div>
+
+    <script>
+        function getQueryParams() {
+            const params = {};
+            location.search.substring(1).split('&').forEach(pair => {
+                if (!pair) return;
+                const [k, v] = pair.split('=');
+                params[decodeURIComponent(k)] = v ? decodeURIComponent(v) : '';
+            });
+            return params;
+        }
+
+        const p = getQueryParams();
+        const status = (p.status || '').toLowerCase();
+        const orderId = p.orderId || p.vnp_TxnRef || '';
+        const message = p.message || p.msg || '';
+        const txn = p.transactionId || p.vnp_TransactionNo || '';
+        const amount = p.amount || p.vnp_Amount || '';
+
+        const titleEl = document.getElementById('title');
+        const msgEl = document.getElementById('message');
+        const detailsEl = document.getElementById('details');
+
+        if (status === 'success') {
+            titleEl.classList.add('success');
+            titleEl.textContent = 'Thanh toán thành công';
+            msgEl.textContent = 'Cảm ơn bạn đã thanh toán. Đơn hàng của bạn đang được xử lý.';
+            detailsEl.style.display = 'block';
+            detailsEl.innerHTML = `
+                <p><strong>Đơn hàng:</strong> ${orderId}</p>
+                <p><strong>Mã giao dịch:</strong> ${txn}</p>
+                <p><strong>Số tiền:</strong> ${amount ? (Number(amount)).toLocaleString() + ' ₫' : 'N/A'}</p>
+            `;
+        } else if (status === 'fail') {
+            titleEl.classList.add('fail');
+            titleEl.textContent = 'Thanh toán không thành công';
+            msgEl.textContent = message || 'Thanh toán thất bại hoặc bị hủy.';
+            detailsEl.style.display = 'block';
+            detailsEl.innerHTML = `<p><strong>Đơn hàng:</strong> ${orderId}</p><p><strong>Ghi chú:</strong> ${message}</p>`;
+        } else {
+            titleEl.textContent = 'Kết quả thanh toán';
+            msgEl.textContent = 'Không nhận được thông tin kết quả. Vui lòng kiểm tra đơn hàng trong trang quản lý.';
+        }
+    </script>
+</body>
+
+</html>

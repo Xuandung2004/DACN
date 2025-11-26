@@ -68,7 +68,7 @@ namespace DACN_Web_API.Controllers
         public IActionResult DelCartItem(int nguoiDungId, int sanPhamId, int kichThuocId)
         {
             var delItem = db.Giohangs.FirstOrDefault(g => g.NguoiDungId == nguoiDungId && g.SanPhamId == sanPhamId && g.KichThuocId == kichThuocId);
-            if(delItem == null)
+            if (delItem == null)
             {
                 return NotFound(new { message = "Không tìm thấy sản phẩm!" });
             }
@@ -92,7 +92,7 @@ namespace DACN_Web_API.Controllers
             Console.WriteLine($"==> AddToCart: NguoiDung={item.NguoiDungId}, SanPham={item.SanPhamId}, KichThuoc={item.KichThuocId}, SL={item.SoLuong}");
 
             var existing = db.Giohangs.FirstOrDefault(g => g.NguoiDungId == item.NguoiDungId && g.SanPhamId == item.SanPhamId && g.KichThuocId == item.KichThuocId);
-            if(existing == null)
+            if (existing == null)
             {
                 var newItem = new Giohang
                 {

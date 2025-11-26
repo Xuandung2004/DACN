@@ -374,9 +374,53 @@ $(document).ready(function () {
             contentType: "application/json",
             data: JSON.stringify(data),
             success: function (res) {
-                alert("Đặt hàng thành công! Mã đơn: " + res.donHangId);
-                document.getElementById("orderModal").style.display = "none";
-                loadCart();
+                // Nếu khách chọn Banking (VNPay) — tạo URL thanh toán và redirect
+                const phuongThuc = data.phuongThucThanhToan || "COD";
+                console.log("✅ Đặt hàng thành công, phương thức:", phuongThuc, "Mã đơn:", res.donHangId);
+
+                if (phuongThuc && phuongThuc.toUpperCase() === 'BANKING') {
+                    // chuẩn bị payload cho tạo URL VNPay; dùng donHangId làm txn ref
+                    const paymentData = {
+                        orderType: String(res.donHangId),
+                        amount: res.tongTien,
+                        orderDescription: `Thanh toán đơn hàng #${res.donHangId}`,
+                        name: $("#tenNguoiNhan").val() || ""
+                    };
+
+                    console.log("💳 Gửi request VNPay payment:", paymentData);
+
+                    $.ajax({
+                        url: "http://localhost:5150/api/ThanhToan/create-payment-url",
+                        method: "POST",
+                        contentType: "application/json",
+                        data: JSON.stringify(paymentData),
+                        success: function (payRes) {
+                            console.log("✅ Nhận URL VNPay:", payRes);
+                            if (payRes && payRes.paymentUrl) {
+                                // đóng modal và chuyển hướng tới VNPay (không ghi alert)
+                                document.getElementById("orderModal").style.display = "none";
+                                console.log("🔄 Redirecting to VNPay...");
+                                window.location.href = payRes.paymentUrl;
+                            } else {
+                                alert("Không tạo được URL thanh toán VNPay. Vui lòng thử lại.");
+                                document.getElementById("orderModal").style.display = "none";
+                                loadCart();
+                            }
+                        },
+                        error: function (err) {
+                            console.error("❌ Lỗi tạo URL VNPay:", err);
+                            alert("Lỗi khi tạo URL VNPay. Vui lòng thử lại sau.");
+                            document.getElementById("orderModal").style.display = "none";
+                            loadCart();
+                        }
+                    });
+                } else {
+                    // COD — hoàn tất đặt hàng và hiển thị thông báo
+                    console.log("✅ COD payment, order completed");
+                    alert("Đặt hàng thành công! Mã đơn: " + res.donHangId);
+                    document.getElementById("orderModal").style.display = "none";
+                    loadCart();
+                }
             },
             error: function (err) {
                 alert("Lỗi đặt hàng!");

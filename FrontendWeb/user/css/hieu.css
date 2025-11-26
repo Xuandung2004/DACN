@@ -1,0 +1,39 @@
+.search-bar-custom {
+    align-items: center;
+    border-radius: 20px;
+    overflow: hidden;
+    padding-right: 0;
+}
+
+.search-bar-custom input[name="search-product"] {
+    border: none;
+    outline: none;
+    flex: 1 1 auto;
+    border-radius: 20px 0 0 20px;
+    background: transparent;
+    height: 40px;
+}
+
+.search-bar-custom button {
+    border: none;
+    background: #ffb3b3;
+    border-radius: 0 20px 20px 0;
+    height: 40px;
+    min-width: 48px;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-bar-custom button:hover {
+    background: #ff6666;
+}
+
+#review-list {
+    height: 600px;
+
+    overflow-y: auto;
+    padding: 0px 30px;
+}
