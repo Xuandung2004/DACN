@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Drawing;
 using System.Threading.Tasks;
 
 namespace DACN_Web_API.Controllers
@@ -52,7 +53,11 @@ namespace DACN_Web_API.Controllers
                 sp.MoTa,
                 DanhMuc = sp.DanhMuc?.TenDm,
                 Anh = sp.Anhs.Select(a => a.Url).ToList(),
-                KichThuoc = sp.Kichthuocs.Select(a => a.SoLieu).ToList()
+                KichThuoc = sp.Kichthuocs.Select(a => new
+                {
+                    id = a.Id,
+                    size = a.SoLieu
+                }).ToList()
             };
 
             return Ok(sanPhamChiTiet);

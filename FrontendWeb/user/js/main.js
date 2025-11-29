@@ -275,6 +275,11 @@
         // Lấy id sản phẩm từ data-id
         let productId = $(this).data('id');
 
+        
+        // Lưu productId vào modal để sau này nút Add to Cart biết lấy
+        $('.js-modal1').attr('data-product-id', productId);
+        console.log('Đã lưu productId vào modal:', productId);
+
         // Gọi API lấy chi tiết sản phẩm
         $.ajax({
             url: `http://localhost:5150/api/DanhSachSanPham/${productId}`,
@@ -294,8 +299,8 @@
                 const $select = $('.js-modal1 select[name="time"]');
                 $select.find('option:not(:first)').remove(); // xóa các option cũ (trừ dòng đầu tiên)
 
-                data.kichThuoc.forEach(size => {
-                    $select.append(`<option value="${size}">Size ${size}</option>`);
+                data.kichThuoc.forEach(kt => {
+                    $select.append(`<option value="${kt.id}">Size ${kt.size}</option>`);
                 });
 
                 // Làm mới Select2 nếu đang dùng
