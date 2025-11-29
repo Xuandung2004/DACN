@@ -11,27 +11,14 @@ namespace DACN_Web_API.Controllers
     [ApiController]
     public class DanhSachSanPhamController : ControllerBase
     {
-
         private CsdlFinal1Context _context = new CsdlFinal1Context();
-        //  GET: api/DanhSachSanPham
-        //[HttpGet]
-        //public async Task<IActionResult> GetSanPhams()
-        //{
-        //    var sanPhams = await _context.Sanphams
-        //        .Include(sp => sp.Anhs)
-        //        .Select(sp => new
-        //        {
-        //            sp.Id,
-        //            sp.TenSp,
-        //            sp.Gia,
-        //            Anh = sp.Anhs.Select(a => a.Url).ToList()
-        //            //KichThuoc = sp.Kichthuocs.Select(k => k.SoLieu).ToList()
-        //        })
-        //        .ToListAsync();
 
-        //    return Ok(sanPhams);
-        //}
-
+        /// <summary>
+        /// Lấy chi tiết sản phẩm theo ID, lọc, tìm kiếm, phân trang
+        /// </summary>
+        /// <param name="id">Id sản phẩm</param>
+        /// <returns>Danh sách sản phẩm, stt trang, số sản phẩm 1 trang</returns>
+        /// created by: TMHIEU (27/11/2025)
         //  GET: api/DanhSachSanPham/5 (chi tiết sản phẩm)
         [HttpGet("{id}")]
         public async Task<IActionResult> GetSanPham(int id)
@@ -152,6 +139,5 @@ namespace DACN_Web_API.Controllers
 
             return Ok(dsDanhMuc);
         }
-
     }
 }
