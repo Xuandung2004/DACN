@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Collections.Generic;
+using System.Collections.Generic; // Cần thêm namespace này cho List/IEnumerable
 
 namespace DACN_Web_API.Controllers
 {
@@ -17,20 +17,21 @@ namespace DACN_Web_API.Controllers
         public required string DiaChiCuThe { get; set; }
     }
     
+    // DTO cho GET danh sách
     public class DiaChiResponseModel
     {
         public int Id { get; set; }
         public string? TenNguoiNhan { get; set; }
         public string? Sdt { get; set; }
         public string? DiaChiCuThe { get; set; }
-        public int? NguoiDungId { get; set; } 
+        public int? NguoiDungId { get; set; } // Giữ kiểu nullable (?) để khớp với Model
     }
 
     [Route("api/[controller]")]
     [ApiController]
     public class DiaChiController : ControllerBase
     {
-        private readonly CsdlFinal1Context db = new CsdlFinal1Context(); 
+        private readonly CsdlFinal1Context db = new CsdlFinal1Context();
         
         // --- Hàm kiểm tra và trả về lỗi chung ---
         private IActionResult? ValidateDiaChiModel(DiaChiCreateModel model)
@@ -50,6 +51,7 @@ namespace DACN_Web_API.Controllers
 
         // --------------------------------------------------------
         // --- 1. Thêm địa chỉ nhận hàng mới (POST) ---
+        // POST api/DiaChi
         // --------------------------------------------------------
         [HttpPost]
         public async Task<IActionResult> ThemDiaChi([FromBody] DiaChiCreateModel model)
@@ -69,13 +71,13 @@ namespace DACN_Web_API.Controllers
                     TenNguoiNhan = model.TenNguoiNhan,
                     Sdtnn = model.Sdt,
                     DiaChiNhan = model.DiaChiCuThe,
-                    NguoiDungId = model.IdNguoiDung,
+                    NguoiDungId = model.IdNguoiDung
                 };
 
                 db.Thongtinnhans.Add(newDiaChi);
                 await db.SaveChangesAsync();
 
-                // Tối ưu hóa trả về 
+                // Tối ưu hóa trả về (Không cần gọi GetDiaChiById để truy vấn lại DB)
                 return CreatedAtAction(nameof(GetDiaChiById), new { id = newDiaChi.Id }, new 
                 { 
                     message = "Thêm địa chỉ giao hàng thành công.", 
@@ -85,7 +87,7 @@ namespace DACN_Web_API.Controllers
                         TenNguoiNhan = newDiaChi.TenNguoiNhan,
                         Sdt = newDiaChi.Sdtnn,
                         DiaChiCuThe = newDiaChi.DiaChiNhan,
-                        NguoiDungId = newDiaChi.NguoiDungId,
+                        NguoiDungId = newDiaChi.NguoiDungId
                     }
                 });
             }
@@ -97,6 +99,7 @@ namespace DACN_Web_API.Controllers
         
         // --------------------------------------------------------
         // --- 2. Lấy danh sách địa chỉ theo ID người dùng (GET) ---
+        // GET api/DiaChi/NguoiDung/{nguoiDungId}
         // --------------------------------------------------------
         [HttpGet("NguoiDung/{nguoiDungId}")]
         public async Task<ActionResult<IEnumerable<DiaChiResponseModel>>> GetDiaChiByNguoiDung(int nguoiDungId)
@@ -108,11 +111,13 @@ namespace DACN_Web_API.Controllers
 
             try
             {
+                // 1. Kiểm tra người dùng tồn tại
                 if (!await db.Nguoidungs.AnyAsync(nd => nd.Id == nguoiDungId && nd.ViTri == "khachhang"))
                 {
                     return NotFound(new { message = $"Không tìm thấy tài khoản khách hàng với ID: {nguoiDungId}." });
                 }
 
+                // 2. Lấy tất cả thông tin nhận hàng (địa chỉ) của người dùng đó
                 var danhSachDiaChi = await db.Thongtinnhans
                     .Where(t => t.NguoiDungId == nguoiDungId)
                     .Select(t => new DiaChiResponseModel 
@@ -121,9 +126,9 @@ namespace DACN_Web_API.Controllers
                         TenNguoiNhan = t.TenNguoiNhan,
                         Sdt = t.Sdtnn,
                         DiaChiCuThe = t.DiaChiNhan,
-                        NguoiDungId = t.NguoiDungId,
+                        NguoiDungId = t.NguoiDungId
                     })
-                    .OrderByDescending(t => t.Id) // Chỉ sắp xếp theo ID (mới nhất lên đầu)
+                    .OrderByDescending(t => t.Id) 
                     .ToListAsync();
 
                 if (!danhSachDiaChi.Any())
@@ -141,6 +146,7 @@ namespace DACN_Web_API.Controllers
         
         // --------------------------------------------------------
         // --- 3. Hàm Hỗ trợ cho CreatedAtAction (GET 1 bản ghi) ---
+        // GET api/DiaChi/{id}
         // --------------------------------------------------------
         [HttpGet("{id}", Name = "GetDiaChiById")]
         public async Task<IActionResult> GetDiaChiById(int id)
@@ -153,7 +159,7 @@ namespace DACN_Web_API.Controllers
                     t.TenNguoiNhan,
                     Sdt = t.Sdtnn,
                     DiaChiCuThe = t.DiaChiNhan,
-                    t.NguoiDungId,
+                    t.NguoiDungId
                 })
                 .FirstOrDefaultAsync();
 
