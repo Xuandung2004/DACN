@@ -202,7 +202,7 @@ function renderProduct(p) {
     const sizeSelect = document.querySelector('.size-204 select[name="time"]');
     sizeSelect.innerHTML = `<option>Choose an option</option>`;
     p.kichThuoc.forEach(size => {
-        sizeSelect.innerHTML += `<option>${size}</option>`;
+        sizeSelect.innerHTML += `<option value="${size.id}">${size.size}</option>`;
     });
 
     // 5. Render hình ảnh vào Slick3 Gallery
