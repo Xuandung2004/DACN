@@ -16,24 +16,28 @@
 
 .search-bar-custom button {
     border: none;
-    background: #ffb3b3;
+    background: #717fe0;
     border-radius: 0 20px 20px 0;
     height: 40px;
     min-width: 48px;
     cursor: pointer;
-    transition: background 0.2s;
     display: flex;
     align-items: center;
     justify-content: center;
+    color: #fff;
 }
 
 .search-bar-custom button:hover {
-    background: #ff6666;
+    background: #8d9cfc;
+    color: #fff;
+}
+
+.search-bar-custom input::placeholder {
+    color: #9298ba;
 }
 
 #review-list {
     height: 600px;
-
     overflow-y: auto;
     padding: 0px 30px;
 }
