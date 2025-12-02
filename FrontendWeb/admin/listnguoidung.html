@@ -15,15 +15,17 @@
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/dataTables.dataTables.min.css"> 
-    
+    <link rel="stylesheet" href="css/dataTables.dataTables.min.css">
+
 </head>
 
 <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
+
         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
                 <div class="sidebar-brand-icon rotate-n-15">
@@ -36,8 +38,8 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item">
-                <a class="nav-link" href="index.html">
+            <li class="nav-item active">
+                <a class="nav-link" href="/FrontendWeb/admin/index.html">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -60,15 +62,15 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Các chức năng</h6>
-                        <a class="collapse-item" href="buttons.html">Liệt kê</a>
-                        <a class="collapse-item" href="cards.html">Thêm mới</a>
+                        <a class="collapse-item" href="listdanhmuc.html">Liệt kê</a>
+                        <a class="collapse-item" href="#" data-toggle="modal" data-target="#danhMucModal">Thêm mới</a>
                     </div>
                 </div>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThere" aria-expanded="true"
-                    aria-controls="collapseTwo">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThere"
+                    aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fab fa-product-hunt"></i>
                     <span>Sản phẩm</span>
                 </a>
@@ -88,20 +90,15 @@
                 </a>
             </li>
 
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="listnguoidung.html" aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-users"></i>
                     <span>Người dùng</span>
                 </a>
             </li>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
 
-            <!-- Sidebar Toggler (Sidebar) -->
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
+
         </ul>
         <!-- End of Sidebar -->
 
@@ -132,12 +129,12 @@
                                 aria-labelledby="userDropdown">
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profile
+                                    Cá nhân
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
+                                    Đăng xuất
                                 </a>
                             </div>
                         </li>
@@ -145,209 +142,276 @@
                 </nav>
                 <!-- End of Topbar -->
 
-            <!-- =========================
+                <!-- =========================
             📄 QUẢN LÝ NGƯỜI DÙNG
             ========================= -->
-            <div class="container-fluid">
-                <div class="d-flex mb-3">
-                    <button class="btn btn-success" id="addUserBtn">
-                        <i class="fas fa-plus"></i> Thêm người dùng mới
-                    </button>
-                </div>
+                <div class="container-fluid">
+                    <div class="d-flex mb-3">
+                        <button class="btn btn-success" id="addUserBtn">
+                            <i class="fas fa-plus"></i> Thêm người dùng mới
+                        </button>
+                    </div>
 
-                <div class="card shadow mb-4">
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered" id="usersTable" width="100%" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Họ tên</th>
-                                        <th>Tên ĐN</th>
-                                        <th>Email</th>
-                                        <th>SĐT</th>
-                                        <th>Vị trí</th>
-                                        <th>Trạng thái</th>
-                                        <th>Hành động</th>
-                                    </tr>
-                                </thead>
-                            </table>
+                    <div class="card shadow mb-4">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="usersTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Họ tên</th>
+                                            <th>Tên ĐN</th>
+                                            <th>Email</th>
+                                            <th>SĐT</th>
+                                            <th>Vị trí</th>
+                                            <th>Trạng thái</th>
+                                            <th>Hành động</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- =========================
-            🧩 MODAL NGƯỜI DÙNG (BS4)
+                <!-- =========================
+            🧩 MODAL THÊM NGƯỜI DÙNG (BS4)
             ========================= -->
-            <div class="modal fade" id="userModal" tabindex="-1" role="dialog">
-                <div class="modal-dialog">
-                    <div class="modal-content">
+                <div class="modal fade" id="userModal" tabindex="-1" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
 
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modalTitle">Thêm người dùng mới</h5>
-                            <button type="button" class="close" data-dismiss="modal">
-                                <span>&times;</span>
-                            </button>
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalTitle">Thêm người dùng mới</h5>
+                                <button type="button" class="close" data-dismiss="modal">
+                                    <span>&times;</span>
+                                </button>
+                            </div>
+
+                            <div class="modal-body">
+
+                                <form id="userFormAdd">
+                                    <input type="hidden" id="Id">
+
+                                    <div class="form-group">
+                                        <label>Họ tên (*)</label>
+                                        <input type="text" id="HoTen" class="form-control">
+                                    </div>
+
+                                    <div class="form-group" id="tenDnGroup">
+                                        <label>Tên đăng nhập (*)</label>
+                                        <input type="text" id="TenDn" class="form-control">
+                                    </div>
+
+                                    <div class="form-group" id="passwordGroup">
+                                        <label>Mật khẩu (*)</label>
+                                        <input type="password" id="MatKhau" class="form-control">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <input type="email" id="Email" class="form-control">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>SĐT</label>
+                                        <input type="tel" id="Sdt" class="form-control">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Vị trí</label>
+                                        <select id="ViTri" class="form-control">
+                                            <option value="khachhang">Khách hàng</option>
+                                            <option value="nhan vien">Nhân viên</option>
+                                            <option value="admin">Admin</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group" id="trangThaiGroup" style="display:none;">
+                                        <label>Trạng thái</label>
+                                        <select id="TrangThai" class="form-control">
+                                            <option value="đang hoạt động">Đang hoạt động</option>
+                                            <option value="ngừng hoạt động">Ngừng hoạt động</option>
+                                        </select>
+                                    </div>
+
+                                </form>
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                                <button class="btn btn-primary" id="saveBtn">Lưu</button>
+                            </div>
+
                         </div>
-
-                        <div class="modal-body">
-
-                            <form id="userForm">
-                                <input type="hidden" id="Id">
-
-                                <div class="form-group">
-                                    <label>Họ tên (*)</label>
-                                    <input type="text" id="HoTen" class="form-control">
-                                </div>
-
-                                <div class="form-group" id="tenDnGroup">
-                                    <label>Tên đăng nhập (*)</label>
-                                    <input type="text" id="TenDn" class="form-control">
-                                </div>
-
-                                <div class="form-group" id="passwordGroup">
-                                    <label>Mật khẩu (*)</label>
-                                    <input type="password" id="MatKhau" class="form-control">
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Email</label>
-                                    <input type="email" id="Email" class="form-control">
-                                </div>
-
-                                <div class="form-group">
-                                    <label>SĐT</label>
-                                    <input type="tel" id="Sdt" class="form-control">
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Vị trí</label>
-                                    <select id="ViTri" class="form-control">
-                                        <option value="khachhang">Khách hàng</option>
-                                        <option value="nhan vien">Nhân viên</option>
-                                        <option value="admin">Admin</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group" id="trangThaiGroup" style="display:none;">
-                                    <label>Trạng thái</label>
-                                    <select id="TrangThai" class="form-control">
-                                        <option value="đang hoạt động">Đang hoạt động</option>
-                                        <option value="ngừng hoạt động">Ngừng hoạt động</option>
-                                    </select>
-                                </div>
-
-                            </form>
-
-                        </div>
-
-                        <div class="modal-footer">
-                            <button class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                            <button class="btn btn-primary" id="saveBtn">Lưu</button>
-                        </div>
-
                     </div>
                 </div>
-            </div>
+
+                <!-- =========================
+            🧩 MODAL SỬA NGƯỜI DÙNG (BS4)
+            ========================= -->
+                <div class="modal fade" id="userModal" tabindex="-1" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalTitle">Sửa người dùng mới</h5>
+                                <button type="button" class="close" data-dismiss="modal">
+                                    <span>&times;</span>
+                                </button>
+                            </div>
+
+                            <div class="modal-body">
+
+                                <form id="userFormEdit">
+                                    <input type="hidden" id="Id">
+
+                                    <div class="form-group">
+                                        <label>Họ tên (*)</label>
+                                        <input type="text" id="HoTen" class="form-control">
+                                    </div>
+
+                                    <div class="form-group" id="tenDnGroup">
+                                        <label>Tên đăng nhập (*)</label>
+                                        <input type="text" id="TenDn" class="form-control">
+                                    </div>
+
+                                    <div class="form-group" id="passwordGroup">
+                                        <label>Mật khẩu (*)</label>
+                                        <input type="password" id="MatKhau" class="form-control">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <input type="email" id="Email" class="form-control">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>SĐT</label>
+                                        <input type="tel" id="Sdt" class="form-control">
+                                    </div>
+
+                                    <div class="form-group" id="trangThaiGroup" style="display:none;">
+                                        <label>Trạng thái</label>
+                                        <select id="TrangThai" class="form-control">
+                                            <option value="đang hoạt động">Đang hoạt động</option>
+                                            <option value="ngừng hoạt động">Ngừng hoạt động</option>
+                                        </select>
+                                    </div>
+
+                                </form>
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                                <button class="btn btn-primary" id="saveBtn">Lưu</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
 
 
-            <!-- =========================
+                <!-- =========================
             🔐 MODAL ĐỔI MẬT KHẨU
             ========================= -->
-            <div class="modal fade" id="changePasswordModal" tabindex="-1">
-                <div class="modal-dialog">
-                    <div class="modal-content">
+                <div class="modal fade" id="changePasswordModal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
 
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="changePassModalTitle">Đổi mật khẩu</h5>
-                            <button type="button" class="close" data-dismiss="modal">
-                                <span>&times;</span>
-                            </button>
-                        </div>
-
-                        <div class="modal-body">
-                            <input type="hidden" id="ChangePassId">
-
-                            <div class="form-group">
-                                <label>Mật khẩu mới</label>
-                                <input type="password" id="NewMatKhau" class="form-control">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="changePassModalTitle">Đổi mật khẩu</h5>
+                                <button type="button" class="close" data-dismiss="modal">
+                                    <span>&times;</span>
+                                </button>
                             </div>
 
-                            <div class="form-group">
-                                <label>Xác nhận mật khẩu</label>
-                                <input type="password" id="NewMatKhauConfirm" class="form-control">
+                            <div class="modal-body">
+                                <input type="hidden" id="ChangePassId">
+
+                                <div class="form-group">
+                                    <label>Mật khẩu mới</label>
+                                    <input type="password" id="NewMatKhau" class="form-control">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Xác nhận mật khẩu</label>
+                                    <input type="password" id="NewMatKhauConfirm" class="form-control">
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="modal-footer">
-                            <button class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                            <button class="btn btn-primary" id="saveNewPassBtn">Đổi mật khẩu</button>
-                        </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                                <button class="btn btn-primary" id="saveNewPassBtn">Đổi mật khẩu</button>
+                            </div>
 
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Toast (BS4) -->
+                <div aria-live="polite" aria-atomic="true"
+                    style="position: fixed; top: 80px; right: 15px; z-index: 9999;">
+                    <div id="toastContainer"></div>
+                </div>
+
+                <!-- Footer -->
+                <footer class="sticky-footer bg-white">
+                    <div class="container my-auto">
+                        <div class="copyright text-center my-auto">
+                            <span>Copyright &copy; Your Website 2025</span>
+                        </div>
+                    </div>
+                </footer>
+                <!-- End of Footer -->
+
+            </div>
+            <!-- End of Content Wrapper -->
+
+        </div>
+        <!-- End of Page Wrapper -->
+
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
+
+        <!-- Logout Modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Bạn muốn đăng xuất?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Chọn "Đăng xuất" bên dưới nếu bạn thực sự muốn kết thúc phiên làm việc.
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
+                        <a class="btn btn-primary" href="/FrontendWeb/user/myloginfinal1.html">Đăng xuất</a>
                     </div>
                 </div>
             </div>
-
-            <!-- Toast (BS4) -->
-            <div aria-live="polite" aria-atomic="true" style="position: fixed; top: 80px; right: 15px; z-index: 9999;">
-                <div id="toastContainer"></div>
-            </div>
-
-            <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2025</span>
-                    </div>
-                </div>
-            </footer>
-            <!-- End of Footer -->
-
         </div>
-        <!-- End of Content Wrapper -->
 
-    </div>
-    <!-- End of Page Wrapper -->
+        <!-- Bootstrap core JavaScript-->
+        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
+        <!-- Core plugin JavaScript-->
+        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Bạn muốn đăng xuất?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Chọn "Đăng xuất" bên dưới nếu bạn thực sự muốn kết thúc phiên làm việc.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
-                    <a class="btn btn-primary" href="../user/myloginfinal1.html">Đăng xuất</a>
-                </div>
-            </div>
-        </div>
-    </div>
+        <!-- Custom scripts for all pages-->
+        <script src="js/sb-admin-2.min.js"></script>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
-
-    <!-- Page specific scripts -->
-    <script src="js/dataTables.min.js"></script>
-    <script src="js/quanlynguoidung/listnguoidung.js"></script>
+        <!-- Page specific scripts -->
+        <script src="js/dataTables.min.js"></script>
+        <script src="js/quanlynguoidung/listnguoidung.js"></script>
 
 </body>
 

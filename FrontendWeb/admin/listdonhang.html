@@ -21,8 +21,10 @@
 <body id="page-top">
     <!-- Page Wrapper -->
     <div id="wrapper">
+
         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
                 <div class="sidebar-brand-icon rotate-n-15">
@@ -35,8 +37,8 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item">
-                <a class="nav-link" href="index.html">
+            <li class="nav-item active">
+                <a class="nav-link" href="/FrontendWeb/admin/index.html">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -59,15 +61,15 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Các chức năng</h6>
-                        <a class="collapse-item" href="buttons.html">Liệt kê</a>
-                        <a class="collapse-item" href="cards.html">Thêm mới</a>
+                        <a class="collapse-item" href="listdanhmuc.html">Liệt kê</a>
+                        <a class="collapse-item" href="#" data-toggle="modal" data-target="#danhMucModal">Thêm mới</a>
                     </div>
                 </div>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThere" aria-expanded="true"
-                    aria-controls="collapseTwo">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThere"
+                    aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fab fa-product-hunt"></i>
                     <span>Sản phẩm</span>
                 </a>
@@ -80,7 +82,7 @@
                 </div>
             </li>
 
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link collapsed" href="listdonhang.html" aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-wallet"></i>
                     <span>Đơn hàng</span>
@@ -94,13 +96,8 @@
                 </a>
             </li>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
 
-            <!-- Sidebar Toggler (Sidebar) -->
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
+
         </ul>
         <!-- End of Sidebar -->
 
@@ -131,12 +128,12 @@
                                 aria-labelledby="userDropdown">
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profile
+                                    Cá nhân
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
+                                    Đăng xuất
                                 </a>
                             </div>
                         </li>
@@ -146,7 +143,8 @@
 
                 <div class="container-fluid">
                     <div class="d-flex mb-3">
-                        <input type="number" id="searchId" class="form-control w-25 mr-2" placeholder="Nhập ID đơn hàng...">
+                        <input type="number" id="searchId" class="form-control w-25 mr-2"
+                            placeholder="Nhập ID đơn hàng...">
                         <button class="btn btn-primary" id="searchBtn">Tìm kiếm</button>
                     </div>
 
@@ -214,64 +212,66 @@
                         </div>
                     </div>
                 </div>
-                <div aria-live="polite" aria-atomic="true" style="position: fixed; top: 80px; right: 15px; z-index: 9999;">
+                <div aria-live="polite" aria-atomic="true"
+                    style="position: fixed; top: 80px; right: 15px; z-index: 9999;">
                     <div id="toastContainer"></div>
-                </div>               
-
-            <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2025</span>
-                    </div>
                 </div>
-            </footer>
-            <!-- End of Footer -->
+
+                <!-- Footer -->
+                <footer class="sticky-footer bg-white">
+                    <div class="container my-auto">
+                        <div class="copyright text-center my-auto">
+                            <span>Copyright &copy; Your Website 2025</span>
+                        </div>
+                    </div>
+                </footer>
+                <!-- End of Footer -->
+
+            </div>
+            <!-- End of Content Wrapper -->
 
         </div>
-        <!-- End of Content Wrapper -->
+        <!-- End of Page Wrapper -->
 
-    </div>
-    <!-- End of Page Wrapper -->
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Bạn muốn đăng xuất?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Chọn "Đăng xuất" bên dưới nếu bạn thực sự muốn kết thúc phiên làm việc.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
-                    <a class="btn btn-primary" href="../user/myloginfinal1.html">Đăng xuất</a>
+        <!-- Logout Modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Bạn muốn đăng xuất?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Chọn "Đăng xuất" bên dưới nếu bạn thực sự muốn kết thúc phiên làm việc.
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
+                        <a class="btn btn-primary" href="/FrontendWeb/user/myloginfinal1.html">Đăng xuất</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- Bootstrap core JavaScript-->
+        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+        <!-- Core plugin JavaScript-->
+        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+        <!-- Custom scripts for all pages-->
+        <script src="js/sb-admin-2.min.js"></script>
 
-    <!-- Page specific scripts -->
-    <script src="js/dataTables.min.js"></script>
-    <script src="js/quanlydonhang/listdonhang.js"></script>
+        <!-- Page specific scripts -->
+        <script src="js/dataTables.min.js"></script>
+        <script src="js/quanlydonhang/listdonhang.js"></script>
 
 </body>
 

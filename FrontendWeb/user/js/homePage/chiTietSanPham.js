@@ -1,4 +1,17 @@
 document.addEventListener('DOMContentLoaded', function () {
+    // Nếu người dùng login, lấy userId từ localStorage
+    const raw = localStorage.getItem("currentUser");
+    let user = null;
+    try {
+        user = raw ? JSON.parse(raw) : null;
+    } catch (e) {
+        user = null;
+    }
+    const userId = user && (user.id || user.Id || user.ID);
+
+    if (!userId) {
+        document.getElementById("formDanhGia").style.display = "none";
+    }
     // Đánh giá sao
     const stars = document.querySelectorAll('.wrap-rating .item-rating');
     const ratingInput = document.querySelector('.wrap-rating input[name="rating"]');
@@ -29,16 +42,10 @@ document.addEventListener('DOMContentLoaded', function () {
             // Lấy productId từ URL
             const productId = getProductId();
 
-            // Nếu người dùng login, lấy userId từ localStorage
-            const raw = localStorage.getItem("currentUser");
-            let user = null;
-            try {
-                user = raw ? JSON.parse(raw) : null;
-            } catch (e) {
-                user = null;
-            }
 
-            const userId = (user && (user.id || user.Id || user.ID)) || 1;
+
+
+
             console.log(userId);
             // (demo: để mặc định 1 nếu chưa login)
 
@@ -200,18 +207,70 @@ function renderProduct(p) {
 
     // 4. Render Kích thước vào dropdown Size
     const sizeSelect = document.querySelector('.size-204 select[name="time"]');
-    sizeSelect.innerHTML = `<option>Choose an option</option>`;
-    p.kichThuoc.forEach(size => {
-        sizeSelect.innerHTML += `<option value="${size.id}">${size.size}</option>`;
+    sizeSelect.innerHTML = `<option>Chọn kích cỡ</option>`;
+    p.kichThuoc.forEach(kt => {
+        sizeSelect.innerHTML += `<option>${kt.size}</option>`;
     });
 
-    // 5. Render hình ảnh vào Slick3 Gallery
-    // renderImages(p.anh);
+    const $modal = $('.sec-product-detail');
+    $modal.data('product-id', p.id);
+    // ---- Cập nhật ảnh slider ----
+    const $gallery = $modal.find('.slick3.gallery-lb');
+
+    // Nếu slider đã init → unslick
+    if ($gallery.hasClass('slick-initialized')) {
+        $gallery.slick('unslick');
+    }
+
+    $gallery.empty(); // xóa ảnh cũ
+
+    // Thêm ảnh mới
+    p.anh.forEach(imgSrc => {
+        const slide = `
+                    <div class="item-slick3" data-thumb="/FrontendWeb/${imgSrc}">
+                        <div class="wrap-pic-w pos-relative">
+                            <img src="/FrontendWeb/${imgSrc}" alt="IMG-PRODUCT">
+                            <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
+                               href="/FrontendWeb/${imgSrc}">
+                                <i class="fa fa-expand"></i>
+                            </a>
+                        </div>
+                    </div>
+                `;
+        $gallery.append(slide);
+    });
+
+    // Khởi tạo lại Slick slider modal
+    $gallery.slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        fade: true,
+        infinite: true,
+        autoplay: false,
+        autoplaySpeed: 6000,
+
+        arrows: true,
+        appendArrows: $modal.find('.wrap-slick3-arrows'),
+        prevArrow: '<button class="arrow-slick3 prev-slick3"><i class="fa fa-angle-left" aria-hidden="true"></i></button>',
+        nextArrow: '<button class="arrow-slick3 next-slick3"><i class="fa fa-angle-right" aria-hidden="true"></i></button>',
+
+        dots: true,
+        appendDots: $modal.find('.wrap-slick3-dots'),
+        dotsClass: 'slick3-dots',
+
+        customPaging: function (slick, index) {
+            var portrait = $(slick.$slides[index]).data('thumb');
+            return `<img src="${portrait}"><div class="slick3-dot-overlay"></div>`;
+        },
+    });
+
+
+
 
     // 6. Cập nhật danh mục
     const categoriesText = document.querySelector(".size-302 .stext-107:last-child");
     if (categoriesText) {
-        categoriesText.textContent = `Category: ${p.danhMuc}`;
+        categoriesText.textContent = `Danh mục: ${p.danhMuc}`;
     }
 }
 
