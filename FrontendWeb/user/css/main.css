@@ -3773,3 +3773,7 @@ input.num-product::-webkit-inner-spin-button {
   }
 
 }
+
+.dropdown-toggle::after {
+  display: none !important;
+}
