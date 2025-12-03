@@ -209,7 +209,7 @@ function renderProduct(p) {
     const sizeSelect = document.querySelector('.size-204 select[name="time"]');
     sizeSelect.innerHTML = `<option>Chọn kích cỡ</option>`;
     p.kichThuoc.forEach(kt => {
-        sizeSelect.innerHTML += `<option>${kt.size}</option>`;
+        sizeSelect.innerHTML += `<option value="${kt.id}">Cỡ ${kt.size}</option>`;
     });
 
     const $modal = $('.sec-product-detail');

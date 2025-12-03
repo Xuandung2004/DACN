@@ -36,7 +36,7 @@ $(document).ready(function () {
                                 padding:10px 0;
                                 border-bottom:1px solid #eee;
                             ">
-                                <img src="../image/${p.anh}" alt="" style="
+                                <img src="../${p.anh}" alt="" style="
                                     width:70px;
                                     height:70px;
                                     object-fit:cover;

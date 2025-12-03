@@ -37,7 +37,6 @@
 	<header class="header-v4">
 		<!-- Header desktop -->
 		<div class="container-menu-desktop">
-			Tài khoản cá nhân
 
 			<div class="wrap-menu-desktop how-shadow1">
 				<nav class="limiter-menu-desktop container">
@@ -60,7 +59,7 @@
 
 
 							<li class="active-menu">
-								<a href="blog.html">Blog</a>
+								<a href="blog.html">Bài viết</a>
 							</li>
 
 							<li>
@@ -93,10 +92,25 @@
 						</div>
 
 
-						<a href="hoso.html"
-							class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-account">
-							<i class="zmdi zmdi-account"></i>
-						</a>
+						<li class="nav-item dropdown no-arrow">
+
+							<a data-toggle="dropdown" id="userDropdown"
+								class="nav-link dropdown-toggle dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-account">
+								<i class="zmdi zmdi-account"></i>
+							</a>
+							<!-- Dropdown - User Information -->
+							<div class="dropdown-menu dropdown-menu-left shadow animated--grow-in start-50"
+								aria-labelledby="userDropdown">
+								<a class="dropdown-item" href="hoso.html">
+									Cá nhân
+								</a>
+								<div class="dropdown-divider"></div>
+								<a onclick="dangXuat()" class="dropdown-item" href="#" data-toggle="modal"
+									data-target="#logoutModal">
+									Đăng xuất
+								</a>
+							</div>
+						</li>
 					</div>
 				</nav>
 			</div>
@@ -285,13 +299,9 @@
 
 					<div class="header-cart-buttons flex-w w-full">
 						<a href="shoping-cart.html"
-							class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-r-8 m-b-10">
-							View Cart
-						</a>
-
-						<a href="shoping-cart.html"
-							class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-b-10">
-							Check Out
+							class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-r-8 m-b-10"
+							style="width: 100%; justify-content: center;">
+							Xem giỏ hàng
 						</a>
 					</div>
 				</div>
@@ -332,11 +342,11 @@
 
 							<div class="flex-col-c-m size-123 bg9 how-pos5">
 								<span class="ltext-107 cl2 txt-center">
-									22
+									03
 								</span>
 
 								<span class="stext-109 cl3 txt-center">
-									Jan 2018
+									Dec 2025
 								</span>
 							</div>
 						</div>
@@ -344,84 +354,85 @@
 						<div class="p-t-32">
 							<span class="flex-w flex-m stext-111 cl2 p-b-19">
 								<span>
-									<span class="cl4">By</span> Admin
+									<span class="cl4">Bởi</span> Admin
 									<span class="cl12 m-l-4 m-r-6">|</span>
 								</span>
 
 								<span>
-									22 Jan, 2018
+									03 Dec, 2025
 									<span class="cl12 m-l-4 m-r-6">|</span>
 								</span>
 
 								<span>
-									StreetStyle, Fashion, Couple
+									Kim cương, Trang sức, Xu hướng
 									<span class="cl12 m-l-4 m-r-6">|</span>
 								</span>
 
 								<span>
-									8 Comments
+									5 Bình luận
 								</span>
 							</span>
 
 							<h4 class="ltext-109 cl2 p-b-28">
-								8 Inspiring Ways to Wear Dresses in the Winter
+								Top 5 Mẫu Kim Cương Xu Hướng Năm 2025
 							</h4>
 
 							<p class="stext-117 cl6 p-b-26">
-								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet est vel orci
-								luctus sollicitudin. Duis eleifend vestibulum justo, varius semper lacus condimentum
-								dictum. Donec pulvinar a magna ut malesuada. In posuere felis diam, vel sodales metus
-								accumsan in. Duis viverra dui eu pharetra pellentesque. Donec a eros leo. Quisque sed
-								ligula vitae lorem efficitur faucibus. Praesent sit amet imperdiet ante. Nulla id tellus
-								auctor, dictum libero a, malesuada nisi. Nulla in porta nibh, id vestibulum ipsum.
-								Praesent dapibus tempus erat quis aliquet. Donec ac purus id sapien condimentum feugiat.
+								Năm 2025 đánh dấu sự trở lại của những thiết kế kim cương tinh tế, hiện đại nhưng vẫn
+								giữ được nét sang trọng
+								cổ điển. Trong bài viết này, chúng tôi sẽ giới thiệu 5 mẫu kim cương được dự đoán sẽ dẫn
+								đầu xu hướng trang sức
+								năm nay, từ kiểu cắt độc đáo đến các thiết kế đính kèm sáng tạo.
 							</p>
 
 							<p class="stext-117 cl6 p-b-26">
-								Praesent vel mi bibendum, finibus leo ac, condimentum arcu. Pellentesque sem ex,
-								tristique sit amet suscipit in, mattis imperdiet enim. Integer tempus justo nec velit
-								fringilla, eget eleifend neque blandit. Sed tempor magna sed congue auctor. Mauris eu
-								turpis eget tortor ultricies elementum. Phasellus vel placerat orci, a venenatis justo.
-								Phasellus faucibus venenatis nisl vitae vestibulum. Praesent id nibh arcu. Vivamus
-								sagittis accumsan felis, quis vulputate
+								Các mẫu kim cương này không chỉ là món trang sức, mà còn là biểu tượng của phong cách và
+								cá tính. Bạn sẽ tìm thấy
+								từ những viên kim cương cắt tròn kinh điển, đến các kiểu dáng mới lạ như Princess Cut
+								hay Asscher Cut, tất cả
+								đều được chế tác tinh xảo, phù hợp với các dịp đặc biệt hoặc làm điểm nhấn thời trang
+								hàng ngày.
 							</p>
 						</div>
 
 						<div class="flex-w flex-t p-t-16">
 							<span class="size-216 stext-116 cl8 p-t-4">
-								Tags
+								Thẻ
 							</span>
 
 							<div class="flex-w size-217">
-								<a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-									Streetstyle
+								<a href="#"
+									class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
+									Kim cương
 								</a>
 
-								<a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-									Crafts
+								<a href="#"
+									class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
+									Xu hướng 2025
 								</a>
 							</div>
 						</div>
 
+
 						<!--  -->
 						<div class="p-t-40">
 							<h5 class="mtext-113 cl2 p-b-12">
-								Leave a Comment
+								Viết Bình Luận
 							</h5>
 
 							<p class="stext-107 cl6 p-b-40">
-								Your email address will not be published. Required fields are marked *
+								Địa chỉ email của bạn sẽ không được công khai. Những trường bắt buộc được đánh dấu *
 							</p>
 
 							<form>
 								<div class="bor19 m-b-20">
 									<textarea class="stext-111 cl2 plh3 size-124 p-lr-18 p-tb-15" name="cmt"
-										placeholder="Comment..."></textarea>
+										placeholder="Bình luận..."></textarea>
 								</div>
 
 								<div class="bor19 size-218 m-b-20">
 									<input class="stext-111 cl2 plh3 size-116 p-lr-18" type="text" name="name"
-										placeholder="Name *">
+										placeholder="Họ và tên *">
 								</div>
 
 								<div class="bor19 size-218 m-b-20">
@@ -435,10 +446,11 @@
 								</div>
 
 								<button class="flex-c-m stext-101 cl0 size-125 bg3 bor2 hov-btn3 p-lr-15 trans-04">
-									Post Comment
+									Gửi Bình Luận
 								</button>
 							</form>
 						</div>
+
 					</div>
 				</div>
 
@@ -446,7 +458,7 @@
 					<div class="side-menu">
 						<div class="bor17 of-hidden pos-relative">
 							<input class="stext-103 cl2 plh4 size-116 p-l-28 p-r-55" type="text" name="search"
-								placeholder="Search">
+								placeholder="Tìm kiếm trang sức">
 
 							<button class="flex-c-m size-122 ab-t-r fs-18 cl4 hov-cl1 trans-04">
 								<i class="zmdi zmdi-search"></i>
@@ -455,37 +467,37 @@
 
 						<div class="p-t-55">
 							<h4 class="mtext-112 cl2 p-b-33">
-								Categories
+								Danh mục
 							</h4>
 
 							<ul>
 								<li class="bor18">
 									<a href="#" class="dis-block stext-115 cl6 hov-cl1 trans-04 p-tb-8 p-lr-4">
-										Fashion
+										Nhẫn
 									</a>
 								</li>
 
 								<li class="bor18">
 									<a href="#" class="dis-block stext-115 cl6 hov-cl1 trans-04 p-tb-8 p-lr-4">
-										Beauty
+										Vòng cổ
 									</a>
 								</li>
 
 								<li class="bor18">
 									<a href="#" class="dis-block stext-115 cl6 hov-cl1 trans-04 p-tb-8 p-lr-4">
-										Street Style
+										Bông tai
 									</a>
 								</li>
 
 								<li class="bor18">
 									<a href="#" class="dis-block stext-115 cl6 hov-cl1 trans-04 p-tb-8 p-lr-4">
-										Life Style
+										Lắc tay
 									</a>
 								</li>
 
 								<li class="bor18">
 									<a href="#" class="dis-block stext-115 cl6 hov-cl1 trans-04 p-tb-8 p-lr-4">
-										DIY & Crafts
+										Bộ trang sức
 									</a>
 								</li>
 							</ul>
@@ -493,7 +505,7 @@
 
 						<div class="p-t-65">
 							<h4 class="mtext-112 cl2 p-b-33">
-								Featured Products
+								Sản phẩm nổi bật
 							</h4>
 
 							<ul>
@@ -504,11 +516,11 @@
 
 									<div class="size-215 flex-col-t p-t-8">
 										<a href="#" class="stext-116 cl8 hov-cl1 trans-04">
-											White Shirt With Pleat Detail Back
+											Nhẫn vàng trắng đính kim cương
 										</a>
 
 										<span class="stext-116 cl6 p-t-20">
-											$19.00
+											2.500.000₫
 										</span>
 									</div>
 								</li>
@@ -520,11 +532,11 @@
 
 									<div class="size-215 flex-col-t p-t-8">
 										<a href="#" class="stext-116 cl8 hov-cl1 trans-04">
-											Converse All Star Hi Black Canvas
+											Vòng cổ ngọc trai tự nhiên
 										</a>
 
 										<span class="stext-116 cl6 p-t-20">
-											$39.00
+											1.800.000₫
 										</span>
 									</div>
 								</li>
@@ -536,11 +548,11 @@
 
 									<div class="size-215 flex-col-t p-t-8">
 										<a href="#" class="stext-116 cl8 hov-cl1 trans-04">
-											Nixon Porter Leather Watch In Tan
+											Lắc tay bạc họa tiết tinh xảo
 										</a>
 
 										<span class="stext-116 cl6 p-t-20">
-											$17.00
+											950.000₫
 										</span>
 									</div>
 								</li>
@@ -549,103 +561,26 @@
 
 						<div class="p-t-55">
 							<h4 class="mtext-112 cl2 p-b-20">
-								Archive
+								Lưu trữ
 							</h4>
 
 							<ul>
 								<li class="p-b-7">
 									<a href="#" class="flex-w flex-sb-m stext-115 cl6 hov-cl1 trans-04 p-tb-2">
-										<span>
-											July 2018
-										</span>
-
-										<span>
-											(9)
-										</span>
+										<span>Tháng 12/2025</span>
+										<span>(15)</span>
 									</a>
 								</li>
-
 								<li class="p-b-7">
 									<a href="#" class="flex-w flex-sb-m stext-115 cl6 hov-cl1 trans-04 p-tb-2">
-										<span>
-											June 2018
-										</span>
-
-										<span>
-											(39)
-										</span>
+										<span>Tháng 11/2025</span>
+										<span>(22)</span>
 									</a>
 								</li>
-
 								<li class="p-b-7">
 									<a href="#" class="flex-w flex-sb-m stext-115 cl6 hov-cl1 trans-04 p-tb-2">
-										<span>
-											May 2018
-										</span>
-
-										<span>
-											(29)
-										</span>
-									</a>
-								</li>
-
-								<li class="p-b-7">
-									<a href="#" class="flex-w flex-sb-m stext-115 cl6 hov-cl1 trans-04 p-tb-2">
-										<span>
-											April 2018
-										</span>
-
-										<span>
-											(35)
-										</span>
-									</a>
-								</li>
-
-								<li class="p-b-7">
-									<a href="#" class="flex-w flex-sb-m stext-115 cl6 hov-cl1 trans-04 p-tb-2">
-										<span>
-											March 2018
-										</span>
-
-										<span>
-											(22)
-										</span>
-									</a>
-								</li>
-
-								<li class="p-b-7">
-									<a href="#" class="flex-w flex-sb-m stext-115 cl6 hov-cl1 trans-04 p-tb-2">
-										<span>
-											February 2018
-										</span>
-
-										<span>
-											(32)
-										</span>
-									</a>
-								</li>
-
-								<li class="p-b-7">
-									<a href="#" class="flex-w flex-sb-m stext-115 cl6 hov-cl1 trans-04 p-tb-2">
-										<span>
-											January 2018
-										</span>
-
-										<span>
-											(21)
-										</span>
-									</a>
-								</li>
-
-								<li class="p-b-7">
-									<a href="#" class="flex-w flex-sb-m stext-115 cl6 hov-cl1 trans-04 p-tb-2">
-										<span>
-											December 2017
-										</span>
-
-										<span>
-											(26)
-										</span>
+										<span>Tháng 10/2025</span>
+										<span>(18)</span>
 									</a>
 								</li>
 							</ul>
@@ -657,24 +592,29 @@
 							</h4>
 
 							<div class="flex-w m-r--5">
-								<a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-									Fashion
+								<a href="#"
+									class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
+									Nhẫn
 								</a>
 
-								<a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-									Lifestyle
+								<a href="#"
+									class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
+									Vòng cổ
 								</a>
 
-								<a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-									Denim
+								<a href="#"
+									class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
+									Bông tai
 								</a>
 
-								<a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-									Streetstyle
+								<a href="#"
+									class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
+									Lắc tay
 								</a>
 
-								<a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-									Crafts
+								<a href="#"
+									class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
+									Bộ trang sức
 								</a>
 							</div>
 						</div>
@@ -897,6 +837,7 @@
 	</script>
 	<!--===============================================================================================-->
 	<script src="js/main.js"></script>
+	<script src="js/GioHang/GioHang.js"></script>
 
 </body>
 
