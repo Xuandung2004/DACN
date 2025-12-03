@@ -40,7 +40,7 @@ $(document).ready(function () {
                     const row = `
                         <li class="header-cart-item flex-w flex-t m-b-12">
 						<div>
-							<img src="../image/${item.anh}" alt="IMG">
+							<img style="width: 60px" src="../${item.anh}" alt="IMG">
 						</div>
 
 						<div class="header-cart-item-txt p-t-8">
@@ -79,6 +79,7 @@ $(document).ready(function () {
                 $(".table-shopping-cart .table_row").remove();
 
                 if (!res.items || res.items.length === 0) {
+                    $(".icon-header-noti.js-show-cart").attr("data-notify", 0);
                     $(".table-shopping-cart").append(`
                         <tr class="table_row">
                             <td colspan="5" class="text-center p-t-40">
@@ -89,6 +90,7 @@ $(document).ready(function () {
                     $(".mtext-110.cl2").text("0 ₫");
                     return;
                 }
+                $(".icon-header-noti.js-show-cart").attr("data-notify", res.items.length);
                 //item.anh
                 res.items.forEach(item => {
                     const row = `
@@ -97,7 +99,7 @@ $(document).ready(function () {
                             data-kichthuoc="${item.kichThuocID}">
                             <td class="column-1">
                                 <div class="DelItem how-itemcart1">
-                                    <img src="../image/${item.anh}" alt="${item.tenSp}">
+                                    <img src="../${item.anh}" alt="${item.tenSp}">
                                 </div>
                             </td>
                             <td class="column-2">${item.tenSp}</td>
@@ -124,7 +126,7 @@ $(document).ready(function () {
                     $(".table-shopping-cart").append(row);
                 });
 
-                $(".mtext-110.cl2").text(res.tongTien.toLocaleString() + " ₫");
+                $(".subtotal-value").text(res.tongTien.toLocaleString() + " ₫");
             },
             error: function (xhr) {
                 console.error("❌ Lỗi tải giỏ hàng:", xhr);
@@ -236,17 +238,18 @@ $(document).ready(function () {
     //add to cart
     $(document).on('click', '.js-addcart-detail', function () {
         const userId = nguoiDungId; // hoặc localStorage.getItem("userId")
-        const productId = $('.js-modal1').data('product-id');
-        const kichThuocId = $('.js-modal1 select[name="time"]').val(); // dropdown size
-        const soLuong = parseInt($('.js-modal1 input[name="num-product"]').val() || 1);
+        const productId = $('.js-modal1').data('product-id') || $('.sec-product-detail').data('product-id');
+        const kichThuocId = $('.js-modal1 select[name="time"]').val() || $('.sec-product-detail select[name="time"]').val(); // dropdown size
+        const soLuong = parseInt( $('.js-modal1 input[name="num-product"]').val() ||$('.sec-product-detail input[name="num-product"]').val() || 1);
+        console.log(productId, kichThuocId, soLuong);
 
         if (!userId) {
             alert("Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng!");
             return;
         }
 
-        if (!kichThuocId) {
-            alert("Vui lòng chọn size trước khi thêm vào giỏ hàng!");
+        if (!kichThuocId || isNaN(kichThuocId)) {
+            alert("Vui lòng chọn kích cỡ trước khi thêm vào giỏ hàng!");
             return;
         }
 
@@ -266,6 +269,7 @@ $(document).ready(function () {
             data: JSON.stringify(data),
             success: function (res) {
                 swal("Sản phẩm", "đã được thêm vào giỏ hàng thành công !", "success");
+                loadCart();
             },
             error: function (xhr) {
                 console.error(xhr);

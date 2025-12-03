@@ -287,13 +287,9 @@
 
 					<div class="header-cart-buttons flex-w w-full">
 						<a href="shoping-cart.html"
-							class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-r-8 m-b-10">
-							View Cart
-						</a>
-
-						<a href="shoping-cart.html"
-							class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-b-10">
-							Check Out
+							class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-r-8 m-b-10"
+							style="width: 100%; justify-content: center;">
+							Xem giỏ hàng
 						</a>
 					</div>
 				</div>
@@ -310,41 +306,41 @@
 	</section>
 
 
-	<!-- Content page -->
-	<section class="bg0 p-t-104 p-b-116">
-		<div class="container">
-			<div class="flex-w flex-tr">
-
-				<div class="w-full-md" style="width: 30%;">
-					<div class="p-t-55 p-b-70 p-lr-30 bor10">
-						<h5 class="mtext-105 cl2 txt-left p-b-20">Tài khoản</h5>
-						<ul class="list-unstyled stext-111 cl2">
-							<li class="p-b-10"><a href="hoso.html">Thông tin cá nhân</a></li>
-							<li class="p-b-10"><a href="doimatkhau.html" class="cl1">Đổi mật khẩu</a></li>
-							<li class="p-b-10"><a href="diachi.html">Địa chỉ</a></li>
-							<li class="p-b-10"><a href="#">Lịch sử đặt hàng</a></li>
-						</ul>
+		<!-- Content page -->
+		<section class="bg0 p-t-104 p-b-116">
+			<div class="container">
+				<div class="flex-w flex-tr">
+		
+					<div class="w-full-md" style="width: 30%;">
+						<div class="p-t-55 p-b-70 p-lr-30 bor10">
+							<h5 class="mtext-105 cl2 txt-left p-b-20">Tài khoản</h5>
+							<ul class="list-unstyled stext-111 cl2">
+								<li class="p-b-10"><a href="hoso.html">Thông tin cá nhân</a></li>
+								<li class="p-b-10"><a href="doimatkhau.html" class="cl1">Đổi mật khẩu</a></li>
+								<li class="p-b-10"><a href="diachi.html">Địa chỉ</a></li>
+								<li class="p-b-10"><a href="LichSuDonHang.html">Lịch sử đặt hàng</a></li>
+							</ul>
+						</div>
 					</div>
-				</div>
-
-
-				<div class="bor10 p-lr-100 p-t-55 p-b-70 w-full-md" style="width: 70%;">
-
-					<h4 class="mtext-105 cl2 txt-center p-b-30">
-						Đổi mật khẩu
-					</h4>
-
-					<form id="doiMatKhauForm">
-
-						<div class="bor8 m-b-20">
-							<input class="stext-111 cl2 plh3 size-116 p-lr-28" type="password" id="MatKhauCu" name="MatKhauCu"
-								placeholder="Mật khẩu Cũ" required>
-						</div>
-
-						<div class="bor8 m-b-20">
-							<input class="stext-111 cl2 plh3 size-116 p-lr-28" type="password" id="MatKhauMoi"
-								name="MatKhauMoi" placeholder="Mật khẩu Mới (ít nhất 6 ký tự)" required>
-						</div>
+		
+		
+					<div class="bor10 p-lr-100 p-t-55 p-b-70 w-full-md" style="width: 70%;">
+		
+						<h4 class="mtext-105 cl2 txt-center p-b-30">
+							Đổi mật khẩu
+						</h4>
+		
+						<form id="doiMatKhauForm">
+						
+							<div class="bor8 m-b-20">
+								<input class="stext-111 cl2 plh3 size-116 p-lr-28"
+									type="password" id="MatKhauCu" name="MatKhauCu" placeholder="Mật khẩu Cũ" required>
+							</div>
+						
+							<div class="bor8 m-b-20">
+								<input class="stext-111 cl2 plh3 size-116 p-lr-28"
+									type="password" id="MatKhauMoi" name="MatKhauMoi" placeholder="Mật khẩu Mới (ít nhất 6 ký tự)" required>
+							</div>
 
 						<div class="bor8 m-b-20">
 							<input class="stext-111 cl2 plh3 size-116 p-lr-28" type="password" id="XacNhanMatKhauMoi"
@@ -583,6 +579,8 @@
 	<!--===============================================================================================-->
 	<script src="js/main.js"></script>
 	<script src="js/myaccount/doimatkhau.js"></script>
+	<script src="js/GioHang/GioHang.js"></script>
+	<script src="js/GioHang/LichSuDonHang.js"></script>
 
 </body>
 
