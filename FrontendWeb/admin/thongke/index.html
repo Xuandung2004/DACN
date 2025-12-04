@@ -52,7 +52,7 @@
                     <i class="fas fa-fw fa-box"></i>
                     <span>Sản phẩm</span></a>
             </li>
-            
+
             <li class="nav-item">
                 <a class="nav-link" href="orders.html">
                     <i class="fas fa-fw fa-shopping-cart"></i>
@@ -104,19 +104,19 @@
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">Admin Name</span>
-                                <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
+                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
                             </a>
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profile
+                                    Cá nhân
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <a onclick="dangXuat()" class="dropdown-item" href="#" data-toggle="modal"
+                                    data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
+                                    Đăng xuất
                                 </a>
                             </div>
                         </li>
@@ -140,21 +140,24 @@
                                     <div class="form-row align-items-end">
                                         <div class="form-group col-4">
                                             <label for="inputWeek">Tuần (WW)</label>
-                                            <input type="number" class="form-control" id="inputWeek" placeholder="45" value="46" min="1" max="53">
+                                            <input type="number" class="form-control" id="inputWeek" placeholder="45"
+                                                value="46" min="1" max="53">
                                         </div>
                                         <div class="form-group col-4">
                                             <label for="inputYearForWeek">Năm (YYYY)</label>
-                                            <input type="number" class="form-control" id="inputYearForWeek" placeholder="2025" value="2025" min="2000" max="2050">
+                                            <input type="number" class="form-control" id="inputYearForWeek"
+                                                placeholder="2025" value="2025" min="2000" max="2050">
                                         </div>
                                         <div class="form-group col-4">
-                                            <button id="btnFetchWeeklyDetail" class="btn btn-info btn-block">Xem chi tiết</button>
+                                            <button id="btnFetchWeeklyDetail" class="btn btn-info btn-block">Xem chi
+                                                tiết</button>
                                         </div>
                                     </div>
                                     <p id="weeklyDetailResult" class="mt-3 font-weight-bold"></p>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="col-xl-4 col-lg-6">
                             <div class="card shadow">
                                 <div class="card-header py-3">
@@ -164,10 +167,12 @@
                                     <div class="form-row align-items-end">
                                         <div class="form-group col-6">
                                             <label for="inputYearForDetail">Năm (YYYY)</label>
-                                            <input type="number" class="form-control" id="inputYearForDetail" placeholder="2025" value="2025" min="2000" max="2050">
+                                            <input type="number" class="form-control" id="inputYearForDetail"
+                                                placeholder="2025" value="2025" min="2000" max="2050">
                                         </div>
                                         <div class="form-group col-6">
-                                            <button id="btnFetchYearlyDetail" class="btn btn-success btn-block">Xem chi tiết</button>
+                                            <button id="btnFetchYearlyDetail" class="btn btn-success btn-block">Xem chi
+                                                tiết</button>
                                         </div>
                                     </div>
                                     <p id="yearlyDetailResult" class="mt-3 font-weight-bold"></p>
@@ -180,18 +185,21 @@
 
                         <div class="col-xl-8 col-lg-7">
                             <div class="card shadow mb-4">
-                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h6 class="m-0 font-weight-bold text-primary">Doanh Thu Theo Từng Tháng</h6>
                                     <div class="input-group" style="width: 180px;">
-                                        <input type="number" class="form-control form-control-sm" id="chartMonthlyYearInput" value="2025" min="2000" max="2050">
+                                        <input type="number" class="form-control form-control-sm"
+                                            id="chartMonthlyYearInput" value="2025" min="2000" max="2050">
                                         <div class="input-group-append">
-                                            <button class="btn btn-primary btn-sm" type="button" id="btnUpdateMonthlyChart">Xem</button>
+                                            <button class="btn btn-primary btn-sm" type="button"
+                                                id="btnUpdateMonthlyChart">Xem</button>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="card-body">
                                     <div class="chart-area">
-                                        <canvas id="monthlyRevenueChart"></canvas> 
+                                        <canvas id="monthlyRevenueChart"></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -208,17 +216,20 @@
                                     </div>
                                     <hr>
                                     <div class="mt-3 text-center small">
-                                        <span class="mr-2"><i class="fas fa-circle" style="color:#1cc88a"></i> 5 Sao</span>
-                                        <span class="mr-2"><i class="fas fa-circle" style="color:#36b9cc"></i> 4 Sao</span>
-                                        <span class="mr-2"><i class="fas fa-circle" style="color:#f6c23e"></i> 3 Sao</span>
-                                        </div>
+                                        <span class="mr-2"><i class="fas fa-circle" style="color:#1cc88a"></i> 5
+                                            Sao</span>
+                                        <span class="mr-2"><i class="fas fa-circle" style="color:#36b9cc"></i> 4
+                                            Sao</span>
+                                        <span class="mr-2"><i class="fas fa-circle" style="color:#f6c23e"></i> 3
+                                            Sao</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="row">
-                        
+
                         <div class="col-xl-6 col-lg-6">
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
@@ -241,9 +252,9 @@
                             </div>
                         </div>
                     </div>
-                    
-                    </div>
+
                 </div>
+            </div>
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
@@ -251,8 +262,8 @@
                     </div>
                 </div>
             </footer>
-            </div>
         </div>
+    </div>
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
@@ -270,13 +281,14 @@
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <a class="btn btn-primary" href="../user/myloginfinal1.html">Logout</a>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="productModalLabel" aria-hidden="true">
+    <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="productModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">

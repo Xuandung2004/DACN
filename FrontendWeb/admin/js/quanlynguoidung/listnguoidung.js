@@ -14,7 +14,7 @@ async function fetchJson(url, options = {}) {
         try {
             const json = JSON.parse(text);
             message = json.message || JSON.stringify(json);
-        } catch {}
+        } catch { }
         throw new Error(message);
     }
     return text ? JSON.parse(text) : {};
@@ -96,13 +96,13 @@ function initDataTable() {
 // =========================
 function openModalForCreate() {
     $("#modalTitle").text("Thêm người dùng mới");
-    $("#userForm")[0].reset();
+    $("#userFormAdd")[0].reset();
 
     $("#Id").val("");
     $("#passwordGroup").show();
     $("#tenDnGroup").show();
     $("#trangThaiGroup").hide();
-
+    $("#ViTri").closest(".form-group").show();
     $("#userModal").modal("show");
 }
 
@@ -113,7 +113,7 @@ async function editUser(id) {
     const u = await fetchJson(`${userBaseUrl}/${id}`);
 
     $("#modalTitle").text("Sửa thông tin người dùng");
-    $("#userForm")[0].reset();
+    $("#userFormEdit")[0].reset();
 
     $("#Id").val(u.id);
     $("#HoTen").val(u.hoTen);
@@ -125,7 +125,7 @@ async function editUser(id) {
     $("#passwordGroup").hide();
     $("#tenDnGroup").hide();
     $("#trangThaiGroup").show();
-
+    $("#ViTri").closest(".form-group").hide();
     $("#userModal").modal("show");
 }
 

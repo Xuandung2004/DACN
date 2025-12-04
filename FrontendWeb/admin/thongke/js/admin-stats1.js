@@ -9,7 +9,7 @@ let ratingsChartInstance = null;
 
 
 // CỔNG API: Kiểm tra lại (đang dùng HTTPS 7109 theo log lỗi cũ)
-const API_BASE_URL = 'http://localhost:5150/api/ThongKe'; 
+const API_BASE_URL = 'http://localhost:5150/api/ThongKe';
 
 /**
  * Hàm chung để lấy dữ liệu từ API
@@ -29,7 +29,7 @@ async function fetchData(endpoint, params = '') {
         return await response.json();
     } catch (error) {
         console.error(error);
-        return null; 
+        return null;
     }
 }
 
@@ -53,25 +53,25 @@ async function renderMonthlyRevenueChart() {
         monthlyRevenueChartInstance = null;
     }
 
-    const data = await fetchData('TheoThang', `?year=${selectedYear}`); 
+    const data = await fetchData('TheoThang', `?year=${selectedYear}`);
     const chartAreaContainer = document.getElementById(chartId)?.parentNode;
-    
-    if (!chartAreaContainer) return; 
+
+    if (!chartAreaContainer) return;
 
     if (!data || data.length === 0) {
         chartAreaContainer.innerHTML = `<p class="text-center">Không có dữ liệu doanh thu tháng cho năm ${selectedYear}.</p>`;
         return;
     }
-    
+
     if (!document.getElementById(chartId)) {
         chartAreaContainer.innerHTML = '<canvas id="monthlyRevenueChart"></canvas>';
     }
 
-    const labels = data.map(d => d.thoiGian); 
+    const labels = data.map(d => d.thoiGian);
     const revenues = data.map(d => d.doanhThu);
 
     const ctx = document.getElementById(chartId)?.getContext('2d');
-    if (!ctx) return; 
+    if (!ctx) return;
 
     monthlyRevenueChartInstance = new Chart(ctx, {
         type: 'bar',
@@ -117,11 +117,11 @@ async function renderInventoryChart() {
         chartContainer.innerHTML = '<p class="text-center">Không có dữ liệu tồn kho.</p>';
         return;
     }
-    
+
     if (!document.getElementById(chartId)) {
         chartContainer.innerHTML = '<canvas id="inventoryChart"></canvas>';
     }
-    
+
     const labels = data.map(d => d.tenDanhMuc);
     const inventory = data.map(d => d.tongSoLuongTonKho);
 
@@ -141,7 +141,7 @@ async function renderInventoryChart() {
             }]
         },
         options: {
-             indexAxis: 'y',
+            indexAxis: 'y',
             maintainAspectRatio: false,
             responsive: true,
             scales: {
@@ -166,7 +166,7 @@ async function renderRatingsChart() {
     }
 
     if (!data || data.tongSoDanhGia === undefined) {
-        if(legendElement) legendElement.innerHTML = '<p class="text-center">Chưa có đánh giá nào.</p>';
+        if (legendElement) legendElement.innerHTML = '<p class="text-center">Chưa có đánh giá nào.</p>';
         return;
     }
 
@@ -176,7 +176,7 @@ async function renderRatingsChart() {
 
     const labels = ['5 Sao', '4 Sao', '3 Sao', '2 Sao', '1 Sao'];
     const counts = [
-        data.soLuong5Sao || 0, data.soLuong4Sao || 0, data.soLuong3Sao || 0, 
+        data.soLuong5Sao || 0, data.soLuong4Sao || 0, data.soLuong3Sao || 0,
         data.soLuong2Sao || 0, data.soLuong1Sao || 0
     ];
 
@@ -201,7 +201,7 @@ async function renderRatingsChart() {
                 legend: { position: 'bottom' },
                 tooltip: {
                     callbacks: {
-                        label: function(context) {
+                        label: function (context) {
                             let label = context.label || '';
                             const total = data.tongSoDanhGia;
                             const currentValue = context.raw;
@@ -217,11 +217,11 @@ async function renderRatingsChart() {
 
 // --- 4. Trạng thái Đơn hàng (Card) ---
 async function renderOrderStatus() {
-    const data = await fetchData('TrangThaiDonHang'); 
+    const data = await fetchData('TrangThaiDonHang');
     const container = document.getElementById('orderStatusCards');
     if (!container) return;
 
-    container.innerHTML = ''; 
+    container.innerHTML = '';
 
     if (!data) {
         container.innerHTML = '<p class="text-danger w-100">Không thể tải trạng thái đơn hàng.</p>';
@@ -265,13 +265,13 @@ async function renderOrderStatus() {
 // ====================================================
 
 function setupEventListeners() {
-    
+
     // 1. Tổng Quan (Khoảng ngày)
     document.getElementById('btnFetchTongQuan')?.addEventListener('click', async () => {
         const startDate = document.getElementById('inputStartDate')?.value;
         const endDate = document.getElementById('inputEndDate')?.value;
         const resultElement = document.getElementById('tongQuanResult');
-        if(!resultElement) return;
+        if (!resultElement) return;
         resultElement.innerHTML = 'Đang tải...';
 
         if (!startDate || !endDate) {
@@ -280,7 +280,7 @@ function setupEventListeners() {
         }
 
         const data = await fetchData('TongQuan', `?startDate=${startDate}&endDate=${endDate}`);
-        
+
         if (data && data.tongDoanhThu !== undefined) {
             const formattedRevenue = formatCurrency(data.tongDoanhThu);
             resultElement.innerHTML = `
@@ -292,13 +292,13 @@ function setupEventListeners() {
             resultElement.innerHTML = '<span class="text-danger">Không tìm thấy dữ liệu Tổng Quan hoặc lỗi API.</span>';
         }
     });
-    
+
     // 2. Chi Tiết Tuần (Endpoint: /ChiTietTuan)
     document.getElementById('btnFetchWeeklyDetail')?.addEventListener('click', async () => {
         const week = document.getElementById('inputWeek')?.value;
         const year = document.getElementById('inputYearForWeek')?.value;
         const resultElement = document.getElementById('weeklyDetailResult');
-        if(!resultElement) return;
+        if (!resultElement) return;
         resultElement.innerHTML = 'Đang tải...';
 
         if (!week || !year || week < 1 || week > 53 || year < 2000) {
@@ -308,7 +308,7 @@ function setupEventListeners() {
 
         const tuanNam = `${week}/${year}`;
         const data = await fetchData('ChiTietTuan', `?tuanNam=${tuanNam}`);
-        
+
         if (data && data.tongDoanhThu !== undefined) {
             const formattedRevenue = formatCurrency(data.tongDoanhThu);
             resultElement.innerHTML = `
@@ -326,7 +326,7 @@ function setupEventListeners() {
         const month = document.getElementById('inputMonth')?.value;
         const year = document.getElementById('inputYearForMonth')?.value;
         const resultElement = document.getElementById('monthlyDetailResult');
-        if(!resultElement) return;
+        if (!resultElement) return;
         resultElement.innerHTML = 'Đang tải...';
 
         if (!month || !year || month < 1 || month > 12 || year < 2000) {
@@ -336,7 +336,7 @@ function setupEventListeners() {
 
         const thangNam = `${month}/${year}`;
         const data = await fetchData('ChiTietThang', `?thangNam=${thangNam}`);
-        
+
         if (data && data.tongDoanhThu !== undefined) {
             const formattedRevenue = formatCurrency(data.tongDoanhThu);
             resultElement.innerHTML = `
@@ -348,12 +348,12 @@ function setupEventListeners() {
             resultElement.innerHTML = `<span class="text-danger">Không tìm thấy dữ liệu chi tiết tháng ${thangNam} hoặc lỗi API.</span>`;
         }
     });
-    
+
     // 4. Chi Tiết Năm (Endpoint: /TheoNamChiTiet)
     document.getElementById('btnFetchYearlyDetail')?.addEventListener('click', async () => {
         const year = document.getElementById('inputYearForDetail')?.value;
         const resultElement = document.getElementById('yearlyDetailResult');
-        if(!resultElement) return;
+        if (!resultElement) return;
         resultElement.innerHTML = 'Đang tải...';
 
         if (!year || year < 2000) {
@@ -362,7 +362,7 @@ function setupEventListeners() {
         }
 
         const data = await fetchData('TheoNamChiTiet', `?year=${year}`);
-        
+
         if (data && data.tongDoanhThu !== undefined) {
             const formattedRevenue = formatCurrency(data.tongDoanhThu);
             resultElement.innerHTML = `
@@ -377,17 +377,17 @@ function setupEventListeners() {
 
     // 5. Cập nhật biểu đồ doanh thu tháng
     document.getElementById('btnUpdateMonthlyChart')?.addEventListener('click', () => {
-        renderMonthlyRevenueChart(); 
+        renderMonthlyRevenueChart();
     });
 }
 
 // Khởi chạy tất cả
 document.addEventListener('DOMContentLoaded', () => {
     // Gọi hàm render ngay để tải dữ liệu khi trang load
-    renderMonthlyRevenueChart(); 
+    renderMonthlyRevenueChart();
     renderInventoryChart();
     renderRatingsChart();
-    renderOrderStatus(); 
-    
-    setupEventListeners(); 
+    renderOrderStatus();
+
+    setupEventListeners();
 });
