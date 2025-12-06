@@ -81,10 +81,11 @@ namespace DACN_Web_API.Controllers
                 // **********************************************
                 // 3. XỬ LÝ KẾT QUẢ: Thành công chỉ khi Hash đúng VÀ vnp_ResponseCode = "00"
                 // **********************************************
+                var donHang = _context.Donhangs.FirstOrDefault(d => d.Id == donHangId);
                 if (response != null && response.Success && vnpResponseCode == "00")
                 {
                     // Chú ý: Cần kiểm tra DonHang đã được thanh toán chưa để tránh trùng lặp
-                    var donHang = _context.Donhangs.FirstOrDefault(d => d.Id == donHangId);
+                   
 
                     // Nếu đơn hàng tồn tại VÀ chưa được thanh toán
                     if (donHang != null /* && donHang.TrangThaiThanhToan != "Thành công" */)
@@ -138,7 +139,8 @@ namespace DACN_Web_API.Controllers
                         // Tra cứu mã lỗi chi tiết từ vnpResponseCode nếu cần, hoặc dùng mô tả chung
                         message = GetVnPayErrorMessage(vnpResponseCode) ?? $"Thanh toán thất bại (Mã: {vnpResponseCode}).";
                     }
-
+                    _context.Donhangs.Remove(donHang);
+                    _context.SaveChanges();
                     // Chuyển hướng đến trang thất bại
                     var failUrl = $"http://127.0.0.1:5500/FrontendWeb/user/checkout-success.html?orderId={donHangId}&status=fail&message={Uri.EscapeDataString(message)}&responseCode={Uri.EscapeDataString(vnpResponseCode ?? string.Empty)}";
                     return Redirect(failUrl);
