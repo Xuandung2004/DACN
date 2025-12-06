@@ -65,16 +65,24 @@ namespace DACN_Web_API.Controllers
 
                 db.SaveChanges();
 
-                // 6. Xóa giỏ hàng sau khi đặt
-                db.Giohangs.RemoveRange(gioHang);
-                db.SaveChanges();
+                // 6. Chỉ xóa giỏ hàng nếu COD (thanh toán ngay)
+                // Với VNPay, giỏ hàng sẽ được xóa sau khi thanh toán thành công
+                var isPhuongThucCOD = string.IsNullOrWhiteSpace(req.PhuongThucThanhToan) ||
+                                      req.PhuongThucThanhToan.Equals("COD", StringComparison.OrdinalIgnoreCase);
+
+                if (isPhuongThucCOD)
+                {
+                    db.Giohangs.RemoveRange(gioHang);
+                    db.SaveChanges();
+                }
 
                 // 7. Trả về phản hồi thành công
                 return Ok(new
                 {
                     message = "Đặt hàng thành công!",
                     donHangId = donHang.Id,
-                    tongTien = tongTien
+                    tongTien = tongTien,
+                    phuongThuc = req.PhuongThucThanhToan
                 });
             }
             catch (Exception ex)

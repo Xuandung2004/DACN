@@ -104,6 +104,13 @@ namespace DACN_Web_API.Controllers
                         _context.SaveChanges();
 
                         // Cập nhật trạng thái Đơn hàng (nếu cần)
+                        // Xóa giỏ hàng của khách sau khi thanh toán VNPay thành công
+                        var cartItems = _context.Giohangs.Where(g => g.NguoiDungId == donHang.NguoiDungId).ToList();
+                        if (cartItems.Any())
+                        {
+                            _context.Giohangs.RemoveRange(cartItems);
+                            _context.SaveChanges();
+                        }
                         // donHang.TrangThaiThanhToan = "Đã thanh toán";
                         // _context.SaveChanges();
                     }
