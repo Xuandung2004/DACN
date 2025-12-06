@@ -43,28 +43,9 @@ namespace DACN_Web_API.Controllers
                     TongTien = (int)tongTien
                 };
 
+                // thêm đơn hàng
                 db.Donhangs.Add(donHang);
-                db.SaveChanges(); // để lấy ID đơn hàng
-
-                // 5. Thêm chi tiết đơn hàng
-                foreach (var item in gioHang)
-                {
-                    var sp = db.Sanphams.Find(item.SanPhamId);
-
-                    var chiTiet = new DonhangChitiet
-                    {
-                        DonHangId = donHang.Id,
-                        SanPhamId = item.SanPhamId,
-                        KichThuocId = item.KichThuocId,
-                        SoLuong = item.SoLuong,
-                        Gia = (decimal)sp.Gia
-                    };
-
-                    db.DonhangChitiets.Add(chiTiet);
-                }
-
                 db.SaveChanges();
-
                 // 6. Chỉ xóa giỏ hàng nếu COD (thanh toán ngay)
                 // Với VNPay, giỏ hàng sẽ được xóa sau khi thanh toán thành công
                 var isPhuongThucCOD = string.IsNullOrWhiteSpace(req.PhuongThucThanhToan) ||
@@ -72,18 +53,47 @@ namespace DACN_Web_API.Controllers
 
                 if (isPhuongThucCOD)
                 {
+                    // 5. Thêm chi tiết đơn hàng
+                    foreach (var item in gioHang)
+                    {
+                        var sp = db.Sanphams.Find(item.SanPhamId);
+
+                        var chiTiet = new DonhangChitiet
+                        {
+                            DonHangId = donHang.Id,
+                            SanPhamId = item.SanPhamId,
+                            KichThuocId = item.KichThuocId,
+                            SoLuong = item.SoLuong,
+                            Gia = (decimal)sp.Gia
+                        };
+
+                        db.DonhangChitiets.Add(chiTiet);
+                    }
+                    //xóa giỏ hàng
                     db.Giohangs.RemoveRange(gioHang);
                     db.SaveChanges();
+
+                    return Ok(new
+                    {
+                        message = "Đặt hàng thành công!",
+                        donHangId = donHang.Id,
+                        tongTien = tongTien,
+                        phuongThuc = req.PhuongThucThanhToan
+                    });
+                }
+                else
+                {
+                    var idDon = donHang.Id;
+                    
+                    return Ok(new
+                    {
+                        message = "Đang tạo đơn thanh toán online!",
+                        donHangId = idDon,
+                        tongTien = tongTien,
+                        phuongThuc = req.PhuongThucThanhToan
+                    });
                 }
 
-                // 7. Trả về phản hồi thành công
-                return Ok(new
-                {
-                    message = "Đặt hàng thành công!",
-                    donHangId = donHang.Id,
-                    tongTien = tongTien,
-                    phuongThuc = req.PhuongThucThanhToan
-                });
             }
             catch (Exception ex)
             {
