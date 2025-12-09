@@ -2,7 +2,7 @@
 {
     public class DatLichDto
     {
-        public int NguoiDungId { get; set; }
+        //public int NguoiDungId { get; set; }
         public DateTime Ngay { get; set; }
     }
 }

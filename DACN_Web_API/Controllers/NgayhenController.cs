@@ -31,8 +31,9 @@ namespace DACN_Web_API.Controllers
         [HttpPost("datlich")]
         public IActionResult DatLich([FromBody] DatLichDto request)
         {
+            // 1. Kiểm tra dữ liệu đầu vào và User
             if (request == null || request.Ngay == default)
-                return BadRequest(new { message = "Dữ liệu lịch không hợp lệ" });
+                return BadRequest(new { message = "Dữ liệu lịch không hợp lệ. Vui lòng chọn ngày và giờ." });
 
             var userId = TryGetCurrentUserId();
             if (userId == null)
@@ -42,28 +43,62 @@ namespace DACN_Web_API.Controllers
             if (user == null)
                 return NotFound(new { message = "Người dùng không tồn tại" });
 
-            // Prevent duplicate appointment on same date for the same user
-            var sameDate = _context.Ngayhens.Any(x => x.NguoiDungId == userId.Value && x.Ngay.HasValue && x.Ngay.Value.Date == request.Ngay.Date);
-            if (sameDate)
-                return Conflict(new { message = "Bạn đã có lịch hẹn vào ngày này" });
+            // Kiểm tra trùng lịch
+            var sameDate = _context.Ngayhens.Any(x =>
+                x.NguoiDungId == userId.Value &&
+                x.Ngay.HasValue &&
+                x.Ngay.Value.Date == request.Ngay.Date
+            );
 
+            if (sameDate)
+                return Conflict(new { message = "Bạn đã có lịch hẹn vào ngày này. Vui lòng chọn ngày khác." });
+
+            // KHAI BÁO BIẾN LICH BÊN NGOÀI KHỐI TRY ĐỂ TRÁNH LỖI "DOES NOT EXIST"
             var lich = new Ngayhen
             {
                 NguoiDungId = userId.Value,
                 Ngay = request.Ngay
             };
 
-            _context.Ngayhens.Add(lich);
-            _context.SaveChanges();
+            // 2. Lưu vào Database VÀ XỬ LÝ LỖI
+            try
+            {
+                _context.Ngayhens.Add(lich);
+                _context.SaveChanges();
 
-            return CreatedAtAction(nameof(LayLichTheoId), new { id = lich.Id }, lich);
+                // Lỗi Tham chiếu Vòng lặp (Circular Reference) xảy ra ở đây.
+                // Giải pháp 1: Cấu hình global trong Program.cs/Startup.cs
+                // Giải pháp 2: Trả về đối tượng ẩn danh (Anonymous object) đã được tinh gọn
+                return CreatedAtAction(nameof(LayLichTheoId), new { id = lich.Id }, new
+                {
+                    message = "Đặt lịch thành công!",
+                    // Chỉ trả về các trường cơ bản để tránh vòng lặp JSON
+                    lich = new
+                    {
+                        lich.Id,
+                        lich.Ngay,
+                        lich.NguoiDungId
+                    }
+                });
+            }
+            catch (Microsoft.EntityFrameworkCore.DbUpdateException dbEx)
+            {
+                // ... (Giữ nguyên logic bắt lỗi DB)
+                Console.WriteLine($"\n***** LỖI DB CHI TIẾT (NGUYÊN NHÂN CUỐI CÙNG) *****\n{dbEx.InnerException?.Message}\n*************************\n");
+                return StatusCode(500, new { error = true, message = "Lỗi Database: Thiếu trường bắt buộc hoặc lỗi kết nối. Vui lòng kiểm tra log backend." });
+            }
+            catch (Exception ex)
+            {
+                // ... (Giữ nguyên logic bắt lỗi chung)
+                Console.WriteLine($"\n***** LỖI SERVER KHÔNG XÁC ĐỊNH *****\n{ex.Message}\n********************************\n");
+                return StatusCode(500, new { error = true, message = "Lỗi máy chủ không xác định. Vui lòng kiểm tra log backend." });
+            }
         }
 
         // Alternate create endpoint (thêm lịch) - alias for datlich
         [HttpPost("them")]
         public IActionResult ThemLich([FromBody] DatLichDto request) => DatLich(request);
 
-        // GET: api/Ngayhen/cua-toi  (lấy tất cả lịch của user hiện tại)
         [HttpGet("cua-toi")]
         public IActionResult LayLichCuaToi()
         {
@@ -71,12 +106,47 @@ namespace DACN_Web_API.Controllers
             if (userId == null)
                 return Unauthorized(new { message = "Vui lòng đăng nhập" });
 
-            var lichs = _context.Ngayhens
+            // 1. Lấy tất cả lịch hẹn của người dùng (bao gồm cả lịch đã qua)
+            var tatCaLich = _context.Ngayhens
                 .Where(x => x.NguoiDungId == userId.Value)
-                .OrderBy(x => x.Ngay)
-                .ToList();
+                .ToList(); // Tải dữ liệu vào bộ nhớ để xử lý
 
-            return Ok(lichs);
+            // Lấy thời điểm hiện tại
+            var now = DateTime.Now;
+
+            // 2. Xác định các lịch đã quá hạn
+            // Lịch quá hạn là lịch đã qua ngày hiện tại, kể cả giờ
+            var lichDaQua = tatCaLich.Where(x => x.Ngay.HasValue && x.Ngay.Value < now).ToList();
+
+            // 3. Xóa các lịch hẹn quá hạn
+            if (lichDaQua.Any())
+            {
+                _context.Ngayhens.RemoveRange(lichDaQua);
+
+                try
+                {
+                    _context.SaveChanges();
+                    // Optional: Log ra console để biết đã xóa bao nhiêu lịch
+                    Console.WriteLine($"Đã tự động xóa {lichDaQua.Count} lịch hẹn cũ cho User ID: {userId.Value}");
+                }
+                catch (Exception ex)
+                {
+                    // Xử lý nếu việc xóa thất bại (ví dụ: do ràng buộc khóa ngoại)
+                    Console.WriteLine($"LỖI khi tự động xóa lịch cũ: {ex.Message}");
+                    // Ta vẫn tiếp tục trả về danh sách lịch hợp lệ
+                }
+            }
+
+            // 4. Trả về danh sách lịch còn hiệu lực (những lịch không nằm trong danh sách đã xóa)
+            var lichConHieuLuc = tatCaLich.Except(lichDaQua).ToList();
+
+            if (lichConHieuLuc.Any())
+            {
+                // Trả về danh sách lịch còn lại
+                return Ok(lichConHieuLuc);
+            }
+
+            return NotFound(new { message = "Bạn chưa có lịch hẹn nào còn hiệu lực." });
         }
 
         // GET: api/Ngayhen/{id}  (lấy 1 lịch theo id)
@@ -115,9 +185,18 @@ namespace DACN_Web_API.Controllers
                 return Conflict(new { message = "Đã tồn tại lịch hẹn vào ngày này" });
 
             lich.Ngay = request.Ngay;
-            _context.SaveChanges();
 
-            return Ok(new { message = "Cập nhật thành công", lich });
+            try
+            {
+                _context.SaveChanges();
+                return Ok(new { message = "Cập nhật thành công", lich });
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi cập nhật
+                Console.WriteLine($"\n***** LỖI CẬP NHẬT DB *****\n{ex.Message}\n*************************\n");
+                return StatusCode(500, new { error = true, message = "Lỗi Database khi cập nhật." });
+            }
         }
 
         // DELETE: api/Ngayhen/huy/{id}  (hủy 1 lịch theo id thuộc user hiện tại)
