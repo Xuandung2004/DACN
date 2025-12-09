@@ -240,7 +240,7 @@ $(document).ready(function () {
         const userId = nguoiDungId; // hoặc localStorage.getItem("userId")
         const productId = $('.js-modal1').data('product-id') || $('.sec-product-detail').data('product-id');
         const kichThuocId = $('.js-modal1 select[name="time"]').val() || $('.sec-product-detail select[name="time"]').val(); // dropdown size
-        const soLuong = parseInt( $('.js-modal1 input[name="num-product"]').val() ||$('.sec-product-detail input[name="num-product"]').val() || 1);
+        const soLuong = parseInt($('.js-modal1 input[name="num-product"]').val() || $('.sec-product-detail input[name="num-product"]').val() || 1);
         console.log(productId, kichThuocId, soLuong);
 
         if (!userId) {
@@ -283,7 +283,7 @@ $(document).ready(function () {
 
         //Tính tông tiền
         $.get("http://localhost:5150/api/giohang/chitiet/" + nguoiDungId, function (res) {
-            if(!res.items || res.items.length === 0){
+            if (!res.items || res.items.length === 0) {
                 alert("Vui lòng thêm sản phẩm vào giỏ hàng!!");
                 return;
             }
@@ -359,6 +359,7 @@ $(document).ready(function () {
             alert("Vui lòng nhập đầy đủ thông tin!");
             return;
         }
+
         var diaChiNhanId = $("#diaChiDaLuu").val();
         if (!diaChiNhanId) {
             alert("Vui lòng chọn địa chỉ nhận hàng!");
@@ -378,11 +379,21 @@ $(document).ready(function () {
             contentType: "application/json",
             data: JSON.stringify(data),
             success: function (res) {
-                // Nếu khách chọn Banking (VNPay) — tạo URL thanh toán và redirect
-                const phuongThuc = data.phuongThucThanhToan || "COD";
-                console.log("✅ Đặt hàng thành công, phương thức:", phuongThuc, "Mã đơn:", res.donHangId);
+                // COD — hoàn tất đặt hàng và hiển thị thông báo
+                console.log("✅ COD payment, order completed");
 
-                if (phuongThuc && phuongThuc.toUpperCase() === 'BANKING') {
+                document.getElementById("orderModal").style.display = "none";
+                loadCart();
+
+                if ($("#phuongThuc").val().trim() === "COD") {
+                    alert("Đặt hàng thành công! Mã đơn: " + res.donHangId);
+                    return;
+                } else {
+                    // Nếu khách chọn Banking(VNPay) — tạo URL thanh toán và redirect
+                    const phuongThuc = data.phuongThucThanhToan;
+                    console.log("✅ Đặt hàng thành công, phương thức:", phuongThuc, "Mã đơn:", res.donHangId);
+
+
                     // chuẩn bị payload cho tạo URL VNPay; dùng donHangId làm txn ref
                     const paymentData = {
                         orderType: String(res.donHangId),
@@ -392,6 +403,7 @@ $(document).ready(function () {
                     };
 
                     console.log("💳 Gửi request VNPay payment:", paymentData);
+
 
                     $.ajax({
                         url: "http://localhost:5150/api/ThanhToan/create-payment-url",
@@ -418,18 +430,17 @@ $(document).ready(function () {
                             loadCart();
                         }
                     });
-                } else {
-                    // COD — hoàn tất đặt hàng và hiển thị thông báo
-                    console.log("✅ COD payment, order completed");
-                    alert("Đặt hàng thành công! Mã đơn: " + res.donHangId);
-                    document.getElementById("orderModal").style.display = "none";
-                    loadCart();
-                }
+
+                };
+
             },
             error: function (err) {
                 alert("Lỗi đặt hàng!");
                 console.log(err);
             }
         });
+
+
+
     });
 });
