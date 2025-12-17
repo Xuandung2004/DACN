@@ -175,6 +175,7 @@
                     </div>
                 </div>
 
+            <!-- =========================
                 <!-- =========================
             🧩 MODAL THÊM NGƯỜI DÙNG (BS4)
             ========================= -->
@@ -263,6 +264,8 @@
                                 </button>
                             </div>
 
+                            <form id="userFormAdd">
+                                <input type="hidden" id="Id">
                             <div class="modal-body">
 
                                 <form id="userFormEdit">
@@ -313,6 +316,71 @@
                         </div>
                     </div>
                 </div>
+
+            <!-- =========================
+            🧩 MODAL SỬA NGƯỜI DÙNG (BS4)
+            ========================= -->
+            <div class="modal fade" id="userModal" tabindex="-1" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalTitle">Sửa người dùng mới</h5>
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span>&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body">
+
+                            <form id="userFormEdit">
+                                <input type="hidden" id="Id">
+
+                                <div class="form-group">
+                                    <label>Họ tên (*)</label>
+                                    <input type="text" id="HoTen" class="form-control">
+                                </div>
+
+                                <div class="form-group" id="tenDnGroup">
+                                    <label>Tên đăng nhập (*)</label>
+                                    <input type="text" id="TenDn" class="form-control">
+                                </div>
+
+                                <div class="form-group" id="passwordGroup">
+                                    <label>Mật khẩu (*)</label>
+                                    <input type="password" id="MatKhau" class="form-control">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input type="email" id="Email" class="form-control">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>SĐT</label>
+                                    <input type="tel" id="Sdt" class="form-control">
+                                </div>
+
+                                <div class="form-group" id="trangThaiGroup" style="display:none;">
+                                    <label>Trạng thái</label>
+                                    <select id="TrangThai" class="form-control">
+                                        <option value="đang hoạt động">Đang hoạt động</option>
+                                        <option value="ngừng hoạt động">Ngừng hoạt động</option>
+                                    </select>
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                            <button class="btn btn-primary" id="saveBtn">Lưu</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
 
 
                 <!-- =========================

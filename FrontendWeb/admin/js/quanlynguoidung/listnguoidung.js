@@ -103,6 +103,7 @@ function openModalForCreate() {
     $("#tenDnGroup").show();
     $("#trangThaiGroup").hide();
     $("#ViTri").closest(".form-group").show();
+
     $("#userModal").modal("show");
 }
 
@@ -126,6 +127,7 @@ async function editUser(id) {
     $("#tenDnGroup").hide();
     $("#trangThaiGroup").show();
     $("#ViTri").closest(".form-group").hide();
+
     $("#userModal").modal("show");
 }
 
