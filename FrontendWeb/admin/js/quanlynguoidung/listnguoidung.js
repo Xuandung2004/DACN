@@ -14,7 +14,7 @@ async function fetchJson(url, options = {}) {
         try {
             const json = JSON.parse(text);
             message = json.message || JSON.stringify(json);
-        } catch {}
+        } catch { }
         throw new Error(message);
     }
     return text ? JSON.parse(text) : {};

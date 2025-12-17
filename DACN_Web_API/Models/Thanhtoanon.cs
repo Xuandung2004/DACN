@@ -22,4 +22,6 @@ public partial class Thanhtoanon
     public string? NoiDung { get; set; }
 
     public virtual Donhang? DonHang { get; set; }
+    //"PaymentBackReturnUrl": "http://localhost:5172/Checkout/PaymentCallbackVnpay"
+
 }

@@ -90,17 +90,25 @@ namespace DACN_Web_API.Controllers
                 return Forbid("Tài khoản đã bị khóa");
 
             // chuẩn hóa role (viTri) để tránh trường hợp viết khác
-            var role = (user.ViTri ?? "").Trim().ToLower(); // ví dụ "admin" hoặc "khachhang"
+            var role = (user.ViTri ?? "").Trim().ToLower(); // ví dụ "admin", "khachhang", "nhanvien"
 
-            // chọn redirectUrl tùy role (frontend có thể dùng role thay vì url nếu muốn)
+            // chọn redirectUrl tùy role
             string redirectUrl;
-            if (role == "admin" || role == "administrator" || role == "quantri")
+            var isAdmin = role.Contains("admin") || role.Contains("administrator") || role.Contains("quantri");
+            var isEmployee = role.Contains("nhan") || role.Contains("nhân") || role.Contains("nv") || role.Contains("nhan_vien") || role.Contains("nhân_viên") || role.Contains("nhanvien");
+
+            if (isAdmin)
             {
-                redirectUrl = "/FrontendWeb/admin/index.html"; // hoặc url admin SPA
+                redirectUrl = "/FrontendWeb/admin/index.html"; // admin dashboard
+            }
+            else if (isEmployee)
+            {
+                // nhân viên -> employee dashboard (no user management)
+                redirectUrl = "/FrontendWeb/admin/indexnv.html";
             }
             else
             {
-                redirectUrl = "/FrontendWeb/user/index.html"; // hoặc trang khách hàng
+                redirectUrl = "/FrontendWeb/user/index.html"; // khách hàng
             }
 
 

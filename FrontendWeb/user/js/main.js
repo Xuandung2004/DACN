@@ -269,49 +269,99 @@
 
     /*==================================================================
     [ Show modal1 ]*/
-    $(document).on('click', '.js-show-modal1', function (e) {
+    document.addEventListener('click', function (e) {
+        const target = e.target.closest('.js-show-modal1');
+        if (!target) return;
+
         e.preventDefault();
 
-        // Lấy id sản phẩm từ data-id
-        let productId = $(this).data('id');
+        const productId = target.dataset.id;
+        console.log('Đã lưu productId vào modal:', productId);
 
-        // Gọi API lấy chi tiết sản phẩm
-        $.ajax({
-            url: `http://localhost:5150/api/DanhSachSanPham/${productId}`,
-            method: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                // Cập nhật thông tin vào modal
-                $('.js-modal1 .js-name-detail').text(data.tenSp);
-                $('.js-modal1 .mtext-106').text(data.gia.toLocaleString() + ' ₫');
-                $('.js-modal1 .stext-102').text(data.danhMuc);
+        const $modal = $('.js-modal1'); // jQuery object
+        $modal.data('product-id', productId);
 
-                // Cập nhật ảnh (nếu có nhiều ảnh)
-                // $('.js-modal1 .slick3 .item-slick3 img').attr('src', data.anh[0]);
-                // hoặc lặp qua data.anh nếu muốn tạo slider
+        // Lấy dữ liệu sản phẩm
+        fetch(`http://localhost:5150/api/DanhSachSanPham/${productId}`)
+            .then(res => {
+                if (!res.ok) throw new Error('Network response was not ok');
+                return res.json();
+            })
+            .then(data => {
+                // ---- Cập nhật thông tin text ----
+                $modal.find('.js-name-detail').text(data.tenSp);
+                $modal.find('.mtext-106').text(data.gia.toLocaleString() + ' ₫');
+                $modal.find('.stext-102').text(data.danhMuc);
 
-                // ----- Thêm size vào dropdown -----
-                const $select = $('.js-modal1 select[name="time"]');
-                $select.find('option:not(:first)').remove(); // xóa các option cũ (trừ dòng đầu tiên)
+                // ---- Cập nhật ảnh slider ----
+                const $gallery = $modal.find('.slick3.gallery-lb');
 
-                data.kichThuoc.forEach(size => {
-                    $select.append(`<option value="${size}">Size ${size}</option>`);
-                });
-
-                // Làm mới Select2 nếu đang dùng
-                if ($select.hasClass('js-select2')) {
-                    $select.trigger('change.select2');
+                // Nếu slider đã init → unslick
+                if ($gallery.hasClass('slick-initialized')) {
+                    $gallery.slick('unslick');
                 }
 
+                $gallery.empty(); // xóa ảnh cũ
+
+                // Thêm ảnh mới
+                data.anh.forEach(imgSrc => {
+                    const slide = `
+                    <div class="item-slick3" data-thumb="/FrontendWeb/${imgSrc}">
+                        <div class="wrap-pic-w pos-relative">
+                            <img src="/FrontendWeb/${imgSrc}" alt="IMG-PRODUCT">
+                            <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
+                               href="/FrontendWeb/${imgSrc}">
+                                <i class="fa fa-expand"></i>
+                            </a>
+                        </div>
+                    </div>
+                `;
+                    $gallery.append(slide);
+                });
+
+                // Khởi tạo lại Slick slider modal
+                $gallery.slick({
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    fade: true,
+                    infinite: true,
+                    autoplay: false,
+                    autoplaySpeed: 6000,
+
+                    arrows: true,
+                    appendArrows: $(this).find('.wrap-slick3-arrows'),
+                    prevArrow: '<button class="arrow-slick3 prev-slick3"><i class="fa fa-angle-left" aria-hidden="true"></i></button>',
+                    nextArrow: '<button class="arrow-slick3 next-slick3"><i class="fa fa-angle-right" aria-hidden="true"></i></button>',
+
+                    dots: true,
+                    appendDots: $(this).find('.wrap-slick3-dots'),
+                    dotsClass: 'slick3-dots',
+                    customPaging: function (slick, index) {
+                        var portrait = $(slick.$slides[index]).data('thumb');
+                        return '<img src=" ' + portrait + ' "/><div class="slick3-dot-overlay"></div>';
+                    },
+                });
+
+                // ---- Cập nhật dropdown size ----
+                const $sizeSelect = $modal.find('select[name="time"]').first();
+                $sizeSelect.find('option:not(:first)').remove();
+                data.kichThuoc.forEach(kt => {
+                    $sizeSelect.append(`<option value="${kt.id}">Cỡ ${kt.size}</option>`);
+                });
+                if ($sizeSelect.hasClass('js-select2')) $sizeSelect.trigger('change.select2');
+
+
+
                 // Hiển thị modal
-                $('.js-modal1').addClass('show-modal1');
-            },
-            error: function (xhr) {
-                console.error(xhr);
+                $modal.addClass('show-modal1');
+            })
+            .catch(err => {
+                console.error(err);
                 alert('Không thể tải dữ liệu sản phẩm!');
-            }
-        });
+            });
     });
+
+
 
 
 
@@ -322,3 +372,9 @@
 
 
 })(jQuery);
+
+// Đăng xuất
+function dangXuat() {
+    localStorage.removeItem("currentUser");
+    window.location.href = "/FrontendWeb/user/myloginfinal1.html";
+}
