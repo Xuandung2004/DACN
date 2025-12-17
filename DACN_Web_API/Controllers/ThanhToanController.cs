@@ -85,7 +85,7 @@ namespace DACN_Web_API.Controllers
                 if (response != null && response.Success && vnpResponseCode == "00")
                 {
                     // Chú ý: Cần kiểm tra DonHang đã được thanh toán chưa để tránh trùng lặp
-                   
+
 
                     // Nếu đơn hàng tồn tại VÀ chưa được thanh toán
                     if (donHang != null /* && donHang.TrangThaiThanhToan != "Thành công" */)
@@ -109,6 +109,22 @@ namespace DACN_Web_API.Controllers
                         var cartItems = _context.Giohangs.Where(g => g.NguoiDungId == donHang.NguoiDungId).ToList();
                         if (cartItems.Any())
                         {
+                            // 5. Thêm chi tiết đơn hàng
+                            foreach (var item in cartItems)
+                            {
+                                var sp = _context.Sanphams.Find(item.SanPhamId);
+
+                                var chiTiet = new DonhangChitiet
+                                {
+                                    DonHangId = donHang.Id,
+                                    SanPhamId = item.SanPhamId,
+                                    KichThuocId = item.KichThuocId,
+                                    SoLuong = item.SoLuong,
+                                    Gia = (decimal)sp.Gia
+                                };
+
+                                _context.DonhangChitiets.Add(chiTiet);
+                            }
                             _context.Giohangs.RemoveRange(cartItems);
                             _context.SaveChanges();
                         }
