@@ -125,6 +125,22 @@ namespace DACN_Web_API.Controllers
                         }
                         if (cartItems.Any())
                         {
+                            // 5. Thêm chi tiết đơn hàng
+                            foreach (var item in cartItems)
+                            {
+                                var sp = _context.Sanphams.Find(item.SanPhamId);
+
+                                var chiTiet = new DonhangChitiet
+                                {
+                                    DonHangId = donHang.Id,
+                                    SanPhamId = item.SanPhamId,
+                                    KichThuocId = item.KichThuocId,
+                                    SoLuong = item.SoLuong,
+                                    Gia = (decimal)sp.Gia
+                                };
+
+                                _context.DonhangChitiets.Add(chiTiet);
+                            }
                             _context.Giohangs.RemoveRange(cartItems);
                             _context.SaveChanges();
                         }

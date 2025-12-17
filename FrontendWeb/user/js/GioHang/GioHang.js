@@ -87,7 +87,7 @@ $(document).ready(function () {
                             </td>
                         </tr>
                     `);
-                    $(".mtext-110.cl2").text("0 ₫");
+                    $(".subtotal-value").text("0 ₫");
                     return;
                 }
                 $(".icon-header-noti.js-show-cart").attr("data-notify", res.items.length);
