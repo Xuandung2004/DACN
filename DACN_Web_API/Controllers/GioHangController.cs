@@ -19,8 +19,6 @@ namespace DACN_Web_API.Controllers
             var items = (from g in db.Giohangs
                          join s in db.Sanphams on g.SanPhamId equals s.Id
                          join k in db.Kichthuocs on g.KichThuocId equals k.Id
-                         join a in db.Anhs on s.Id equals a.SanPhamId into anhGroup
-                         from a in anhGroup.DefaultIfEmpty()
                          where g.NguoiDungId == nguoiDungId
                          select new
                          {
@@ -31,7 +29,10 @@ namespace DACN_Web_API.Controllers
                              SoLuong = g.SoLuong,
                              ThanhTien = g.SoLuong * s.Gia,
                              KichThuoc = k.SoLieu,
-                             Anh = a != null ? a.Url : null
+                             Anh = db.Anhs
+                                 .Where(a => a.SanPhamId == s.Id)
+                                 .Select(a => a.Url)
+                                 .FirstOrDefault()
                          }).ToList();
 
             if (!items.Any())
@@ -67,7 +68,7 @@ namespace DACN_Web_API.Controllers
         public IActionResult DelCartItem(int nguoiDungId, int sanPhamId, int kichThuocId)
         {
             var delItem = db.Giohangs.FirstOrDefault(g => g.NguoiDungId == nguoiDungId && g.SanPhamId == sanPhamId && g.KichThuocId == kichThuocId);
-            if(delItem == null)
+            if (delItem == null)
             {
                 return NotFound(new { message = "Không tìm thấy sản phẩm!" });
             }
@@ -88,8 +89,10 @@ namespace DACN_Web_API.Controllers
         [HttpPost("AddToCart")]
         public IActionResult AddToCart([FromBody] GioHangDTO item)
         {
+            Console.WriteLine($"==> AddToCart: NguoiDung={item.NguoiDungId}, SanPham={item.SanPhamId}, KichThuoc={item.KichThuocId}, SL={item.SoLuong}");
+
             var existing = db.Giohangs.FirstOrDefault(g => g.NguoiDungId == item.NguoiDungId && g.SanPhamId == item.SanPhamId && g.KichThuocId == item.KichThuocId);
-            if(existing == null)
+            if (existing == null)
             {
                 var newItem = new Giohang
                 {

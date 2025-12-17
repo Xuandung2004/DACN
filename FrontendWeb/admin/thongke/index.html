@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>AURORA - Admin Dashboard</title>
+
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+    <div id="wrapper">
+
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fas fa-laugh-wink"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">AURORA Admin</div>
+            </a>
+
+            <hr class="sidebar-divider my-0">
+
+            <li class="nav-item active">
+                <a class="nav-link" href="index.html">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span></a>
+            </li>
+
+            <hr class="sidebar-divider">
+
+            <div class="sidebar-heading">
+                Quản lý
+            </div>
+
+            <li class="nav-item">
+                <a class="nav-link" href="products.html">
+                    <i class="fas fa-fw fa-box"></i>
+                    <span>Sản phẩm</span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="orders.html">
+                    <i class="fas fa-fw fa-shopping-cart"></i>
+                    <span>Đơn hàng</span></a>
+            </li>
+
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+
+        </ul>
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <div id="content">
+
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <ul class="navbar-nav ml-auto">
+
+                        <li class="nav-item dropdown no-arrow d-sm-none">
+                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-search fa-fw"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                                aria-labelledby="searchDropdown">
+                                <form class="form-inline mr-auto w-100 navbar-search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control bg-light border-0 small"
+                                            placeholder="Search for..." aria-label="Search"
+                                            aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Admin Name</span>
+                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Cá nhân
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a onclick="dangXuat()" class="dropdown-item" href="#" data-toggle="modal"
+                                    data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Đăng xuất
+                                </a>
+                            </div>
+                        </li>
+
+                    </ul>
+
+                </nav>
+                <div class="container-fluid">
+
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Dashboard Thống Kê</h1>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-xl-4 col-lg-6">
+                            <div class="card shadow">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-info">Thống kê Doanh thu Chi tiết Tuần</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-row align-items-end">
+                                        <div class="form-group col-4">
+                                            <label for="inputWeek">Tuần (WW)</label>
+                                            <input type="number" class="form-control" id="inputWeek" placeholder="45"
+                                                value="46" min="1" max="53">
+                                        </div>
+                                        <div class="form-group col-4">
+                                            <label for="inputYearForWeek">Năm (YYYY)</label>
+                                            <input type="number" class="form-control" id="inputYearForWeek"
+                                                placeholder="2025" value="2025" min="2000" max="2050">
+                                        </div>
+                                        <div class="form-group col-4">
+                                            <button id="btnFetchWeeklyDetail" class="btn btn-info btn-block">Xem chi
+                                                tiết</button>
+                                        </div>
+                                    </div>
+                                    <p id="weeklyDetailResult" class="mt-3 font-weight-bold"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-4 col-lg-6">
+                            <div class="card shadow">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-success">Thống kê Doanh thu theo Năm</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-row align-items-end">
+                                        <div class="form-group col-6">
+                                            <label for="inputYearForDetail">Năm (YYYY)</label>
+                                            <input type="number" class="form-control" id="inputYearForDetail"
+                                                placeholder="2025" value="2025" min="2000" max="2050">
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <button id="btnFetchYearlyDetail" class="btn btn-success btn-block">Xem chi
+                                                tiết</button>
+                                        </div>
+                                    </div>
+                                    <p id="yearlyDetailResult" class="mt-3 font-weight-bold"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-xl-8 col-lg-7">
+                            <div class="card shadow mb-4">
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Doanh Thu Theo Từng Tháng</h6>
+                                    <div class="input-group" style="width: 180px;">
+                                        <input type="number" class="form-control form-control-sm"
+                                            id="chartMonthlyYearInput" value="2025" min="2000" max="2050">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary btn-sm" type="button"
+                                                id="btnUpdateMonthlyChart">Xem</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-area">
+                                        <canvas id="monthlyRevenueChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-4 col-lg-5">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Tỷ Lệ Đánh Giá (Sao)</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-pie pt-4">
+                                        <canvas id="ratingsChart"></canvas>
+                                    </div>
+                                    <hr>
+                                    <div class="mt-3 text-center small">
+                                        <span class="mr-2"><i class="fas fa-circle" style="color:#1cc88a"></i> 5
+                                            Sao</span>
+                                        <span class="mr-2"><i class="fas fa-circle" style="color:#36b9cc"></i> 4
+                                            Sao</span>
+                                        <span class="mr-2"><i class="fas fa-circle" style="color:#f6c23e"></i> 3
+                                            Sao</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-xl-6 col-lg-6">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Tồn Kho Theo Danh Mục Sản Phẩm</h6>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="inventoryChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-6 col-lg-6">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Doanh Thu Theo Năm</h6>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="yearlyRevenueChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; AURORA 2025</span>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="../user/myloginfinal1.html">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="productModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="productModalLabel">Thêm Sản Phẩm Mới</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="productForm">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="TenSp">Tên Sản Phẩm</label>
+                                <input type="text" class="form-control" id="TenSp" required />
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="Gia">Giá</label>
+                                <input type="number" class="form-control" id="Gia" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="MoTa">Mô Tả</label>
+                            <textarea class="form-control" id="MoTa" rows="3"></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label for="DanhMucId">Danh Mục (ID)</label>
+                                <input type="number" class="form-control" id="DanhMucId" required />
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="Slug">Slug</label>
+                                <input type="text" class="form-control" id="Slug" />
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="TonKho">Tồn Kho</label>
+                                <input type="number" class="form-control" id="TonKho" />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="NgayTao">Ngày Tạo</label>
+                                <input type="datetime-local" class="form-control" id="NgayTao" />
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="AnhId">Ảnh (ID)</label>
+                                <input type="number" class="form-control" id="AnhId" required />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                    <button id="saveBtn" type="button" class="btn btn-primary">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <script src="js/sb-admin-2.min.js"></script>
+
+    <script src="vendor/chart.js/Chart.min.js"></script>
+
+    <script src="js/admin-stats.js"></script>
+    <script src="js/admin-products.js"></script>
+
+</body>
+
+</html>
